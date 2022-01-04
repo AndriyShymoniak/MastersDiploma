@@ -1,5 +1,5 @@
-DROP DATABASE IF EXISTS masters_project;
-CREATE DATABASE masters_project;
+-- DROP DATABASE IF EXISTS masters;
+-- CREATE DATABASE masters;
 
 -- Contains personal information about users
 CREATE SEQUENCE person_sequence INCREMENT BY 1 MINVALUE 0 MAXVALUE 9223372036854775807 START 0 NO CYCLE;
@@ -12,7 +12,7 @@ CREATE TABLE person
     PRIMARY KEY (person_id)
 );
 
--- Contains all possible user roles
+-- Contains all possible "user" roles
 CREATE SEQUENCE user_role_sequence INCREMENT BY 1 MINVALUE 0 MAXVALUE 9223372036854775807 START 0 NO CYCLE;
 CREATE TABLE user_role
 (
@@ -23,7 +23,7 @@ CREATE TABLE user_role
 
 -- Contains all users
 CREATE SEQUENCE user_sequence INCREMENT BY 1 MINVALUE 0 MAXVALUE 9223372036854775807 START 0 NO CYCLE;
-CREATE TABLE user
+CREATE TABLE "user"
 (
     user_id         NUMERIC(16)  NOT NULL DEFAULT NEXTVAL('user_sequence'::regclass),
     username        VARCHAR(100) NOT NULL UNIQUE,
@@ -55,7 +55,7 @@ CREATE TABLE media
     create_user         NUMERIC(16),
     create_date         TIMESTAMP,
     PRIMARY KEY (media_id),
-    CONSTRAINT "fk_media_create_user" FOREIGN KEY (create_user) REFERENCES user (user_id)
+    CONSTRAINT "fk_media_create_user" FOREIGN KEY (create_user) REFERENCES "user" (user_id)
 );
 
 -- Contains locations of detected objects
@@ -113,8 +113,8 @@ CREATE TABLE recognition_result
     CONSTRAINT "fk_recognition_result_ml_model_id" FOREIGN KEY (ml_model_id) REFERENCES ml_model (ml_model_id),
     CONSTRAINT "fk_recognition_result_media_id" FOREIGN KEY (media_id) REFERENCES media (media_id),
     CONSTRAINT "fk_recognition_result_location_id" FOREIGN KEY (location_id) REFERENCES location (location_id),
-    CONSTRAINT "fk_recognition_result_create_user" FOREIGN KEY (create_user) REFERENCES user (user_id),
-    CONSTRAINT "fk_recognition_result_update_user" FOREIGN KEY (update_user) REFERENCES user (user_id)
+    CONSTRAINT "fk_recognition_result_create_user" FOREIGN KEY (create_user) REFERENCES "user" (user_id),
+    CONSTRAINT "fk_recognition_result_update_user" FOREIGN KEY (update_user) REFERENCES "user" (user_id)
 );
 
 -- Relation between recognition_result and observed_object tables
