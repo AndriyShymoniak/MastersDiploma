@@ -79,7 +79,8 @@ CREATE TABLE ml_model
     is_active   NUMERIC(1),
     create_user NUMERIC(16),
     create_date TIMESTAMP,
-    PRIMARY KEY (ml_model_id)
+    PRIMARY KEY (ml_model_id),
+    CONSTRAINT "fk_ml_model_create_user" FOREIGN KEY (create_user) REFERENCES "user" (user_id)
 );
 
 -- Relation between ml_model and observed_object tables

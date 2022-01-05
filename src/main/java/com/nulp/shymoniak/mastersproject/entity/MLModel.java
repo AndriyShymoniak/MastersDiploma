@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -26,9 +27,13 @@ public class MLModel {
     @Column(name = "is_active")
     private Integer isActive;
 
-    @Column(name = "create_user")
-    private Long createUser;
-
     @Column(name = "create_date")
     private LocalDateTime createDate;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "create_user", referencedColumnName = "user_id")
+    private User createUser;
+
+    @OneToMany(mappedBy = "observedObject", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MLModelObservedObject> observedObjectList;
 }

@@ -13,9 +13,11 @@ public class MLModelObservedObject {
     @Column(name = "ml_model_observed_object_id")
     private Long mlModelObservedObjectId;
 
-    @Column(name = "ml_model_id")
-    private Long mlModelId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ml_model_id", referencedColumnName = "ml_model_id")
+    private MLModel mlModel;
 
-    @Column(name = "observed_object_id")
-    private Long observedObjectId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "observed_object_id", referencedColumnName = "observed_object_id")
+    private ObservedObject observedObject;
 }

@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -23,24 +24,32 @@ public class RecognitionResult {
     @Column(name = "is_recognition_correct")
     private Integer is_recognition_correct;
 
-    @Column(name = "ml_model_id")
-    private Long mlModelId;
-
-    @Column(name = "media_id")
-    private Long mediaId;
-
-    @Column(name = "location_id")
-    private Long locationId;
-
-    @Column(name = "create_user")
-    private Long createUser;
-
     @Column(name = "create_date")
     private LocalDateTime createDate;
 
-    @Column(name = "update_user")
-    private Long updateUser;
-
     @Column(name = "update_date")
     private LocalDateTime updateDate;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "ml_model_id", referencedColumnName = "ml_model_id")
+    private MLModel mlModel;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "media_id", referencedColumnName = "media_id")
+    private Media media;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "location_id", referencedColumnName = "location_id")
+    private Location location;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "create_user", referencedColumnName = "user_id")
+    private User createUser;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "update_user", referencedColumnName = "user_id")
+    private User updateUser;
+
+    @OneToMany(mappedBy = "observedObject", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RecognitionResultObservedObject> observedObjectList;
 }

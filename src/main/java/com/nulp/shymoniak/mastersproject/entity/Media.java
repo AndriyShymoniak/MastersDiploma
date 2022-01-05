@@ -20,9 +20,10 @@ public class Media {
     @Column(name = "processed_media_url")
     private String processedMediaUrl;
 
-    @Column(name = "create_user")
-    private Long createUser;
-
     @Column(name = "create_date")
     private LocalDateTime createDate;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "create_user", referencedColumnName = "user_id")
+    private User createUser;
 }

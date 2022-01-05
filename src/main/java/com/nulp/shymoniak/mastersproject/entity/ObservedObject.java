@@ -3,6 +3,7 @@ package com.nulp.shymoniak.mastersproject.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity
@@ -15,4 +16,10 @@ public class ObservedObject {
 
     @Column(name = "object_name")
     private String objectName;
+
+    @OneToMany(mappedBy = "mlModel", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MLModelObservedObject> mlModelList;
+
+    @OneToMany(mappedBy = "recognitionResult", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RecognitionResultObservedObject> recognitionResultList;
 }

@@ -20,12 +20,14 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "user_role_id")
-    private Long userRoleId;
-
-    @Column(name = "person_id")
-    private Long personId;
-
     @Column(name = "registered_date")
     private LocalDateTime registeredDate;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "person_id", referencedColumnName = "person_id")
+    private Person person;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_role_id", referencedColumnName = "user_role_id")
+    private UserRole userRole;
 }

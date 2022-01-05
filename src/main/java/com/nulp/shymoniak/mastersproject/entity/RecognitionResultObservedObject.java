@@ -13,9 +13,11 @@ public class RecognitionResultObservedObject {
     @Column(name = "recognition_result_observed_object_id")
     private Long recognitionResultObservedObjectId;
 
-    @Column(name = "recognition_result_id")
-    private Long recognitionResultId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "recognition_result_id", referencedColumnName = "recognition_result_id")
+    private RecognitionResult recognitionResult;
 
-    @Column(name = "observed_object_id")
-    private Long observedObjectId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "observed_object_id", referencedColumnName = "observed_object_id")
+    private ObservedObject observedObject;
 }
