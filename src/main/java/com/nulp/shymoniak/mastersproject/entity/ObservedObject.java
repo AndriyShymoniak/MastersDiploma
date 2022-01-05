@@ -3,6 +3,7 @@ package com.nulp.shymoniak.mastersproject.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -18,8 +19,8 @@ public class ObservedObject {
     private String objectName;
 
     @OneToMany(mappedBy = "mlModel", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<MLModelObservedObject> mlModelList;
+    private List<MLModelObservedObject> mlModelList = new ArrayList<>();
 
     @OneToMany(mappedBy = "recognitionResult", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<RecognitionResultObservedObject> recognitionResultList;
+    private List<RecognitionResultObservedObject> recognitionResultList = new ArrayList<>();
 }

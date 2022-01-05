@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -35,5 +36,5 @@ public class MLModel {
     private User createUser;
 
     @OneToMany(mappedBy = "observedObject", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<MLModelObservedObject> observedObjectList;
+    private List<MLModelObservedObject> observedObjectList = new ArrayList<>();
 }

@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -51,5 +52,5 @@ public class RecognitionResult {
     private User updateUser;
 
     @OneToMany(mappedBy = "observedObject", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<RecognitionResultObservedObject> observedObjectList;
+    private List<RecognitionResultObservedObject> observedObjectList = new ArrayList<>();
 }
