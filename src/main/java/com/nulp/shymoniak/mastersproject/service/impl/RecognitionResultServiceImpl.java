@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class RecognitionResultServiceImpl implements RecognitionResultService {
@@ -31,14 +33,19 @@ public class RecognitionResultServiceImpl implements RecognitionResultService {
         return mapper.mapAll(recognitionResultList, RecognitionResultDTO.class);
     }
 
-    // TODO: 2022-01-04
     @Override
     public List<RecognitionResultDTO> findAllByUserId(Long userId) {
-//        Optional<RecognitionResult> optionalRecognitionResult =
-//                recognitionResultRepository.findById(userId);
-//        return optionalRecognitionResult.map(item -> mapper.map(item, RecognitionResultDTO.class))
-//                .orElseThrow(() -> new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND));
-        return null;
+        List<RecognitionResult> resultsByUser = recognitionResultRepository.findAllByCreateUserOrUpdateUser(userId, userId);
+        return mapper.mapAll(resultsByUser, RecognitionResultDTO.class);
+    }
+
+    @Override
+    public Map<LocalDateTime, List<RecognitionResultDTO>> findAllGroupedByDate() {
+        List<RecognitionResult> recognitionResultList = recognitionResultRepository.findAll();
+        List<RecognitionResultDTO> recognitionResultDTOList = mapper.mapAll(recognitionResultList, RecognitionResultDTO.class);
+        Map<LocalDateTime, List<RecognitionResultDTO>> result = recognitionResultDTOList.stream()
+                .collect(Collectors.groupingBy(item -> item.getCreateDate().truncatedTo(ChronoUnit.DAYS)));
+        return new TreeMap<>(result);
     }
 
     @Override

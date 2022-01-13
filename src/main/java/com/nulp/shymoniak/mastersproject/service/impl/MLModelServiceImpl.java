@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class MLModelServiceImpl implements MLModelService {
@@ -32,10 +34,13 @@ public class MLModelServiceImpl implements MLModelService {
         return mapper.mapAll(modelList, MLModelDTO.class);
     }
 
-    // TODO: 2022-01-04
     @Override
-    public List<MLModelDTO> findAllModelsByObservedObject(ObservedObjectDTO observedObject) {
-        return null;
+    public List<MLModelDTO> findAllModelsByObservedObject(Set<Long> observedObjectSet) {
+        List<MLModel> modelList = mlModelRepository.findAll();
+        modelList = modelList.stream()
+                .filter(model -> model.getObservedObjectList().containsAll(observedObjectSet))
+                .collect(Collectors.toList());
+        return mapper.mapAll(modelList, MLModelDTO.class);
     }
 
     @Override

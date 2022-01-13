@@ -1,7 +1,6 @@
 package com.nulp.shymoniak.mastersproject.controller;
 
 import com.nulp.shymoniak.mastersproject.dto.MLModelDTO;
-import com.nulp.shymoniak.mastersproject.dto.ObservedObjectDTO;
 import com.nulp.shymoniak.mastersproject.service.MLModelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("mlModel")
@@ -26,8 +26,8 @@ public class MLModelController {
     }
 
     @GetMapping("/observedObject/")
-    public ResponseEntity<List<MLModelDTO>> findAllModelsByObservedObject(@RequestBody ObservedObjectDTO observedObject) {
-        return new ResponseEntity<>(mlModelService.findAllModelsByObservedObject(observedObject), HttpStatus.OK);
+    public ResponseEntity<List<MLModelDTO>> findAllModelsByObservedObject(@RequestParam Set<Long> observedObjectSet) {
+        return new ResponseEntity<>(mlModelService.findAllModelsByObservedObject(observedObjectSet), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

@@ -7,7 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("recognitionResult")
@@ -22,6 +24,11 @@ public class RecognitionResultController {
     @GetMapping({"", "/"})
     public ResponseEntity<List<RecognitionResultDTO>> findAllRecognitionResults() {
         return new ResponseEntity<>(recognitionService.findAllRecognitionResults(), HttpStatus.OK);
+    }
+
+    @GetMapping("/groupByDate")
+    public ResponseEntity<Map<LocalDateTime, List<RecognitionResultDTO>>> findAllRecognitionResultsGroupedByDate() {
+        return new ResponseEntity<>(recognitionService.findAllGroupedByDate(), HttpStatus.OK);
     }
 
     @GetMapping("/{userId}")
