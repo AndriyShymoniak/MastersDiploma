@@ -9,6 +9,4 @@ import java.util.List;
 @Repository
 public interface RecognitionResultRepository extends JpaRepository<RecognitionResult, Long> {
     List<RecognitionResult> findAllByCreateUserOrUpdateUser(Long createUserId, Long updateUserId);
-    List<RecognitionResult> findAllBy(Long createUserId, Long updateUserId);
-
 }
