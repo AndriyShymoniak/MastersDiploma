@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+// TODO: 2/7/22 Add validation
 @RestController
 @RequestMapping("user")
 public class UserController {
@@ -30,7 +31,7 @@ public class UserController {
     }
 
     @GetMapping("/{username}")
-    public ResponseEntity<UserDTO> findUserById(@PathVariable String username) {
+    public ResponseEntity<UserDTO> findUserByUsername(@PathVariable String username) {
         return new ResponseEntity<>(userService.findByUsername(username), HttpStatus.OK);
     }
 

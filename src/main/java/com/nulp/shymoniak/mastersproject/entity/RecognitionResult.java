@@ -23,7 +23,7 @@ public class RecognitionResult {
     private Integer isObjectPresent;
 
     @Column(name = "is_recognition_correct")
-    private Integer is_recognition_correct;
+    private Integer isRecognitionCorrect;
 
     @Column(name = "create_date")
     private LocalDateTime createDate;

@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
+// TODO: 2/7/22 Add validation 
 @RestController
 @RequestMapping("recognitionResult")
 public class RecognitionResultController {
@@ -31,7 +32,7 @@ public class RecognitionResultController {
         return new ResponseEntity<>(recognitionService.findAllGroupedByDate(), HttpStatus.OK);
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/user/{userId}")
     public ResponseEntity<List<RecognitionResultDTO>> findRecognitionResultsByUserId(@PathVariable Long userId) {
         return new ResponseEntity<>(recognitionService.findAllByUserId(userId), HttpStatus.OK);
     }

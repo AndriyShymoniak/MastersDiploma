@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO: 2/7/22 Change isRecognitionCorrect to Enum 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,7 +16,7 @@ public class RecognitionResultDTO {
     private Long recognitionResultId;
     private String description;
     private Integer isObjectPresent;
-    private Integer is_recognition_correct;
+    private Integer isRecognitionCorrect;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
 

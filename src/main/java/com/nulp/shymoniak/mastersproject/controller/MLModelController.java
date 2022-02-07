@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Set;
 
+// TODO: 2/7/22 Add validation
 @RestController
 @RequestMapping("mlModel")
 public class MLModelController {
@@ -25,7 +26,7 @@ public class MLModelController {
         return new ResponseEntity<>(mlModelService.findAllModels(), HttpStatus.OK);
     }
 
-    @GetMapping("/observedObject/")
+    @GetMapping("/observedObject")
     public ResponseEntity<List<MLModelDTO>> findAllModelsByObservedObject(@RequestParam Set<Long> observedObjectSet) {
         return new ResponseEntity<>(mlModelService.findAllModelsByObservedObject(observedObjectSet), HttpStatus.OK);
     }
