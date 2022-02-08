@@ -5,6 +5,7 @@ import com.nulp.shymoniak.mastersproject.dto.RecognitionResultDTO;
 import com.nulp.shymoniak.mastersproject.entity.RecognitionResult;
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
 import com.nulp.shymoniak.mastersproject.repository.RecognitionResultRepository;
+import com.nulp.shymoniak.mastersproject.service.AbstractService;
 import com.nulp.shymoniak.mastersproject.service.RecognitionResultService;
 import com.nulp.shymoniak.mastersproject.utility.ObjectMapperUtils;
 import com.nulp.shymoniak.mastersproject.utility.validator.RecognitionResultValidator;
@@ -18,10 +19,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class RecognitionResultServiceImpl implements RecognitionResultService {
+public class RecognitionResultServiceImpl extends AbstractService<RecognitionResultDTO> implements RecognitionResultService {
     private final RecognitionResultRepository recognitionResultRepository;
     private final ObjectMapperUtils mapper;
-    private final RecognitionResultValidator validator;
 
     @Autowired
     public RecognitionResultServiceImpl(RecognitionResultRepository recognitionResultRepository, ObjectMapperUtils mapper, RecognitionResultValidator validator) {
@@ -87,13 +87,5 @@ public class RecognitionResultServiceImpl implements RecognitionResultService {
                 .orElseThrow(() -> new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND));
         recognitionResultRepository.save(recognitionResultEntity);
         return recognitionResult;
-    }
-
-    // TODO: 2/8/22  Create AbstractService class with validation through Generics
-    // TODO: 2/8/22 Validate using AOP
-    private void checkIfValid(RecognitionResultDTO recognitionResult){
-        if (validator.isValid(recognitionResult)) {
-            throw new ApiRequestException(ApplicationConstants.ERROR_INVALID_ENTITY + recognitionResult);
-        }
     }
 }
