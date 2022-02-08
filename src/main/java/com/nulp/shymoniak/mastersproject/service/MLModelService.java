@@ -8,7 +8,7 @@ import java.util.Set;
 public interface MLModelService {
     List<MLModelDTO> findAllModels();
 
-    List<MLModelDTO> findAllModelsByObservedObject(Set<Long> observedObjectSet);
+    List<MLModelDTO> findAllModelsByObservedObject(Set<Long> observedObjectIdSet);
 
     MLModelDTO findModelById(Long modelId);
 
