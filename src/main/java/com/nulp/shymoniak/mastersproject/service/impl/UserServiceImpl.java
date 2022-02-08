@@ -5,6 +5,7 @@ import com.nulp.shymoniak.mastersproject.dto.UserDTO;
 import com.nulp.shymoniak.mastersproject.entity.User;
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
 import com.nulp.shymoniak.mastersproject.repository.UserRepository;
+import com.nulp.shymoniak.mastersproject.service.AbstractService;
 import com.nulp.shymoniak.mastersproject.service.UserService;
 import com.nulp.shymoniak.mastersproject.utility.ObjectMapperUtils;
 import com.nulp.shymoniak.mastersproject.utility.validator.UserValidator;
@@ -16,10 +17,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends AbstractService<UserDTO> implements UserService {
     private final UserRepository userRepository;
     private final ObjectMapperUtils mapper;
-    private final UserValidator validator;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, ObjectMapperUtils mapper, UserValidator validator) {
@@ -52,7 +52,6 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public UserDTO createUser(UserDTO user) {
-        checkIfValid(user);
         User userEntity = mapper.map(user, User.class);
         userRepository.save(userEntity);
         return mapper.map(userEntity, UserDTO.class);
@@ -75,13 +74,5 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND));
         userRepository.save(mapper.map(user, User.class));
         return user;
-    }
-
-    // TODO: 2/8/22  Create AbstractService class with validation through Generics
-    // TODO: 2/8/22 Validate using AOP
-    private void checkIfValid(UserDTO user){
-        if (validator.isValid(user)) {
-            throw new ApiRequestException(ApplicationConstants.ERROR_INVALID_ENTITY + user);
-        }
     }
 }

@@ -5,6 +5,7 @@ import com.nulp.shymoniak.mastersproject.dto.MLModelDTO;
 import com.nulp.shymoniak.mastersproject.entity.MLModel;
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
 import com.nulp.shymoniak.mastersproject.repository.MLModelRepository;
+import com.nulp.shymoniak.mastersproject.service.AbstractService;
 import com.nulp.shymoniak.mastersproject.service.MLModelService;
 import com.nulp.shymoniak.mastersproject.utility.ObjectMapperUtils;
 import com.nulp.shymoniak.mastersproject.utility.validator.MLModelValidator;
@@ -18,10 +19,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class MLModelServiceImpl implements MLModelService {
+public class MLModelServiceImpl extends AbstractService<MLModelDTO> implements MLModelService {
     private final MLModelRepository mlModelRepository;
     private final ObjectMapperUtils mapper;
-    private final MLModelValidator validator;
 
     @Autowired
     public MLModelServiceImpl(MLModelRepository mlModelRepository, ObjectMapperUtils mapper, MLModelValidator validator) {
@@ -56,7 +56,6 @@ public class MLModelServiceImpl implements MLModelService {
     @Transactional
     @Override
     public MLModelDTO createModel(MLModelDTO mlModel) {
-        checkIfValid(mlModel);
         MLModel modelEntity = mapper.map(mlModel, MLModel.class);
         mlModelRepository.save(modelEntity);
         return mapper.map(modelEntity, MLModelDTO.class);
@@ -74,19 +73,10 @@ public class MLModelServiceImpl implements MLModelService {
     @Transactional
     @Override
     public MLModelDTO updateModel(MLModelDTO mlModel) {
-        checkIfValid(mlModel);
         mlModelRepository.findById(mlModel.getMlModelId())
                 .orElseThrow(() -> new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND));
         mlModelRepository.save(mapper.map(mlModel, MLModel.class));
         return mlModel;
-    }
-
-    // TODO: 2/8/22  Create AbstractService class with validation through Generics
-    // TODO: 2/8/22 Validate using AOP
-    private void checkIfValid(MLModelDTO mlModel) {
-        if (validator.isValid(mlModel)) {
-            throw new ApiRequestException(ApplicationConstants.ERROR_INVALID_ENTITY + mlModel);
-        }
     }
 
     private boolean doesModelContainAllObservedObjects(MLModel model, Set<Long> observedObjectIdSet) {
