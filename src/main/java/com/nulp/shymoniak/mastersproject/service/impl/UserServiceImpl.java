@@ -52,7 +52,6 @@ public class UserServiceImpl extends AbstractService<UserDTO> implements UserSer
     @Transactional
     @Override
     public UserDTO createUser(UserDTO user) {
-        checkIfValid(user);
         User userEntity = mapper.map(user, User.class);
         userRepository.save(userEntity);
         return mapper.map(userEntity, UserDTO.class);

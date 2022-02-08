@@ -56,7 +56,6 @@ public class MLModelServiceImpl extends AbstractService<MLModelDTO> implements M
     @Transactional
     @Override
     public MLModelDTO createModel(MLModelDTO mlModel) {
-        checkIfValid(mlModel);
         MLModel modelEntity = mapper.map(mlModel, MLModel.class);
         mlModelRepository.save(modelEntity);
         return mapper.map(modelEntity, MLModelDTO.class);
@@ -74,7 +73,6 @@ public class MLModelServiceImpl extends AbstractService<MLModelDTO> implements M
     @Transactional
     @Override
     public MLModelDTO updateModel(MLModelDTO mlModel) {
-        checkIfValid(mlModel);
         mlModelRepository.findById(mlModel.getMlModelId())
                 .orElseThrow(() -> new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND));
         mlModelRepository.save(mapper.map(mlModel, MLModel.class));

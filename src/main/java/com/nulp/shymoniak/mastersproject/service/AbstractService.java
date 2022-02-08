@@ -7,10 +7,9 @@ import com.nulp.shymoniak.mastersproject.utility.validator.Validator;
 public abstract class AbstractService<T> {
     protected Validator validator;
 
-    // TODO: 2/8/22 Validate using AOP
-    protected void checkIfValid(T t){
+    public void checkIfValid(T t){
         if (validator.isValid(t)) {
-            throw new ApiRequestException(ApplicationConstants.ERROR_INVALID_ENTITY + t.toString());
+            throw new ApiRequestException(ApplicationConstants.ERROR_INVALID_ENTITY + ": " + t.toString());
         }
     }
 }

@@ -62,7 +62,6 @@ public class RecognitionResultServiceImpl extends AbstractService<RecognitionRes
     @Transactional
     @Override
     public RecognitionResultDTO createRecognitionResult(RecognitionResultDTO recognitionResult) {
-        checkIfValid(recognitionResult);
         RecognitionResult recognitionResultEntity = mapper.map(recognitionResult, RecognitionResult.class);
         recognitionResultRepository.save(recognitionResultEntity);
         return mapper.map(recognitionResultEntity, RecognitionResultDTO.class);
@@ -82,7 +81,6 @@ public class RecognitionResultServiceImpl extends AbstractService<RecognitionRes
     @Transactional
     @Override
     public RecognitionResultDTO updateRecognitionResult(RecognitionResultDTO recognitionResult) {
-        checkIfValid(recognitionResult);
         RecognitionResult recognitionResultEntity = recognitionResultRepository.findById(recognitionResult.getRecognitionResultId())
                 .orElseThrow(() -> new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND));
         recognitionResultRepository.save(recognitionResultEntity);
