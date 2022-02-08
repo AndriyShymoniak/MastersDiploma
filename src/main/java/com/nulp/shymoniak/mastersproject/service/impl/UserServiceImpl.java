@@ -48,7 +48,7 @@ public class UserServiceImpl extends AbstractService<UserDTO> implements UserSer
                 .orElseThrow(() -> new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND));
     }
 
-    // TODO: 2/7/22 fill registeredDate field
+    // TODO: 2/7/22 fill registeredDate field / change registeredDate to createDate
     @Transactional
     @Override
     public UserDTO createUser(UserDTO user) {
@@ -57,6 +57,7 @@ public class UserServiceImpl extends AbstractService<UserDTO> implements UserSer
         return mapper.map(userEntity, UserDTO.class);
     }
 
+    // TODO: 2/8/22 remove isActive field ?
     @Transactional
     @Override
     public UserDTO deleteUser(Long userId) {

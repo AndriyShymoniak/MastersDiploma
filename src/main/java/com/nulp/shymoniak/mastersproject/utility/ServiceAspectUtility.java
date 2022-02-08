@@ -3,7 +3,9 @@ package com.nulp.shymoniak.mastersproject.utility;
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
 import lombok.SneakyThrows;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -11,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.time.LocalDateTime;
 
 @Aspect
 @Component
@@ -31,6 +35,10 @@ public class ServiceAspectUtility {
     public void callUpdateMethod() {
     }
 
+    @Pointcut("execution(* com.nulp.shymoniak.mastersproject.service.impl*..*delete*(..))")
+    public void callDeleteMethod() {
+    }
+
     /**
      * Validates DTO classes instances in ServiceImpl classes
      * before create and update methods are called
@@ -41,8 +49,57 @@ public class ServiceAspectUtility {
     public void validateDTOs(JoinPoint joinPoint) {
         Object serviceImplInstance = getInstanceOfClassWithJoinPoint(joinPoint);
         Object dtoEntity = getDTOEntityFromParameters(joinPoint);
-        Method checkIfValid = serviceImplInstance.getClass().getDeclaredMethod("checkIfValid", Object.class);
+        Method checkIfValid = serviceImplInstance.getClass()
+                .getDeclaredMethod("checkIfValid", Object.class);
         checkIfValid.invoke(serviceImplInstance, dtoEntity);
+    }
+
+    // TODO: 2/8/22 fill related fields
+    @SneakyThrows
+    @Around("callCreateMethod()")
+    public void fillDTOFieldsOnCreate(ProceedingJoinPoint proceedingJoinPoint){
+        Object dtoEntity = getDTOEntityFromParameters(proceedingJoinPoint);
+        dtoEntity = fillCreateFields(dtoEntity);
+        proceedingJoinPoint.proceed(new Object[] {dtoEntity});
+    }
+
+    // TODO: 2/8/22 fill related fields
+    @SneakyThrows
+    @Around("callUpdateMethod() || callDeleteMethod()")
+    public void fillDTOFieldsOnUpdateOrDelete(ProceedingJoinPoint proceedingJoinPoint){
+        Object dtoEntity = getDTOEntityFromParameters(proceedingJoinPoint);
+        dtoEntity = fillUpdateFields(dtoEntity);
+        proceedingJoinPoint.proceed(new Object[] {dtoEntity});
+    }
+
+    // TODO: 2/8/22 refactor
+    @SneakyThrows
+    private Object fillCreateFields(Object obj){
+        Field[] fields = obj.getClass().getDeclaredFields();
+        for (Field field : fields) {
+            if (field.getName().equals("createDate")){
+                field.setAccessible(true);
+                field.set(obj, LocalDateTime.now());
+            } else if (field.getName().equals("createUser")){
+                // TODO: 2/8/22  set user from session
+            }
+        }
+        return obj;
+    }
+
+    // TODO: 2/8/22 refactor
+    @SneakyThrows
+    private Object fillUpdateFields(Object obj){
+        Field[] fields = obj.getClass().getDeclaredFields();
+        for (Field field : fields) {
+            if (field.getName().equals("updateDate")){
+                field.setAccessible(true);
+                field.set(obj, LocalDateTime.now());
+            } else if (field.getName().equals("updateUser")){
+                // TODO: 2/8/22  set user from session
+            }
+        }
+        return obj;
     }
 
     /**

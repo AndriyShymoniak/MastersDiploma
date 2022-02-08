@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.util.Map;
 
+// TODO: 2/8/22 add rating logic
 @Data
 public class MLModelRating {
     private MLModelDTO mlModel;

@@ -9,5 +9,9 @@ public class ApplicationConstants {
     public static final Integer EARTH_RADIUS = 6371; //Kilometers
 
     // URL regex pattern
-    public static final String  URL_REGEX_PATTERN = "^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
+    public static final String URL_REGEX_PATTERN = "^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
+
+    // Default values
+    public static final Integer DEFAULT_TRUE_FLAG = 1;
+    public static final Integer DEFAULT_FALSE_FLAG = 0;
 }

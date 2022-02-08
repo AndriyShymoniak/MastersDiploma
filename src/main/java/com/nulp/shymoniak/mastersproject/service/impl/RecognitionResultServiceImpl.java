@@ -58,7 +58,6 @@ public class RecognitionResultServiceImpl extends AbstractService<RecognitionRes
                 .orElseThrow(() -> new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND));
     }
 
-    // TODO: 2/7/22 fill createUser, createDate
     @Transactional
     @Override
     public RecognitionResultDTO createRecognitionResult(RecognitionResultDTO recognitionResult) {
@@ -67,7 +66,6 @@ public class RecognitionResultServiceImpl extends AbstractService<RecognitionRes
         return mapper.map(recognitionResultEntity, RecognitionResultDTO.class);
     }
 
-    // TODO: 2/7/22 fill updateDate, updateUser
     @Transactional
     @Override
     public RecognitionResultDTO deleteRecognitionResult(Long recognitionResultId) {
@@ -77,7 +75,6 @@ public class RecognitionResultServiceImpl extends AbstractService<RecognitionRes
         return mapper.map(recognitionResultEntity, RecognitionResultDTO.class);
     }
 
-    // TODO: 2/7/22 fill updateDate, updateUser
     @Transactional
     @Override
     public RecognitionResultDTO updateRecognitionResult(RecognitionResultDTO recognitionResult) {

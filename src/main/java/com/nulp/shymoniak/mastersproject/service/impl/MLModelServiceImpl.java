@@ -32,7 +32,7 @@ public class MLModelServiceImpl extends AbstractService<MLModelDTO> implements M
 
     @Override
     public List<MLModelDTO> findAllModels() {
-        List<MLModel> modelList = mlModelRepository.findAll();
+        List<MLModel> modelList = mlModelRepository.findAllActiveModels();
         return mapper.mapAll(modelList, MLModelDTO.class);
     }
 
@@ -40,6 +40,7 @@ public class MLModelServiceImpl extends AbstractService<MLModelDTO> implements M
     public List<MLModelDTO> findAllModelsByObservedObject(Set<Long> observedObjectIdSet) {
         List<MLModel> modelList = mlModelRepository.findAll();
         modelList = modelList.stream()
+                .filter(model -> model.getIsActive().equals(ApplicationConstants.DEFAULT_TRUE_FLAG))
                 .filter(model -> doesModelContainAllObservedObjects(model, observedObjectIdSet))
                 .collect(Collectors.toList());
         return mapper.mapAll(modelList, MLModelDTO.class);
@@ -52,7 +53,6 @@ public class MLModelServiceImpl extends AbstractService<MLModelDTO> implements M
                 .orElseThrow(() -> new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND));
     }
 
-    // TODO: 2/7/22 fill createDate, createUser
     @Transactional
     @Override
     public MLModelDTO createModel(MLModelDTO mlModel) {
@@ -66,7 +66,8 @@ public class MLModelServiceImpl extends AbstractService<MLModelDTO> implements M
     public MLModelDTO deleteModel(Long modelId) {
         MLModel modelEntity = mlModelRepository.findById(modelId)
                 .orElseThrow(() -> new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND));
-        mlModelRepository.delete(modelEntity);
+        modelEntity.setIsActive(ApplicationConstants.DEFAULT_FALSE_FLAG);
+        mlModelRepository.save(modelEntity);
         return mapper.map(modelEntity, MLModelDTO.class);
     }
 
