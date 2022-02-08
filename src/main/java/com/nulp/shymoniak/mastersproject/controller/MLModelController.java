@@ -37,7 +37,7 @@ public class MLModelController {
     }
 
     @PostMapping
-    public ResponseEntity<MLModelDTO> createcModel(@RequestBody MLModelDTO user) {
+    public ResponseEntity<MLModelDTO> createModel(@RequestBody MLModelDTO user) {
         return new ResponseEntity<>(mlModelService.createModel(user), HttpStatus.CREATED);
     }
 

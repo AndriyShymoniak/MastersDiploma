@@ -2,12 +2,12 @@ package com.nulp.shymoniak.mastersproject.service.impl;
 
 import com.nulp.shymoniak.mastersproject.constant.ApplicationConstants;
 import com.nulp.shymoniak.mastersproject.dto.MLModelDTO;
-import com.nulp.shymoniak.mastersproject.dto.ObservedObjectDTO;
 import com.nulp.shymoniak.mastersproject.entity.MLModel;
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
 import com.nulp.shymoniak.mastersproject.repository.MLModelRepository;
 import com.nulp.shymoniak.mastersproject.service.MLModelService;
 import com.nulp.shymoniak.mastersproject.utility.ObjectMapperUtils;
+import com.nulp.shymoniak.mastersproject.utility.validator.MLModelValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,11 +21,13 @@ import java.util.stream.Collectors;
 public class MLModelServiceImpl implements MLModelService {
     private final MLModelRepository mlModelRepository;
     private final ObjectMapperUtils mapper;
+    private final MLModelValidator validator;
 
     @Autowired
-    public MLModelServiceImpl(MLModelRepository mlModelRepository, ObjectMapperUtils mapper) {
+    public MLModelServiceImpl(MLModelRepository mlModelRepository, ObjectMapperUtils mapper, MLModelValidator validator) {
         this.mlModelRepository = mlModelRepository;
         this.mapper = mapper;
+        this.validator = validator;
     }
 
     @Override
@@ -34,6 +36,7 @@ public class MLModelServiceImpl implements MLModelService {
         return mapper.mapAll(modelList, MLModelDTO.class);
     }
 
+    // TODO: 2/8/22 filter will cause bug because containsAll has Long values 
     @Override
     public List<MLModelDTO> findAllModelsByObservedObject(Set<Long> observedObjectSet) {
         List<MLModel> modelList = mlModelRepository.findAll();
@@ -50,9 +53,11 @@ public class MLModelServiceImpl implements MLModelService {
                 .orElseThrow(() -> new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND));
     }
 
+    // TODO: 2/7/22 fill createDate, createUser 
     @Transactional
     @Override
     public MLModelDTO createModel(MLModelDTO mlModel) {
+        checkIfValid(mlModel);
         MLModel modelEntity = mapper.map(mlModel, MLModel.class);
         mlModelRepository.save(modelEntity);
         return mapper.map(modelEntity, MLModelDTO.class);
@@ -70,9 +75,18 @@ public class MLModelServiceImpl implements MLModelService {
     @Transactional
     @Override
     public MLModelDTO updateModel(MLModelDTO mlModel) {
+        checkIfValid(mlModel);
         mlModelRepository.findById(mlModel.getMlModelId())
                 .orElseThrow(() -> new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND));
         mlModelRepository.save(mapper.map(mlModel, MLModel.class));
         return mlModel;
+    }
+
+    // TODO: 2/8/22  Create AbstractService class with validation through Generics
+    // TODO: 2/8/22 Validate using AOP
+    private void checkIfValid(MLModelDTO mlModel){
+        if (validator.isValid(mlModel)) {
+            throw new ApiRequestException(ApplicationConstants.ERROR_INVALID_ENTITY + mlModel);
+        }
     }
 }
