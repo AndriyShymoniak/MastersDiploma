@@ -16,7 +16,7 @@ import java.lang.reflect.Method;
 @Aspect
 @Component
 public class ServiceAspectUtility {
-    private ApplicationContext context;
+    private final ApplicationContext context;
 
     @Autowired
     public ServiceAspectUtility(ApplicationContext context) {
@@ -31,6 +31,11 @@ public class ServiceAspectUtility {
     public void callUpdateMethod() {
     }
 
+    /**
+     * Validates DTO classes instances in ServiceImpl classes
+     * before create and update methods are called
+     * @param joinPoint
+     */
     @SneakyThrows
     @Before("callCreateMethod() || callUpdateMethod()")
     public void validateDTOs(JoinPoint joinPoint) {

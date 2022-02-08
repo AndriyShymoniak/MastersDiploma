@@ -1,4 +1,4 @@
-package com.nulp.shymoniak.mastersproject.utility.validator;
+package com.nulp.shymoniak.mastersproject.utility;
 
 import org.springframework.stereotype.Component;
 
@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 import static com.nulp.shymoniak.mastersproject.constant.ApplicationConstants.URL_REGEX_PATTERN;
 
 @Component
-public class GeneralValidator {
+public class GeneralValidationUtility {
     public boolean isValidURL(String url) {
         return isNotNullAndNotBlank(url) && Pattern.matches(URL_REGEX_PATTERN, url);
     }

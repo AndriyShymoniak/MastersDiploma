@@ -2,7 +2,7 @@ package com.nulp.shymoniak.mastersproject.service;
 
 import com.nulp.shymoniak.mastersproject.constant.ApplicationConstants;
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
-import com.nulp.shymoniak.mastersproject.utility.validator.Validator;
+import com.nulp.shymoniak.mastersproject.validation.Validator;
 
 public abstract class AbstractService<T> {
     protected Validator validator;

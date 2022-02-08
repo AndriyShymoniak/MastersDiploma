@@ -1,21 +1,22 @@
-package com.nulp.shymoniak.mastersproject.utility.validator;
+package com.nulp.shymoniak.mastersproject.validation;
 
 import com.nulp.shymoniak.mastersproject.dto.PersonDTO;
 import com.nulp.shymoniak.mastersproject.dto.UserDTO;
 import com.nulp.shymoniak.mastersproject.dto.UserRoleDTO;
 import com.nulp.shymoniak.mastersproject.repository.UserRepository;
+import com.nulp.shymoniak.mastersproject.utility.GeneralValidationUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserValidator implements Validator<UserDTO> {
     private final UserRepository repository;
-    private final GeneralValidator generalValidator;
+    private final GeneralValidationUtility generalValidationUtility;
 
     @Autowired
-    public UserValidator(UserRepository repository, GeneralValidator generalValidator) {
+    public UserValidator(UserRepository repository, GeneralValidationUtility generalValidationUtility) {
         this.repository = repository;
-        this.generalValidator = generalValidator;
+        this.generalValidationUtility = generalValidationUtility;
     }
 
     @Override
@@ -31,7 +32,7 @@ public class UserValidator implements Validator<UserDTO> {
     }
 
     private boolean isPasswordValid(String password) {
-        return generalValidator.isNotNullAndNotBlank(password);
+        return generalValidationUtility.isNotNullAndNotBlank(password);
     }
 
     private boolean isUserRoleValid(UserRoleDTO userRoleDTO) {
@@ -39,8 +40,8 @@ public class UserValidator implements Validator<UserDTO> {
     }
 
     private boolean isPersonValid(PersonDTO personDTO) {
-        return generalValidator.isNotNullAndNotBlank(personDTO.getName())
-                && generalValidator.isNotNullAndNotBlank(personDTO.getSurname())
-                && generalValidator.isNotNullAndNotBlank(personDTO.getEmail());
+        return generalValidationUtility.isNotNullAndNotBlank(personDTO.getName())
+                && generalValidationUtility.isNotNullAndNotBlank(personDTO.getSurname())
+                && generalValidationUtility.isNotNullAndNotBlank(personDTO.getEmail());
     }
 }

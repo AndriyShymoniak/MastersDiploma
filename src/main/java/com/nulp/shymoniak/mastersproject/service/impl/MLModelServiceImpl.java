@@ -8,7 +8,7 @@ import com.nulp.shymoniak.mastersproject.repository.MLModelRepository;
 import com.nulp.shymoniak.mastersproject.service.AbstractService;
 import com.nulp.shymoniak.mastersproject.service.MLModelService;
 import com.nulp.shymoniak.mastersproject.utility.ObjectMapperUtils;
-import com.nulp.shymoniak.mastersproject.utility.validator.MLModelValidator;
+import com.nulp.shymoniak.mastersproject.validation.MLModelValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

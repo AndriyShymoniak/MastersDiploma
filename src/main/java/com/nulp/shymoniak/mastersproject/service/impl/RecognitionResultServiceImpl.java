@@ -8,7 +8,7 @@ import com.nulp.shymoniak.mastersproject.repository.RecognitionResultRepository;
 import com.nulp.shymoniak.mastersproject.service.AbstractService;
 import com.nulp.shymoniak.mastersproject.service.RecognitionResultService;
 import com.nulp.shymoniak.mastersproject.utility.ObjectMapperUtils;
-import com.nulp.shymoniak.mastersproject.utility.validator.RecognitionResultValidator;
+import com.nulp.shymoniak.mastersproject.validation.RecognitionResultValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
