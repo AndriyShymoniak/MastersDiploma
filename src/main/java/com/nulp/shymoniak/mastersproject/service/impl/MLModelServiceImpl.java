@@ -36,12 +36,11 @@ public class MLModelServiceImpl implements MLModelService {
         return mapper.mapAll(modelList, MLModelDTO.class);
     }
 
-    // TODO: 2/8/22 filter will cause bug because containsAll has Long values 
     @Override
-    public List<MLModelDTO> findAllModelsByObservedObject(Set<Long> observedObjectSet) {
+    public List<MLModelDTO> findAllModelsByObservedObject(Set<Long> observedObjectIdSet) {
         List<MLModel> modelList = mlModelRepository.findAll();
         modelList = modelList.stream()
-                .filter(model -> model.getObservedObjectList().containsAll(observedObjectSet))
+                .filter(model -> doesModelContainAllObservedObjects(model, observedObjectIdSet))
                 .collect(Collectors.toList());
         return mapper.mapAll(modelList, MLModelDTO.class);
     }
@@ -53,7 +52,7 @@ public class MLModelServiceImpl implements MLModelService {
                 .orElseThrow(() -> new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND));
     }
 
-    // TODO: 2/7/22 fill createDate, createUser 
+    // TODO: 2/7/22 fill createDate, createUser
     @Transactional
     @Override
     public MLModelDTO createModel(MLModelDTO mlModel) {
@@ -84,9 +83,16 @@ public class MLModelServiceImpl implements MLModelService {
 
     // TODO: 2/8/22  Create AbstractService class with validation through Generics
     // TODO: 2/8/22 Validate using AOP
-    private void checkIfValid(MLModelDTO mlModel){
+    private void checkIfValid(MLModelDTO mlModel) {
         if (validator.isValid(mlModel)) {
             throw new ApiRequestException(ApplicationConstants.ERROR_INVALID_ENTITY + mlModel);
         }
+    }
+
+    private boolean doesModelContainAllObservedObjects(MLModel model, Set<Long> observedObjectIdSet) {
+        return model.getObservedObjectList().stream()
+                .map(observedObject -> observedObject.getObservedObject().getObservedObjectId())
+                .collect(Collectors.toList())
+                .containsAll(observedObjectIdSet);
     }
 }

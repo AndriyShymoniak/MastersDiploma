@@ -27,8 +27,8 @@ public class MLModelController {
     }
 
     @GetMapping("/observedObject")
-    public ResponseEntity<List<MLModelDTO>> findAllModelsByObservedObject(@RequestParam Set<Long> observedObjectSet) {
-        return new ResponseEntity<>(mlModelService.findAllModelsByObservedObject(observedObjectSet), HttpStatus.OK);
+    public ResponseEntity<List<MLModelDTO>> findAllModelsByObservedObject(@RequestParam Set<Long> observedObjectIdSet) {
+        return new ResponseEntity<>(mlModelService.findAllModelsByObservedObject(observedObjectIdSet), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
