@@ -1,8 +1,6 @@
 package com.nulp.shymoniak.mastersproject.validation;
 
-import com.nulp.shymoniak.mastersproject.dto.PersonDTO;
 import com.nulp.shymoniak.mastersproject.dto.UserDTO;
-import com.nulp.shymoniak.mastersproject.dto.UserRoleDTO;
 import com.nulp.shymoniak.mastersproject.repository.UserRepository;
 import com.nulp.shymoniak.mastersproject.utility.GeneralValidationUtility;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,19 +10,23 @@ import org.springframework.stereotype.Component;
 public class UserValidator implements Validator<UserDTO> {
     private final UserRepository repository;
     private final GeneralValidationUtility generalValidationUtility;
+    private final UserRoleValidator userRoleValidator;
+    private final PersonValidator personValidator;
 
     @Autowired
-    public UserValidator(UserRepository repository, GeneralValidationUtility generalValidationUtility) {
+    public UserValidator(UserRepository repository, GeneralValidationUtility generalValidationUtility, UserRoleValidator userRoleValidator, PersonValidator personValidator) {
         this.repository = repository;
         this.generalValidationUtility = generalValidationUtility;
+        this.userRoleValidator = userRoleValidator;
+        this.personValidator = personValidator;
     }
 
     @Override
     public boolean isValid(UserDTO userDTO) {
-        return !isUsernameUnique(userDTO.getUsername())
-                || !isPasswordValid(userDTO.getPassword())
-                || !isUserRoleValid(userDTO.getUserRole())
-                || !isPersonValid(userDTO.getPerson());
+        return isUsernameUnique(userDTO.getUsername())
+                || isPasswordValid(userDTO.getPassword())
+                || userRoleValidator.isValid(userDTO.getUserRole())
+                || personValidator.isValid(userDTO.getPerson());
     }
 
     private boolean isUsernameUnique(String username) {
@@ -33,15 +35,5 @@ public class UserValidator implements Validator<UserDTO> {
 
     private boolean isPasswordValid(String password) {
         return generalValidationUtility.isNotNullAndNotBlank(password);
-    }
-
-    private boolean isUserRoleValid(UserRoleDTO userRoleDTO) {
-        return userRoleDTO.getRole() != null;
-    }
-
-    private boolean isPersonValid(PersonDTO personDTO) {
-        return generalValidationUtility.isNotNullAndNotBlank(personDTO.getName())
-                && generalValidationUtility.isNotNullAndNotBlank(personDTO.getSurname())
-                && generalValidationUtility.isNotNullAndNotBlank(personDTO.getEmail());
     }
 }
