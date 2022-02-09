@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Set;
 
-// TODO: 2/7/22 Add validation
 @RestController
 @RequestMapping("mlModel")
 public class MLModelController {

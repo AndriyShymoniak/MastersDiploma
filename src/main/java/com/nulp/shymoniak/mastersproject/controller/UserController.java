@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-// TODO: 2/7/22 Add validation
 @RestController
 @RequestMapping("user")
 public class UserController {

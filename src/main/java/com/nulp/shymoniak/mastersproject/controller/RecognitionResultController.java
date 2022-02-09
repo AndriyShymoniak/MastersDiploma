@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
-// TODO: 2/7/22 Add validation 
 @RestController
 @RequestMapping("recognitionResult")
 public class RecognitionResultController {
