@@ -23,14 +23,15 @@ public class UserValidator implements Validator<UserDTO> {
 
     @Override
     public boolean isValid(UserDTO userDTO) {
-        return isUsernameUnique(userDTO.getUsername())
-                || isPasswordValid(userDTO.getPassword())
-                || userRoleValidator.isValid(userDTO.getUserRole())
-                || personValidator.isValid(userDTO.getPerson());
+        return isUsernameValid(userDTO.getUsername())
+                && isPasswordValid(userDTO.getPassword())
+                && userRoleValidator.isValid(userDTO.getUserRole())
+                && personValidator.isValid(userDTO.getPerson());
     }
 
-    private boolean isUsernameUnique(String username) {
-        return repository.existsByUsername(username);
+    private boolean isUsernameValid(String username) {
+        return generalValidationUtility.isNotNullAndNotBlank(username)
+                && !repository.existsByUsername(username);  // username should be unique in DB
     }
 
     private boolean isPasswordValid(String password) {
