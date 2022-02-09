@@ -25,7 +25,7 @@ class MediaValidatorTest {
     }
 
     @BeforeAll
-    void setUp() {
+    static void setUp() {
         PersonDTO validPerson = new PersonDTO(999L, "Anton", "Surname", "test@email.com");
         UserRoleDTO validUserRole = new UserRoleDTO(999L, "ROLE");
         validUser = new UserDTO(999L, "username", "password", LocalDateTime.now(), validPerson, validUserRole);

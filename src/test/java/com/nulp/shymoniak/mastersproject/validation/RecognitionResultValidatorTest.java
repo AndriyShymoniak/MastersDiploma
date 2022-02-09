@@ -47,7 +47,7 @@ class RecognitionResultValidatorTest {
         assertFalse(isValid(invalidRecognitionResult1));
         assertFalse(isValid(invalidRecognitionResult2));
         assertFalse(isValid(invalidRecognitionResult3));
-        assertFalse(isValid(validRecognitionResult1));
+        assertTrue(isValid(validRecognitionResult1));
     }
 
     private boolean isValid(RecognitionResultDTO recognitionResultDTO) {
