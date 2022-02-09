@@ -11,21 +11,24 @@ import java.util.List;
 @Component
 public class MLModelValidator implements Validator<MLModelDTO> {
     private final GeneralValidationUtility generalValidationUtility;
+    private final ObservedObjectValidator observedObjectValidator;
 
     @Autowired
-    public MLModelValidator(GeneralValidationUtility generalValidationUtility) {
+    public MLModelValidator(GeneralValidationUtility generalValidationUtility, ObservedObjectValidator observedObjectValidator) {
         this.generalValidationUtility = generalValidationUtility;
+        this.observedObjectValidator = observedObjectValidator;
     }
 
     @Override
     public boolean isValid(MLModelDTO mlModelDTO) {
         return generalValidationUtility.isNotNullAndNotBlank(mlModelDTO.getModelName())
-                || generalValidationUtility.isValidURL(mlModelDTO.getModelPath())
-                || validateObservedObjectList(mlModelDTO.getObservedObjectList());
+                && generalValidationUtility.isValidURL(mlModelDTO.getModelPath())
+                && isObservedObjectListValid(mlModelDTO.getObservedObjectList());
     }
 
-    // TODO: 2/9/22 add list of objects validation (ObservedObjectValidator)
-    private boolean validateObservedObjectList(List<MLModelObservedObjectDTO> mlModelObservedObjectList){
-        return true;
+    private boolean isObservedObjectListValid(List<MLModelObservedObjectDTO> mlModelObservedObjectList){
+        return mlModelObservedObjectList.stream()
+                .map(mlModelObservedObject -> mlModelObservedObject.getObservedObject())
+                .allMatch(item -> observedObjectValidator.isValid(item));
     }
 }

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+// TODO: 2/9/22 replace @Data with other annotations
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

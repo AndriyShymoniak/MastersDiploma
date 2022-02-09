@@ -14,6 +14,7 @@ public class ObservedObjectValidator implements Validator<ObservedObjectDTO> {
         this.generalValidationUtility = generalValidationUtility;
     }
 
+    // TODO: 2/9/22 add validation fields
     @Override
     public boolean isValid(ObservedObjectDTO observedObjectDTO) {
         return generalValidationUtility.isNotNullAndNotBlank(observedObjectDTO.getObjectName());

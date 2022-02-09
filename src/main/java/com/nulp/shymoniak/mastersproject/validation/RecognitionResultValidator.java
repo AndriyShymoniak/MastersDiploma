@@ -25,8 +25,8 @@ public class RecognitionResultValidator implements Validator<RecognitionResultDT
     @Override
     public boolean isValid(RecognitionResultDTO recognitionResultDTO) {
         return generalValidationUtility.isNotNullAndNotBlank(recognitionResultDTO.getDescription())
-                || mlModelValidator.isValid(recognitionResultDTO.getMlModel())
-                || mediaValidator.isValid(recognitionResultDTO.getMedia())
-                || locationValidator.isValid(recognitionResultDTO.getLocation());
+                && mlModelValidator.isValid(recognitionResultDTO.getMlModel())
+                && mediaValidator.isValid(recognitionResultDTO.getMedia())
+                && locationValidator.isValid(recognitionResultDTO.getLocation());
     }
 }
