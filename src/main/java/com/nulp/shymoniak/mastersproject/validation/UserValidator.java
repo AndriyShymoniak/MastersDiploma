@@ -2,21 +2,22 @@ package com.nulp.shymoniak.mastersproject.validation;
 
 import com.nulp.shymoniak.mastersproject.dto.UserDTO;
 import com.nulp.shymoniak.mastersproject.repository.UserRepository;
-import com.nulp.shymoniak.mastersproject.utility.GeneralValidationUtility;
+import com.nulp.shymoniak.mastersproject.utility.ValidationUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+// TODO: 2/10/22 remove related objects validation
 @Component
 public class UserValidator implements Validator<UserDTO> {
     private final UserRepository repository;
-    private final GeneralValidationUtility generalValidationUtility;
+    private final ValidationUtility validationUtility;
     private final UserRoleValidator userRoleValidator;
     private final PersonValidator personValidator;
 
     @Autowired
-    public UserValidator(UserRepository repository, GeneralValidationUtility generalValidationUtility, UserRoleValidator userRoleValidator, PersonValidator personValidator) {
+    public UserValidator(UserRepository repository, ValidationUtility validationUtility, UserRoleValidator userRoleValidator, PersonValidator personValidator) {
         this.repository = repository;
-        this.generalValidationUtility = generalValidationUtility;
+        this.validationUtility = validationUtility;
         this.userRoleValidator = userRoleValidator;
         this.personValidator = personValidator;
     }
@@ -30,11 +31,11 @@ public class UserValidator implements Validator<UserDTO> {
     }
 
     private boolean isUsernameValid(String username) {
-        return generalValidationUtility.isNotNullAndNotBlank(username)
+        return validationUtility.isNotNullAndNotBlank(username)
                 && !repository.existsByUsername(username);  // username should be unique in DB
     }
 
     private boolean isPasswordValid(String password) {
-        return generalValidationUtility.isNotNullAndNotBlank(password);
+        return validationUtility.isNotNullAndNotBlank(password);
     }
 }

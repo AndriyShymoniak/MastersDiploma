@@ -8,8 +8,10 @@ public class ApplicationConstants {
     // Is used in DistanceCalculator
     public static final Integer EARTH_RADIUS = 6371; //Kilometers
 
-    // URL regex pattern
+    // Regex patterns
     public static final String URL_REGEX_PATTERN = "^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
+    public static final String EMAIL_REGEX_PATTERN = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
+    public static final String CAPITAL_LETTERS_WITH_UNDERSCORE_REGEX_PATTERN = "^([A-Z]+_)*[A-Z]+$";
 
     // Default values
     public static final Integer DEFAULT_TRUE_FLAG = 1;

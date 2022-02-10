@@ -1,7 +1,7 @@
 package com.nulp.shymoniak.mastersproject.validation;
 
 import com.nulp.shymoniak.mastersproject.dto.*;
-import com.nulp.shymoniak.mastersproject.utility.GeneralValidationUtility;
+import com.nulp.shymoniak.mastersproject.utility.ValidationUtilityImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class RecognitionResultValidatorTest {
     private final RecognitionResultValidator recognitionResultValidator;
-    private final GeneralValidationUtility generalValidationUtility;
+    private final ValidationUtilityImpl validationUtilityImpl;
 
     @Mock
     private MLModelValidator mlModelValidator;
@@ -28,9 +28,9 @@ class RecognitionResultValidatorTest {
 
 
     @Autowired
-    public RecognitionResultValidatorTest(RecognitionResultValidator recognitionResultValidator, GeneralValidationUtility generalValidationUtility) {
+    public RecognitionResultValidatorTest(RecognitionResultValidator recognitionResultValidator, ValidationUtilityImpl validationUtilityImpl) {
         this.recognitionResultValidator = recognitionResultValidator;
-        this.generalValidationUtility = generalValidationUtility;
+        this.validationUtilityImpl = validationUtilityImpl;
     }
 
     @Test
@@ -51,7 +51,7 @@ class RecognitionResultValidatorTest {
     }
 
     private boolean isValid(RecognitionResultDTO recognitionResultDTO) {
-        return generalValidationUtility.isNotNullAndNotBlank(recognitionResultDTO.getDescription())
+        return validationUtilityImpl.isNotNullAndNotBlank(recognitionResultDTO.getDescription())
                 && mlModelValidator.isValid(recognitionResultDTO.getMlModel())
                 && mediaValidator.isValid(recognitionResultDTO.getMedia())
                 && locationValidator.isValid(recognitionResultDTO.getLocation());

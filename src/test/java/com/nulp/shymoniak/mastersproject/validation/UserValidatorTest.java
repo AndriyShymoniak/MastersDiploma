@@ -4,29 +4,22 @@ import com.nulp.shymoniak.mastersproject.dto.PersonDTO;
 import com.nulp.shymoniak.mastersproject.dto.UserDTO;
 import com.nulp.shymoniak.mastersproject.dto.UserRoleDTO;
 import com.nulp.shymoniak.mastersproject.repository.UserRepository;
-import com.nulp.shymoniak.mastersproject.utility.GeneralValidationUtility;
-import org.junit.jupiter.api.AfterAll;
+import com.nulp.shymoniak.mastersproject.utility.ValidationUtilityImpl;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class UserValidatorTest {
     private final UserValidator userValidator;
-    private final GeneralValidationUtility generalValidationUtility;
+    private final ValidationUtilityImpl validationUtilityImpl;
     private static PersonDTO validPerson;
     private static UserRoleDTO validUserRole;
 
@@ -34,9 +27,9 @@ class UserValidatorTest {
     private UserRepository userRepository;
 
     @Autowired
-    public UserValidatorTest(UserValidator userValidator, GeneralValidationUtility generalValidationUtility) {
+    public UserValidatorTest(UserValidator userValidator, ValidationUtilityImpl validationUtilityImpl) {
         this.userValidator = userValidator;
-        this.generalValidationUtility = generalValidationUtility;
+        this.validationUtilityImpl = validationUtilityImpl;
     }
 
     @BeforeAll
@@ -71,7 +64,7 @@ class UserValidatorTest {
     }
 
     private boolean isUsernameValid(String username) {
-        return generalValidationUtility.isNotNullAndNotBlank(username)
+        return validationUtilityImpl.isNotNullAndNotBlank(username)
                 && !userRepository.existsByUsername(username);
     }
 }
