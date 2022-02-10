@@ -7,9 +7,8 @@ import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
 import com.nulp.shymoniak.mastersproject.repository.UserRepository;
 import com.nulp.shymoniak.mastersproject.service.AbstractService;
 import com.nulp.shymoniak.mastersproject.service.UserService;
-import com.nulp.shymoniak.mastersproject.utility.ObjectMapperUtils;
-import com.nulp.shymoniak.mastersproject.validation.UserValidator;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.nulp.shymoniak.mastersproject.utility.mapping.UserMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,34 +16,28 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl extends AbstractService<UserDTO> implements UserService {
     private final UserRepository userRepository;
-    private final ObjectMapperUtils mapper;
-
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository, ObjectMapperUtils mapper, UserValidator validator) {
-        this.userRepository = userRepository;
-        this.mapper = mapper;
-        this.validator = validator;
-    }
+    private UserMapper mapper = UserMapper.INSTANCE;
 
     @Override
     public List<UserDTO> findAllUsers() {
         List<User> users = userRepository.findAll();
-        return mapper.mapAll(users, UserDTO.class);
+        return mapper.map(users);
     }
 
     @Override
     public UserDTO findByUsername(String username) {
         Optional<User> optionalUser = userRepository.findByUsername(username);
-        return optionalUser.map(item -> mapper.map(item, UserDTO.class))
+        return optionalUser.map(item -> mapper.map(item))
                 .orElseThrow(() -> new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND));
     }
 
     @Override
     public UserDTO findUserById(Long userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
-        return optionalUser.map(item -> mapper.map(item, UserDTO.class))
+        return optionalUser.map(item -> mapper.map(item))
                 .orElseThrow(() -> new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND));
     }
 
@@ -52,9 +45,9 @@ public class UserServiceImpl extends AbstractService<UserDTO> implements UserSer
     @Transactional
     @Override
     public UserDTO createUser(UserDTO user) {
-        User userEntity = mapper.map(user, User.class);
+        User userEntity = mapper.map(user);
         userRepository.save(userEntity);
-        return mapper.map(userEntity, UserDTO.class);
+        return mapper.map(userEntity);
     }
 
     // TODO: 2/8/22 remove isActive field ?
@@ -64,7 +57,7 @@ public class UserServiceImpl extends AbstractService<UserDTO> implements UserSer
         User userEntity = userRepository.findById(userId)
                 .orElseThrow(() -> new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND));
         userRepository.delete(userEntity);
-        return mapper.map(userEntity, UserDTO.class);
+        return mapper.map(userEntity);
     }
 
     @Transactional
@@ -73,7 +66,7 @@ public class UserServiceImpl extends AbstractService<UserDTO> implements UserSer
         checkIfValid(user);
         userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND));
-        userRepository.save(mapper.map(user, User.class));
+        userRepository.save(mapper.map(user));
         return user;
     }
 }
