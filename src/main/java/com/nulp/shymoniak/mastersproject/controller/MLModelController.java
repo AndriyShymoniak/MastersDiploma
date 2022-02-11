@@ -22,7 +22,7 @@ public class MLModelController {
 
     @GetMapping({"", "/"})
     public ResponseEntity<List<MLModelDTO>> findAllModels() {
-        return new ResponseEntity<>(mlModelService.findAllModels(), HttpStatus.OK);
+        return new ResponseEntity<>(mlModelService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/observedObject")
@@ -32,21 +32,21 @@ public class MLModelController {
 
     @GetMapping("/{id}")
     public ResponseEntity<MLModelDTO> findModelById(@PathVariable Long id) {
-        return new ResponseEntity<>(mlModelService.findModelById(id), HttpStatus.OK);
+        return new ResponseEntity<>(mlModelService.findById(id), HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<MLModelDTO> createModel(@RequestBody MLModelDTO user) {
-        return new ResponseEntity<>(mlModelService.createModel(user), HttpStatus.CREATED);
+        return new ResponseEntity<>(mlModelService.createItem(user), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<MLModelDTO> deleteModel(@PathVariable Long id) {
-        return new ResponseEntity<>(mlModelService.deleteModel(id), HttpStatus.OK);
+        return new ResponseEntity<>(mlModelService.deleteItem(id), HttpStatus.OK);
     }
 
     @PutMapping
     public ResponseEntity<MLModelDTO> updateModel(@RequestBody MLModelDTO user) {
-        return new ResponseEntity<>(mlModelService.updateModel(user), HttpStatus.CREATED);
+        return new ResponseEntity<>(mlModelService.updateItem(user), HttpStatus.CREATED);
     }
 }

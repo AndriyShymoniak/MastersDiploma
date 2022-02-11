@@ -23,7 +23,7 @@ public class RecognitionResultController {
 
     @GetMapping({"", "/"})
     public ResponseEntity<List<RecognitionResultDTO>> findAllRecognitionResults() {
-        return new ResponseEntity<>(recognitionService.findAllRecognitionResults(), HttpStatus.OK);
+        return new ResponseEntity<>(recognitionService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/groupByDate")
@@ -43,16 +43,16 @@ public class RecognitionResultController {
 
     @PostMapping
     public ResponseEntity<RecognitionResultDTO> createRecognitionResult(@RequestBody RecognitionResultDTO recognitionResult) {
-        return new ResponseEntity<>(recognitionService.createRecognitionResult(recognitionResult), HttpStatus.CREATED);
+        return new ResponseEntity<>(recognitionService.createItem(recognitionResult), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<RecognitionResultDTO> deleteRecognitionResult(@PathVariable Long id) {
-        return new ResponseEntity<>(recognitionService.deleteRecognitionResult(id), HttpStatus.OK);
+        return new ResponseEntity<>(recognitionService.deleteItem(id), HttpStatus.OK);
     }
 
     @PutMapping
     public ResponseEntity<RecognitionResultDTO> updateRecognitionResult(@RequestBody RecognitionResultDTO recognitionResult) {
-        return new ResponseEntity<>(recognitionService.updateRecognitionResult(recognitionResult), HttpStatus.CREATED);
+        return new ResponseEntity<>(recognitionService.updateItem(recognitionResult), HttpStatus.CREATED);
     }
 }

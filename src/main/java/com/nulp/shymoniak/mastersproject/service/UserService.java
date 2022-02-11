@@ -4,16 +4,8 @@ import com.nulp.shymoniak.mastersproject.dto.UserDTO;
 
 import java.util.List;
 
-public interface UserService {
-    List<UserDTO> findAllUsers();
+public interface UserService extends CustomService<UserDTO> {
 
     UserDTO findByUsername(String username);
 
-    UserDTO findUserById(Long userId);
-
-    UserDTO createUser(UserDTO user);
-
-    UserDTO deleteUser(Long userId);
-
-    UserDTO updateUser(UserDTO user);
 }

@@ -10,7 +10,6 @@ import com.nulp.shymoniak.mastersproject.service.RecognitionResultService;
 import com.nulp.shymoniak.mastersproject.utility.mapping.RecognitionResultMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -24,9 +23,39 @@ public class RecognitionResultServiceImpl extends AbstractService<RecognitionRes
     private RecognitionResultMapper mapper = RecognitionResultMapper.INSTANCE;
 
     @Override
-    public List<RecognitionResultDTO> findAllRecognitionResults() {
+    public List<RecognitionResultDTO> findAll() {
         List<RecognitionResult> recognitionResultList = recognitionResultRepository.findAll();
         return mapper.map(recognitionResultList);
+    }
+
+    @Override
+    public RecognitionResultDTO findById(Long id) {
+        Optional<RecognitionResult> optionalUser = recognitionResultRepository.findById(id);
+        return optionalUser.map(item -> mapper.map(item))
+                .orElseThrow(() -> new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND));
+    }
+
+    @Override
+    public RecognitionResultDTO createItem(RecognitionResultDTO recognitionResult) {
+        RecognitionResult recognitionResultEntity = mapper.map(recognitionResult);
+        recognitionResultRepository.save(recognitionResultEntity);
+        return mapper.map(recognitionResultEntity);
+    }
+
+    @Override
+    public RecognitionResultDTO updateItem(RecognitionResultDTO recognitionResult) {
+        RecognitionResult recognitionResultEntity = recognitionResultRepository.findById(recognitionResult.getRecognitionResultId())
+                .orElseThrow(() -> new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND));
+        recognitionResultRepository.save(recognitionResultEntity);
+        return recognitionResult;
+    }
+
+    @Override
+    public RecognitionResultDTO deleteItem(Long id) {
+        RecognitionResult recognitionResultEntity = recognitionResultRepository.findById(id)
+                .orElseThrow(() -> new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND));
+        recognitionResultRepository.delete(recognitionResultEntity);
+        return mapper.map(recognitionResultEntity);
     }
 
     @Override
@@ -42,38 +71,5 @@ public class RecognitionResultServiceImpl extends AbstractService<RecognitionRes
         Map<LocalDateTime, List<RecognitionResultDTO>> result = recognitionResultDTOList.stream()
                 .collect(Collectors.groupingBy(item -> item.getCreateDate().truncatedTo(ChronoUnit.DAYS)));
         return new TreeMap<>(result);
-    }
-
-    @Override
-    public RecognitionResultDTO findById(Long recognitionResultId) {
-        Optional<RecognitionResult> optionalUser = recognitionResultRepository.findById(recognitionResultId);
-        return optionalUser.map(item -> mapper.map(item))
-                .orElseThrow(() -> new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND));
-    }
-
-    @Transactional
-    @Override
-    public RecognitionResultDTO createRecognitionResult(RecognitionResultDTO recognitionResult) {
-        RecognitionResult recognitionResultEntity = mapper.map(recognitionResult);
-        recognitionResultRepository.save(recognitionResultEntity);
-        return mapper.map(recognitionResultEntity);
-    }
-
-    @Transactional
-    @Override
-    public RecognitionResultDTO deleteRecognitionResult(Long recognitionResultId) {
-        RecognitionResult recognitionResultEntity = recognitionResultRepository.findById(recognitionResultId)
-                .orElseThrow(() -> new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND));
-        recognitionResultRepository.delete(recognitionResultEntity);
-        return mapper.map(recognitionResultEntity);
-    }
-
-    @Transactional
-    @Override
-    public RecognitionResultDTO updateRecognitionResult(RecognitionResultDTO recognitionResult) {
-        RecognitionResult recognitionResultEntity = recognitionResultRepository.findById(recognitionResult.getRecognitionResultId())
-                .orElseThrow(() -> new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND));
-        recognitionResultRepository.save(recognitionResultEntity);
-        return recognitionResult;
     }
 }

@@ -21,12 +21,12 @@ public class UserController {
 
     @GetMapping({"", "/"})
     public ResponseEntity<List<UserDTO>> findAllUsers() {
-        return new ResponseEntity<>(userService.findAllUsers(), HttpStatus.OK);
+        return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> findUserById(@PathVariable Long id) {
-        return new ResponseEntity<>(userService.findUserById(id), HttpStatus.OK);
+        return new ResponseEntity<>(userService.findById(id), HttpStatus.OK);
     }
 
     @GetMapping("/{username}")
@@ -36,16 +36,16 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO user) {
-        return new ResponseEntity<>(userService.createUser(user), HttpStatus.CREATED);
+        return new ResponseEntity<>(userService.createItem(user), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<UserDTO> deleteUser(@PathVariable Long id) {
-        return new ResponseEntity<>(userService.deleteUser(id), HttpStatus.OK);
+        return new ResponseEntity<>(userService.deleteItem(id), HttpStatus.OK);
     }
 
     @PutMapping
     public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO user) {
-        return new ResponseEntity<>(userService.updateUser(user), HttpStatus.CREATED);
+        return new ResponseEntity<>(userService.updateItem(user), HttpStatus.CREATED);
     }
 }

@@ -5,16 +5,8 @@ import com.nulp.shymoniak.mastersproject.dto.MLModelDTO;
 import java.util.List;
 import java.util.Set;
 
-public interface MLModelService {
-    List<MLModelDTO> findAllModels();
+public interface MLModelService extends CustomService<MLModelDTO> {
 
     List<MLModelDTO> findAllModelsByObservedObject(Set<Long> observedObjectIdSet);
 
-    MLModelDTO findModelById(Long modelId);
-
-    MLModelDTO createModel(MLModelDTO mlModel);
-
-    MLModelDTO deleteModel(Long modelId);
-
-    MLModelDTO updateModel(MLModelDTO mlModel);
 }
