@@ -5,15 +5,7 @@ import com.nulp.shymoniak.mastersproject.entity.RecognitionResult;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-import java.util.List;
-
 @Mapper(componentModel = "spring")
-public interface RecognitionResultMapper {
+public interface RecognitionResultMapper extends AbstractMapper<RecognitionResult, RecognitionResultDTO> {
     RecognitionResultMapper INSTANCE = Mappers.getMapper(RecognitionResultMapper.class);
-
-    RecognitionResultDTO map(RecognitionResult recognitionResult);
-
-    RecognitionResult map(RecognitionResultDTO recognitionResultDTO);
-
-    List<RecognitionResultDTO> map(List<RecognitionResult> recognitionResultList);
 }

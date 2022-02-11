@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ObservedObjectRepository extends JpaRepository<ObservedObject, Long> {
+public interface ObservedObjectRepository extends AbstractRepository<ObservedObject, Long> {
 }

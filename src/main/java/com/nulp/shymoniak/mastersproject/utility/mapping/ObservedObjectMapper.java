@@ -5,15 +5,7 @@ import com.nulp.shymoniak.mastersproject.entity.ObservedObject;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-import java.util.List;
-
 @Mapper(componentModel = "spring")
-public interface ObservedObjectMapper {
+public interface ObservedObjectMapper extends AbstractMapper<ObservedObject, ObservedObjectDTO> {
     ObservedObjectMapper INSTANCE = Mappers.getMapper(ObservedObjectMapper.class);
-
-    ObservedObjectDTO map(ObservedObject observedObject);
-
-    ObservedObject map(ObservedObjectDTO observedObjectDTO);
-
-    List<ObservedObjectDTO> map(List<ObservedObject> observedObjectList);
 }

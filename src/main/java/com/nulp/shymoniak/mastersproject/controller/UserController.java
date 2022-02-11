@@ -1,7 +1,7 @@
 package com.nulp.shymoniak.mastersproject.controller;
 
 import com.nulp.shymoniak.mastersproject.dto.UserDTO;
-import com.nulp.shymoniak.mastersproject.service.UserService;
+import com.nulp.shymoniak.mastersproject.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,8 @@ import java.util.List;
 @RestController
 @RequestMapping("user")
 public class UserController {
-    private final UserService userService;
+    // TODO: 2/11/22 change to Interface
+    private final UserServiceImpl userService;
 
     @GetMapping({"", "/"})
     public ResponseEntity<List<UserDTO>> findAllUsers() {

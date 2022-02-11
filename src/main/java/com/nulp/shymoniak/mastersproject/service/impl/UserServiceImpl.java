@@ -8,62 +8,33 @@ import com.nulp.shymoniak.mastersproject.repository.UserRepository;
 import com.nulp.shymoniak.mastersproject.service.AbstractService;
 import com.nulp.shymoniak.mastersproject.service.UserService;
 import com.nulp.shymoniak.mastersproject.utility.mapping.UserMapper;
-import lombok.RequiredArgsConstructor;
+import com.nulp.shymoniak.mastersproject.validation.UserValidator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
-public class UserServiceImpl extends AbstractService<UserDTO> implements UserService {
+public class UserServiceImpl extends AbstractService<User, UserDTO> implements UserService {
     private final UserRepository userRepository;
-    private UserMapper mapper = UserMapper.INSTANCE;
 
-    @Override
-    public List<UserDTO> findAll() {
-        List<User> users = userRepository.findAll();
-        return mapper.map(users);
-    }
-
-    @Override
-    public UserDTO findById(Long id) {
-        Optional<User> optionalUser = userRepository.findById(id);
-        return optionalUser.map(item -> mapper.map(item))
-                .orElseThrow(() -> new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND));
+    // TODO: 2/11/22 refactor two repositories
+    @Autowired
+    public UserServiceImpl(UserRepository repository, UserValidator validator) {
+        this.userRepository = repository;
+        this.validator = validator;
+        this.repository = repository;
+        this.mapper = UserMapper.INSTANCE;
     }
 
     // TODO: 2/7/22 fill registeredDate field / change registeredDate to createDate
-    @Override
-    public UserDTO createItem(UserDTO user) {
-        User userEntity = mapper.map(user);
-        userRepository.save(userEntity);
-        return mapper.map(userEntity);
-    }
-
     // TODO: 2/11/22 refactor findById on exists by id
-    @Override
-    public UserDTO updateItem(UserDTO user) {
-        checkIfValid(user);
-        userRepository.findById(user.getUserId())
-                .orElseThrow(() -> new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND));
-        userRepository.save(mapper.map(user));
-        return user;
-    }
-
     // TODO: 2/8/22 remove isActive field ?
-    @Override
-    public UserDTO deleteItem(Long id) {
-        User userEntity = userRepository.findById(id)
-                .orElseThrow(() -> new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND));
-        userRepository.delete(userEntity);
-        return mapper.map(userEntity);
-    }
 
     @Override
     public UserDTO findByUsername(String username) {
         Optional<User> optionalUser = userRepository.findByUsername(username);
-        return optionalUser.map(item -> mapper.map(item))
+        return optionalUser.map(item -> (UserDTO) mapper.mapToDTO(item))
                 .orElseThrow(() -> new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND));
     }
 }

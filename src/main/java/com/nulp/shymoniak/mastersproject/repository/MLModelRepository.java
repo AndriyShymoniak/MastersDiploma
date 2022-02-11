@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface MLModelRepository extends JpaRepository<MLModel, Long> {
+public interface MLModelRepository extends AbstractRepository<MLModel, Long> {
     @Query("select m from MLModel m where m.isActive = 1")
     List<MLModel> findAllActiveModels();
 }
