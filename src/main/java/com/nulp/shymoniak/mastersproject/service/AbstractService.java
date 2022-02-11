@@ -8,7 +8,7 @@ public abstract class AbstractService<T> {
     protected Validator validator;
 
     public void checkIfValid(T t){
-        if (validator.isValid(t)) {
+        if (!validator.isValid(t)) {
             throw new ApiRequestException(ApplicationConstants.ERROR_INVALID_ENTITY + ": " + t.toString());
         }
     }

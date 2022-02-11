@@ -3,36 +3,29 @@ package com.nulp.shymoniak.mastersproject.validation;
 import com.nulp.shymoniak.mastersproject.dto.UserDTO;
 import com.nulp.shymoniak.mastersproject.repository.UserRepository;
 import com.nulp.shymoniak.mastersproject.utility.ValidationUtility;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-// TODO: 2/10/22 remove related objects validation
 @Component
+@RequiredArgsConstructor
 public class UserValidator implements Validator<UserDTO> {
     private final UserRepository repository;
     private final ValidationUtility validationUtility;
-    private final UserRoleValidator userRoleValidator;
-    private final PersonValidator personValidator;
-
-    @Autowired
-    public UserValidator(UserRepository repository, ValidationUtility validationUtility, UserRoleValidator userRoleValidator, PersonValidator personValidator) {
-        this.repository = repository;
-        this.validationUtility = validationUtility;
-        this.userRoleValidator = userRoleValidator;
-        this.personValidator = personValidator;
-    }
 
     @Override
     public boolean isValid(UserDTO userDTO) {
         return isUsernameValid(userDTO.getUsername())
-                && isPasswordValid(userDTO.getPassword())
-                && userRoleValidator.isValid(userDTO.getUserRole())
-                && personValidator.isValid(userDTO.getPerson());
+                && isPasswordValid(userDTO.getPassword());
     }
 
+    /**
+     * Checks whether username is not blank and unique in DB
+     * @param username
+     * @return true if username is unique in DB and not blank
+     */
     private boolean isUsernameValid(String username) {
         return validationUtility.isNotNullAndNotBlank(username)
-                && !repository.existsByUsername(username);  // username should be unique in DB
+                && !repository.existsByUsername(username);
     }
 
     private boolean isPasswordValid(String password) {
