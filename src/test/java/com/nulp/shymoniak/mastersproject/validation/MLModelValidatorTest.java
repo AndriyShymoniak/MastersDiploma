@@ -1,9 +1,9 @@
 package com.nulp.shymoniak.mastersproject.validation;
 
 import com.nulp.shymoniak.mastersproject.dto.*;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
@@ -12,10 +12,14 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@RequiredArgsConstructor
 class MLModelValidatorTest {
-    private final MLModelValidator mlModelValidator;
+    private MLModelValidator mlModelValidator;
     private static String validURL;
+
+    @Autowired
+    public MLModelValidatorTest(MLModelValidator mlModelValidator) {
+        this.mlModelValidator = mlModelValidator;
+    }
 
     @BeforeAll
     static void setUp() {

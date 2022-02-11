@@ -2,9 +2,9 @@ package com.nulp.shymoniak.mastersproject.validation;
 
 import com.nulp.shymoniak.mastersproject.dto.MediaDTO;
 import com.nulp.shymoniak.mastersproject.dto.UserDTO;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
@@ -12,10 +12,14 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@RequiredArgsConstructor
 class MediaValidatorTest {
     private final MediaValidator mediaValidator;
     private static String validUrl;
+
+    @Autowired
+    public MediaValidatorTest(MediaValidator mediaValidator) {
+        this.mediaValidator = mediaValidator;
+    }
 
     @BeforeAll
     static void setUp() {

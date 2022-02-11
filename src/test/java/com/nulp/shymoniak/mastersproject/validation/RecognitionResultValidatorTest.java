@@ -1,8 +1,8 @@
 package com.nulp.shymoniak.mastersproject.validation;
 
 import com.nulp.shymoniak.mastersproject.dto.*;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
@@ -10,9 +10,13 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@RequiredArgsConstructor
 class RecognitionResultValidatorTest {
     private final RecognitionResultValidator recognitionResultValidator;
+
+    @Autowired
+    public RecognitionResultValidatorTest(RecognitionResultValidator recognitionResultValidator) {
+        this.recognitionResultValidator = recognitionResultValidator;
+    }
 
     @Test
     void validateRecognitionResultDescription() {
