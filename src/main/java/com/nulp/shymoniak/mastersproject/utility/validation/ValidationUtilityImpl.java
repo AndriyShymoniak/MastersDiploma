@@ -31,6 +31,7 @@ public class ValidationUtilityImpl implements ValidationUtility {
     // TODO: 2/11/22 create implementation and test
     @Override
     public boolean isValidBooleanRepresentedWithInteger(Integer input) {
-        return true;
+        return input != null
+                && (input.equals(DEFAULT_FALSE_FLAG) || input.equals(DEFAULT_TRUE_FLAG));
     }
 }

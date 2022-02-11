@@ -1,5 +1,6 @@
 package com.nulp.shymoniak.mastersproject.utility;
 
+import com.nulp.shymoniak.mastersproject.constant.ApplicationConstants;
 import com.nulp.shymoniak.mastersproject.utility.validation.ValidationUtilityImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -138,5 +139,21 @@ class ValidationUtilityImplTest {
         assertTrue(validationUtilityImpl.isValidStringWithCapitalLettersAndUnderscores(validString2));
         assertTrue(validationUtilityImpl.isValidStringWithCapitalLettersAndUnderscores(validString3));
         assertTrue(validationUtilityImpl.isValidStringWithCapitalLettersAndUnderscores(validString4));
+    }
+
+    @Test
+    void checkIfBooleanIsRepresentedWithIntegerCorrectly(){
+        // given
+        Integer invalid1 = null;
+        Integer invalid2 = -5;
+        Integer invalid3 = 5;
+        Integer valid1 = ApplicationConstants.DEFAULT_FALSE_FLAG;
+        Integer valid2 = ApplicationConstants.DEFAULT_TRUE_FLAG;
+        // then
+        assertFalse(validationUtilityImpl.isValidBooleanRepresentedWithInteger(invalid1));
+        assertFalse(validationUtilityImpl.isValidBooleanRepresentedWithInteger(invalid2));
+        assertFalse(validationUtilityImpl.isValidBooleanRepresentedWithInteger(invalid3));
+        assertTrue(validationUtilityImpl.isValidBooleanRepresentedWithInteger(valid1));
+        assertTrue(validationUtilityImpl.isValidBooleanRepresentedWithInteger(valid2));
     }
 }

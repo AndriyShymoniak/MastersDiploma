@@ -12,10 +12,11 @@ public class UserValidator implements Validator<UserDTO> {
     private final UserRepository repository;
     private final ValidationUtility validationUtility;
 
+    // TODO: 2/11/22 add password validation
     @Override
     public boolean isValid(UserDTO userDTO) {
         return isUsernameValid(userDTO.getUsername())
-                && isPasswordValid(userDTO.getPassword());
+                && validationUtility.isNotNullAndNotBlank(userDTO.getPassword());
     }
 
     /**
@@ -26,9 +27,5 @@ public class UserValidator implements Validator<UserDTO> {
     private boolean isUsernameValid(String username) {
         return validationUtility.isNotNullAndNotBlank(username)
                 && !repository.existsByUsername(username);
-    }
-
-    private boolean isPasswordValid(String password) {
-        return validationUtility.isNotNullAndNotBlank(password);
     }
 }

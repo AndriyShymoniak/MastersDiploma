@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 public class PersonValidator implements Validator<PersonDTO> {
     private final ValidationUtility validationUtility;
 
-    // TODO: 2/9/22 add email validation
     // TODO: 2/9/22 add validation on name and surname with letters only (no *&^%$)
     @Override
     public boolean isValid(PersonDTO personDTO) {

@@ -14,6 +14,8 @@ public class MLModelValidator implements Validator<MLModelDTO> {
     @Override
     public boolean isValid(MLModelDTO mlModelDTO) {
         return validationUtility.isNotNullAndNotBlank(mlModelDTO.getModelName())
-                && validationUtility.isValidURL(mlModelDTO.getModelPath());
+                && validationUtility.isValidURL(mlModelDTO.getModelPath())
+                && validationUtility.isValidBooleanRepresentedWithInteger(mlModelDTO.getIsCustom())
+                && validationUtility.isValidBooleanRepresentedWithInteger(mlModelDTO.getIsActive());
     }
 }
