@@ -2,6 +2,7 @@ package com.nulp.shymoniak.mastersproject.controller;
 
 import com.nulp.shymoniak.mastersproject.dto.RecognitionResultDTO;
 import com.nulp.shymoniak.mastersproject.service.RecognitionResultService;
+import com.nulp.shymoniak.mastersproject.service.impl.RecognitionResultServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("recognitionResult")
 public class RecognitionResultController {
-    private final RecognitionResultService recognitionService;
+    private final RecognitionResultServiceImpl recognitionService;
 
     @GetMapping({"", "/"})
     public ResponseEntity<List<RecognitionResultDTO>> findAllRecognitionResults() {

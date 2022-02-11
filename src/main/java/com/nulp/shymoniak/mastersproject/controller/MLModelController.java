@@ -2,6 +2,7 @@ package com.nulp.shymoniak.mastersproject.controller;
 
 import com.nulp.shymoniak.mastersproject.dto.MLModelDTO;
 import com.nulp.shymoniak.mastersproject.service.MLModelService;
+import com.nulp.shymoniak.mastersproject.service.impl.MLModelServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("mlModel")
 public class MLModelController {
-    private final MLModelService mlModelService;
+    private final MLModelServiceImpl mlModelService;
 
     @GetMapping({"", "/"})
     public ResponseEntity<List<MLModelDTO>> findAllModels() {

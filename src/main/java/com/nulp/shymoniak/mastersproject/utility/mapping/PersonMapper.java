@@ -5,15 +5,7 @@ import com.nulp.shymoniak.mastersproject.entity.Person;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-import java.util.List;
-
 @Mapper(componentModel = "spring")
-public interface PersonMapper {
+public interface PersonMapper extends AbstractMapper<Person, PersonDTO> {
     PersonMapper INSTANCE = Mappers.getMapper(PersonMapper.class);
-
-    PersonDTO map(Person person);
-
-    Person map(PersonDTO personDTO);
-
-    List<PersonDTO> map(List<Person> personList);
 }

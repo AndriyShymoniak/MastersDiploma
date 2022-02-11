@@ -5,15 +5,7 @@ import com.nulp.shymoniak.mastersproject.entity.Media;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-import java.util.List;
-
 @Mapper(componentModel = "spring")
-public interface MediaMapper {
+public interface MediaMapper extends AbstractMapper<Media, MediaDTO> {
     MediaMapper INSTANCE = Mappers.getMapper(MediaMapper.class);
-
-    MediaDTO map(Media media);
-
-    Media map(MediaDTO mediaDTO);
-
-    List<MediaDTO> map(List<Media> mediaList);
 }
