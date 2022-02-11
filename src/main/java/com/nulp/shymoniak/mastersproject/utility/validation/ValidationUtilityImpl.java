@@ -1,4 +1,4 @@
-package com.nulp.shymoniak.mastersproject.utility;
+package com.nulp.shymoniak.mastersproject.utility.validation;
 
 import org.springframework.stereotype.Component;
 

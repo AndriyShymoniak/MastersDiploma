@@ -4,7 +4,7 @@ import com.nulp.shymoniak.mastersproject.dto.PersonDTO;
 import com.nulp.shymoniak.mastersproject.dto.UserDTO;
 import com.nulp.shymoniak.mastersproject.dto.UserRoleDTO;
 import com.nulp.shymoniak.mastersproject.repository.UserRepository;
-import com.nulp.shymoniak.mastersproject.utility.ValidationUtilityImpl;
+import com.nulp.shymoniak.mastersproject.utility.validation.ValidationUtilityImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

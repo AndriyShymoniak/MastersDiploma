@@ -2,7 +2,7 @@ package com.nulp.shymoniak.mastersproject.controller;
 
 import com.nulp.shymoniak.mastersproject.dto.RecognitionResultDTO;
 import com.nulp.shymoniak.mastersproject.service.RecognitionResultService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,15 +11,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("recognitionResult")
 public class RecognitionResultController {
     private final RecognitionResultService recognitionService;
-
-    @Autowired
-    public RecognitionResultController(RecognitionResultService recognitionService) {
-        this.recognitionService = recognitionService;
-    }
 
     @GetMapping({"", "/"})
     public ResponseEntity<List<RecognitionResultDTO>> findAllRecognitionResults() {

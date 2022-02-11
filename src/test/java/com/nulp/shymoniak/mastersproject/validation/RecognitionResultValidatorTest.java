@@ -1,7 +1,7 @@
 package com.nulp.shymoniak.mastersproject.validation;
 
 import com.nulp.shymoniak.mastersproject.dto.*;
-import com.nulp.shymoniak.mastersproject.utility.ValidationUtilityImpl;
+import com.nulp.shymoniak.mastersproject.utility.validation.ValidationUtilityImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -14,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class RecognitionResultValidatorTest {
-    private final RecognitionResultValidator recognitionResultValidator;
     private final ValidationUtilityImpl validationUtilityImpl;
 
     @Mock
@@ -28,8 +27,7 @@ class RecognitionResultValidatorTest {
 
 
     @Autowired
-    public RecognitionResultValidatorTest(RecognitionResultValidator recognitionResultValidator, ValidationUtilityImpl validationUtilityImpl) {
-        this.recognitionResultValidator = recognitionResultValidator;
+    public RecognitionResultValidatorTest(ValidationUtilityImpl validationUtilityImpl) {
         this.validationUtilityImpl = validationUtilityImpl;
     }
 

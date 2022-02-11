@@ -2,7 +2,7 @@ package com.nulp.shymoniak.mastersproject.controller;
 
 import com.nulp.shymoniak.mastersproject.dto.MLModelDTO;
 import com.nulp.shymoniak.mastersproject.service.MLModelService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,15 +10,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Set;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("mlModel")
 public class MLModelController {
     private final MLModelService mlModelService;
-
-    @Autowired
-    public MLModelController(MLModelService mlModelService) {
-        this.mlModelService = mlModelService;
-    }
 
     @GetMapping({"", "/"})
     public ResponseEntity<List<MLModelDTO>> findAllModels() {
