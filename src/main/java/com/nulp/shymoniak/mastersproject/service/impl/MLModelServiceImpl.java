@@ -17,12 +17,12 @@ import java.util.stream.Collectors;
 @Service
 public class MLModelServiceImpl extends AbstractService<MLModel, MLModelDTO> implements MLModelService {
     private final MLModelRepository mlModelRepository;
-    private final MlModelMapper mapper = MlModelMapper.INSTANCE;
 
     public MLModelServiceImpl(MLModelRepository repository, MLModelValidator validator) {
         this.mlModelRepository = repository;
-        this.validator = validator;
         this.repository = repository;
+        this.validator = validator;
+        this.mapper = MlModelMapper.INSTANCE;
     }
 
     // TODO: 2/11/22 check if @Transactional is supported

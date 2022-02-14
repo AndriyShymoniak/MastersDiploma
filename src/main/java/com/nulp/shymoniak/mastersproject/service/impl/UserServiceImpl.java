@@ -22,15 +22,14 @@ public class UserServiceImpl extends AbstractService<User, UserDTO> implements U
     @Autowired
     public UserServiceImpl(UserRepository repository, UserValidator validator) {
         this.userRepository = repository;
-        this.validator = validator;
         this.repository = repository;
+        this.validator = validator;
         this.mapper = UserMapper.INSTANCE;
     }
 
     // TODO: 2/7/22 fill registeredDate field / change registeredDate to createDate
     // TODO: 2/11/22 refactor findById on exists by id
     // TODO: 2/8/22 remove isActive field ?
-
     @Override
     public UserDTO findByUsername(String username) {
         Optional<User> optionalUser = userRepository.findByUsername(username);

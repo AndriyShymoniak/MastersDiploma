@@ -14,10 +14,9 @@ import java.util.List;
 import java.util.Optional;
 
 public abstract class AbstractService<Entity, DTO> {
-    // TODO: 2/11/22 make protected
-    public Validator validator;
-    public AbstractRepository repository;
-    public AbstractMapper mapper;
+    protected Validator validator;
+    protected AbstractRepository repository;
+    protected AbstractMapper mapper;
 
     public List<DTO> findAll() {
         List<Entity> entityList = repository.findAll();

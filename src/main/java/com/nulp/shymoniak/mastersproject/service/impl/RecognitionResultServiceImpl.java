@@ -17,12 +17,12 @@ import java.util.stream.Collectors;
 @Service
 public class RecognitionResultServiceImpl extends AbstractService<RecognitionResult, RecognitionResultDTO> implements RecognitionResultService {
     private final RecognitionResultRepository recognitionResultRepository;
-    private RecognitionResultMapper mapper = RecognitionResultMapper.INSTANCE;
 
     public RecognitionResultServiceImpl(RecognitionResultRepository repository, RecognitionResultValidator validator) {
         this.recognitionResultRepository = repository;
         this.repository = repository;
         this.validator = validator;
+        this.mapper = RecognitionResultMapper.INSTANCE;
     }
 
     @Override

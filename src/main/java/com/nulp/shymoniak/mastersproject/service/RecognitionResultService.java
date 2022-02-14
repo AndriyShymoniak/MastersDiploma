@@ -6,10 +6,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
-public interface RecognitionResultService {
+public interface RecognitionResultService extends IAbstractCrudService<RecognitionResultDTO> {
 
     List<RecognitionResultDTO> findAllByUserId(Long userId);
 
     Map<LocalDateTime, List<RecognitionResultDTO>> findAllGroupedByDate();
-    
+
 }

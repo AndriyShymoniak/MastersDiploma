@@ -1,7 +1,7 @@
 package com.nulp.shymoniak.mastersproject.controller;
 
 import com.nulp.shymoniak.mastersproject.dto.UserDTO;
-import com.nulp.shymoniak.mastersproject.service.impl.UserServiceImpl;
+import com.nulp.shymoniak.mastersproject.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,8 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("user")
 public class UserController {
-    // TODO: 2/11/22 change to Interface
-    private final UserServiceImpl userService;
+    private final UserService userService;
 
     @GetMapping({"", "/"})
     public ResponseEntity<List<UserDTO>> findAllUsers() {
@@ -36,13 +35,13 @@ public class UserController {
         return new ResponseEntity<>(userService.createItem(user), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<UserDTO> deleteUser(@PathVariable Long id) {
-        return new ResponseEntity<>(userService.deleteItem(id), HttpStatus.OK);
-    }
-
     @PutMapping
     public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO user) {
         return new ResponseEntity<>(userService.updateItem(user), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<UserDTO> deleteUser(@PathVariable Long id) {
+        return new ResponseEntity<>(userService.deleteItem(id), HttpStatus.OK);
     }
 }

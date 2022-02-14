@@ -2,7 +2,6 @@ package com.nulp.shymoniak.mastersproject.controller;
 
 import com.nulp.shymoniak.mastersproject.dto.RecognitionResultDTO;
 import com.nulp.shymoniak.mastersproject.service.RecognitionResultService;
-import com.nulp.shymoniak.mastersproject.service.impl.RecognitionResultServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +15,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("recognitionResult")
 public class RecognitionResultController {
-    private final RecognitionResultServiceImpl recognitionService;
+    private final RecognitionResultService recognitionService;
 
     @GetMapping({"", "/"})
     public ResponseEntity<List<RecognitionResultDTO>> findAllRecognitionResults() {
@@ -43,13 +42,13 @@ public class RecognitionResultController {
         return new ResponseEntity<>(recognitionService.createItem(recognitionResult), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<RecognitionResultDTO> deleteRecognitionResult(@PathVariable Long id) {
-        return new ResponseEntity<>(recognitionService.deleteItem(id), HttpStatus.OK);
-    }
-
     @PutMapping
     public ResponseEntity<RecognitionResultDTO> updateRecognitionResult(@RequestBody RecognitionResultDTO recognitionResult) {
         return new ResponseEntity<>(recognitionService.updateItem(recognitionResult), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<RecognitionResultDTO> deleteRecognitionResult(@PathVariable Long id) {
+        return new ResponseEntity<>(recognitionService.deleteItem(id), HttpStatus.OK);
     }
 }
