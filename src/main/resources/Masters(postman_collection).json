@@ -71,13 +71,33 @@
 							"response": []
 						},
 						{
+							"name": "Delete user by ID",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/user/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"user",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "Create user",
 							"request": {
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"admin\"\n}",
+									"raw": "{\n    \"username\": \"newUser\",\n    \"password\": \"newUser\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -99,33 +119,13 @@
 							"response": []
 						},
 						{
-							"name": "Delete user by ID",
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "http://localhost:8080/user/1",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"user",
-										"1"
-									]
-								}
-							},
-							"response": []
-						},
-						{
 							"name": "Update user",
 							"request": {
 								"method": "PUT",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"admin\"\n}",
+									"raw": "    {\n        \"userId\": 1,\n        \"username\": \"admin\",\n        \"password\": \"admin\",\n        \"registeredDate\": \"2022-02-11T07:35:34.738565\",\n        \"person\": {\n            \"personId\": 1,\n            \"name\": \"Anton\",\n            \"surname\": \"Stefaniv\",\n            \"email\": \"anton_s@email.com\"\n        },\n        \"userRole\": {\n            \"userRoleId\": 1,\n            \"role\": \"ADMIN\"\n        }\n    },",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -232,6 +232,26 @@
 							"response": []
 						},
 						{
+							"name": "Delete recognition result by ID",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/recognitionResult/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"recognitionResult",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "Create recognition result",
 							"request": {
 								"method": "POST",
@@ -254,26 +274,6 @@
 									"port": "8080",
 									"path": [
 										"recognitionResult"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Delete recognition result by ID",
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "http://localhost:8080/recognitionResult/1",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"recognitionResult",
-										"1"
 									]
 								}
 							},
@@ -384,6 +384,26 @@
 							"response": []
 						},
 						{
+							"name": "Delete model by ID",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/mlModel/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"mlModel",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "Create model",
 							"request": {
 								"method": "POST",
@@ -412,26 +432,6 @@
 							"response": []
 						},
 						{
-							"name": "Delete model by ID",
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "http://localhost:8080/mlModel/1",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"mlModel",
-										"1"
-									]
-								}
-							},
-							"response": []
-						},
-						{
 							"name": "Update model",
 							"request": {
 								"method": "PUT",
@@ -454,6 +454,606 @@
 									"port": "8080",
 									"path": [
 										"mlModel"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Location",
+					"item": [
+						{
+							"name": "Find all locations",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/location",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"location"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find location by ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/location/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"location",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete location by ID",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/location/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"location",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create location",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"longitude\": \"49.444452\",\n    \"latitude\": \"39.847446\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/location",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"location"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update location",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"locationId\": 1,\n    \"longitude\": \"49.444452\",\n    \"latitude\": \"39.847446\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/location",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"location"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Media",
+					"item": [
+						{
+							"name": "Find all medias",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/media",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"media"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find media by ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/media/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"media",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete media by ID",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/media/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"media",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create media",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"originalMediaUrl\": \"https://github.com/\",\n    \"processedMediaUrl\": \"https://github.com/\",\n    \"createDate\": \"2022-02-11T07:35:34.763885\",\n    \"createUser\": {\n        \"userId\": 1,\n        \"username\": \"admin\",\n        \"password\": \"admin\",\n        \"registeredDate\": \"2022-02-11T07:35:34.738565\",\n        \"person\": {\n            \"personId\": 1,\n            \"name\": \"Anton\",\n            \"surname\": \"Stefaniv\",\n            \"email\": \"anton_s@email.com\"\n        },\n        \"userRole\": {\n            \"userRoleId\": 1,\n            \"role\": \"ADMIN\"\n        }\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/media",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"media"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update media",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"mediaId\": 1,\n    \"originalMediaUrl\": \"https://github.com/\",\n    \"processedMediaUrl\": \"https://github.com/\",\n    \"createDate\": \"2022-02-11T07:35:34.763885\",\n    \"createUser\": {\n        \"userId\": 1,\n        \"username\": \"admin\",\n        \"password\": \"admin\",\n        \"registeredDate\": \"2022-02-11T07:35:34.738565\",\n        \"person\": {\n            \"personId\": 1,\n            \"name\": \"Anton\",\n            \"surname\": \"Stefaniv\",\n            \"email\": \"anton_s@email.com\"\n        },\n        \"userRole\": {\n            \"userRoleId\": 1,\n            \"role\": \"ADMIN\"\n        }\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/media",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"media"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Observed Object",
+					"item": [
+						{
+							"name": "Find all observed objects",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/observedObject",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"observedObject"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find observed object by ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/observedObject/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"observedObject",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete observed object by ID",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/observedObject/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"observedObject",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create observed object",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"longitude\": \"49.444452\",\n    \"latitude\": \"39.847446\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/observedObject",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"observedObject"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update observed object",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"locationId\": 1,\n    \"longitude\": \"49.444452\",\n    \"latitude\": \"39.847446\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/observedObject",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"observedObject"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Person",
+					"item": [
+						{
+							"name": "Find all peolple",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/person",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"person"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find person by ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/person/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"person",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete person by ID",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/person/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"person",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create person",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Vasyl\",\n    \"surname\": \"Stefaniv\",\n    \"email\": \"vasyl_s@email.com\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/person",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"person"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update person",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"personId\": 1,\n    \"name\": \"Anton\",\n    \"surname\": \"Stefaniv\",\n    \"email\": \"anton_s@email.com\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/person",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"person"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "User Role",
+					"item": [
+						{
+							"name": "Find all user roles",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/userRole",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"userRole"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find user role by ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/userRole/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"userRole",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete user role by ID",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/userRole/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"userRole",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create user role",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"role\": \"SUPER_USER\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/userRole",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"userRole"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update user role",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"userRoleId\": 1,\n    \"role\": \"ADMIN_NEW\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/userRole",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"userRole"
 									]
 								}
 							},
