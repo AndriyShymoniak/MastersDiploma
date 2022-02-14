@@ -66,13 +66,12 @@ public abstract class AbstractService<Entity, DTO> {
 
     @SneakyThrows
     private Long getIdFromEntity(Entity entity) {
-        Entity fromDTO = (Entity) mapper.mapToEntity(entity);
-        Field[] declaredFields = fromDTO.getClass().getDeclaredFields();
+        Field[] declaredFields = entity.getClass().getDeclaredFields();
         for (Field field : declaredFields) {
             Id idAnnotation = field.getAnnotation(Id.class);
             if (idAnnotation != null) {
                 field.setAccessible(true);
-                return (Long) field.get(fromDTO);
+                return (Long) field.get(entity);
             }
         }
         throw new ApiRequestException("There is no ID field found for entity: " + entity.toString());
