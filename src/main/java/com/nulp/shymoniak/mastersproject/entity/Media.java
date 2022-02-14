@@ -1,11 +1,16 @@
 package com.nulp.shymoniak.mastersproject.entity;
 
-import lombok.Data;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @Entity
 @Table(name = "media")
 public class Media {
@@ -25,5 +30,19 @@ public class Media {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "create_user", referencedColumnName = "user_id")
+    @ToString.Exclude
     private User createUser;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Media media = (Media) o;
+        return mediaId != null && Objects.equals(mediaId, media.mediaId);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

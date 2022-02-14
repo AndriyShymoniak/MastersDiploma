@@ -5,8 +5,11 @@ import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
 import com.nulp.shymoniak.mastersproject.repository.AbstractRepository;
 import com.nulp.shymoniak.mastersproject.utility.mapping.AbstractMapper;
 import com.nulp.shymoniak.mastersproject.validation.Validator;
+import lombok.SneakyThrows;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.Id;
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,28 +37,44 @@ public abstract class AbstractService<Entity, DTO> {
         return (DTO) mapper.mapToDTO(entity);
     }
 
-    // TODO: 2/11/22 finish method
     @Transactional
     public DTO updateItem(DTO dto) {
-        //        userRepository.findById(user.getUserId())
-        //                .orElseThrow(() -> new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND));
-        repository.save(mapper.mapToEntity(dto));
+        Entity entity = (Entity) mapper.mapToEntity(dto);
+        Long entityId = getIdFromEntity(entity);
+        if (!repository.existsById(entityId)) {
+            throw new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND);
+        }
+        repository.save(entity);
         return dto;
     }
 
-    // TODO: 2/11/22
     @Transactional
     public DTO deleteItem(Long id) {
-        //         User userEntity = userRepository.findById(id)
-        //                .orElseThrow(() -> new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND));
-        //        userRepository.delete(userEntity);
-        //        return mapper.map(userEntity);
-        return null;
+        Entity entity = (Entity) repository.findById(id);
+        if (entity != null) {
+            throw new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND);
+        }
+        repository.deleteById(id);
+        return (DTO) mapper.mapToDTO(entity);
     }
 
     public void checkIfValid(DTO DTO) {
         if (!validator.isValid(DTO)) {
             throw new ApiRequestException(ApplicationConstants.ERROR_INVALID_ENTITY + ": " + DTO.toString());
         }
+    }
+
+    @SneakyThrows
+    private Long getIdFromEntity(Entity entity) {
+        Entity fromDTO = (Entity) mapper.mapToEntity(entity);
+        Field[] declaredFields = fromDTO.getClass().getDeclaredFields();
+        for (Field field : declaredFields) {
+            Id idAnnotation = field.getAnnotation(Id.class);
+            if (idAnnotation != null) {
+                field.setAccessible(true);
+                return (Long) field.get(fromDTO);
+            }
+        }
+        throw new ApiRequestException("There is no ID field found for entity: " + entity.toString());
     }
 }
