@@ -1,5 +1,6 @@
 package com.nulp.shymoniak.mastersproject.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties("observedObjectList")
 public class RecognitionResultDTO {
     private Long recognitionResultId;
     private String description;

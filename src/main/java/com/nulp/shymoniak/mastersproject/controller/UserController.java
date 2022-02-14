@@ -25,7 +25,7 @@ public class UserController {
         return new ResponseEntity<>(userService.findById(id), HttpStatus.OK);
     }
 
-    @GetMapping("/{username}")
+    @GetMapping("/username/{username}")
     public ResponseEntity<UserDTO> findUserByUsername(@PathVariable String username) {
         return new ResponseEntity<>(userService.findByUsername(username), HttpStatus.OK);
     }

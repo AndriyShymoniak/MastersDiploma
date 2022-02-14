@@ -6,6 +6,7 @@ import com.nulp.shymoniak.mastersproject.entity.MLModel;
 import com.nulp.shymoniak.mastersproject.repository.MLModelRepository;
 import com.nulp.shymoniak.mastersproject.service.AbstractService;
 import com.nulp.shymoniak.mastersproject.service.MLModelService;
+import com.nulp.shymoniak.mastersproject.utility.CycleAvoidingMappingContext;
 import com.nulp.shymoniak.mastersproject.utility.mapping.MlModelMapper;
 import com.nulp.shymoniak.mastersproject.validation.MLModelValidator;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 @Service
 public class MLModelServiceImpl extends AbstractService<MLModel, MLModelDTO> implements MLModelService {
     private final MLModelRepository mlModelRepository;
+
 
     public MLModelServiceImpl(MLModelRepository repository, MLModelValidator validator) {
         this.mlModelRepository = repository;
@@ -34,7 +36,7 @@ public class MLModelServiceImpl extends AbstractService<MLModel, MLModelDTO> imp
                 .filter(model -> model.getIsActive().equals(ApplicationConstants.DEFAULT_TRUE_FLAG))
                 .filter(model -> doesModelContainAllObservedObjects(model, observedObjectIdSet))
                 .collect(Collectors.toList());
-        return mapper.mapToDTO(modelList);
+        return mapper.mapToDTO(modelList, CycleAvoidingMappingContext.getInstance());
     }
 
     private boolean doesModelContainAllObservedObjects(MLModel model, Set<Long> observedObjectIdSet) {
