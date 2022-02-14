@@ -54,7 +54,6 @@ public class ServiceAspectUtility {
         checkIfValid.invoke(serviceImplInstance, dtoEntity);
     }
 
-    // TODO: 2/8/22 fill related fields
     @SneakyThrows
     @Around("callCreateMethod()")
     public void fillDTOFieldsOnCreate(ProceedingJoinPoint proceedingJoinPoint){
@@ -63,7 +62,6 @@ public class ServiceAspectUtility {
         proceedingJoinPoint.proceed(new Object[] {dtoEntity});
     }
 
-    // TODO: 2/8/22 fill related fields
     @SneakyThrows
     @Around("callUpdateMethod() || callDeleteMethod()")
     public void fillDTOFieldsOnUpdateOrDelete(ProceedingJoinPoint proceedingJoinPoint){
@@ -72,7 +70,6 @@ public class ServiceAspectUtility {
         proceedingJoinPoint.proceed(new Object[] {dtoEntity});
     }
 
-    // TODO: 2/8/22 refactor
     @SneakyThrows
     private Object fillCreateFields(Object obj){
         Field[] fields = obj.getClass().getDeclaredFields();
@@ -87,7 +84,6 @@ public class ServiceAspectUtility {
         return obj;
     }
 
-    // TODO: 2/8/22 refactor
     @SneakyThrows
     private Object fillUpdateFields(Object obj){
         Field[] fields = obj.getClass().getDeclaredFields();

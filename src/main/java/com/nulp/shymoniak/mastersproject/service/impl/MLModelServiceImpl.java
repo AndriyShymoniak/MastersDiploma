@@ -27,8 +27,6 @@ public class MLModelServiceImpl extends AbstractService<MLModel, MLModelDTO> imp
         this.mapper = MlModelMapper.INSTANCE;
     }
 
-    // TODO: 2/11/22 check if @Transactional is supported
-
     @Override
     public List<MLModelDTO> findAllModelsByObservedObject(Set<Long> observedObjectIdSet) {
         List<MLModel> modelList = mlModelRepository.findAll();

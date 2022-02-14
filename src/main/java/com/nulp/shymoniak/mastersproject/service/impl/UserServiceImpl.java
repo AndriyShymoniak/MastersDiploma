@@ -19,7 +19,6 @@ import java.util.Optional;
 public class UserServiceImpl extends AbstractService<User, UserDTO> implements UserService {
     private final UserRepository userRepository;
 
-    // TODO: 2/11/22 refactor two repositories
     @Autowired
     public UserServiceImpl(UserRepository repository, UserValidator validator) {
         this.userRepository = repository;
