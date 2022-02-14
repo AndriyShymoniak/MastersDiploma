@@ -7,7 +7,7 @@ import com.nulp.shymoniak.mastersproject.repository.MLModelRepository;
 import com.nulp.shymoniak.mastersproject.service.AbstractService;
 import com.nulp.shymoniak.mastersproject.service.MLModelService;
 import com.nulp.shymoniak.mastersproject.utility.CycleAvoidingMappingContext;
-import com.nulp.shymoniak.mastersproject.utility.mapping.MlModelMapper;
+import com.nulp.shymoniak.mastersproject.mapping.MlModelMapper;
 import com.nulp.shymoniak.mastersproject.validation.MLModelValidator;
 import org.springframework.stereotype.Service;
 

@@ -8,7 +8,7 @@ import com.nulp.shymoniak.mastersproject.repository.UserRepository;
 import com.nulp.shymoniak.mastersproject.service.AbstractService;
 import com.nulp.shymoniak.mastersproject.service.UserService;
 import com.nulp.shymoniak.mastersproject.utility.CycleAvoidingMappingContext;
-import com.nulp.shymoniak.mastersproject.utility.mapping.UserMapper;
+import com.nulp.shymoniak.mastersproject.mapping.UserMapper;
 import com.nulp.shymoniak.mastersproject.validation.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

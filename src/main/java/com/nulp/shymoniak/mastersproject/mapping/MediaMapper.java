@@ -1,4 +1,4 @@
-package com.nulp.shymoniak.mastersproject.utility.mapping;
+package com.nulp.shymoniak.mastersproject.mapping;
 
 import com.nulp.shymoniak.mastersproject.dto.MediaDTO;
 import com.nulp.shymoniak.mastersproject.entity.Media;

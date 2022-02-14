@@ -6,7 +6,7 @@ import com.nulp.shymoniak.mastersproject.repository.RecognitionResultRepository;
 import com.nulp.shymoniak.mastersproject.service.AbstractService;
 import com.nulp.shymoniak.mastersproject.service.RecognitionResultService;
 import com.nulp.shymoniak.mastersproject.utility.CycleAvoidingMappingContext;
-import com.nulp.shymoniak.mastersproject.utility.mapping.RecognitionResultMapper;
+import com.nulp.shymoniak.mastersproject.mapping.RecognitionResultMapper;
 import com.nulp.shymoniak.mastersproject.validation.RecognitionResultValidator;
 import org.springframework.stereotype.Service;
 

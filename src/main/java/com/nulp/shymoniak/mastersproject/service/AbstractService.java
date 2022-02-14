@@ -4,7 +4,7 @@ import com.nulp.shymoniak.mastersproject.constant.ApplicationConstants;
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
 import com.nulp.shymoniak.mastersproject.repository.AbstractRepository;
 import com.nulp.shymoniak.mastersproject.utility.CycleAvoidingMappingContext;
-import com.nulp.shymoniak.mastersproject.utility.mapping.AbstractMapper;
+import com.nulp.shymoniak.mastersproject.mapping.AbstractMapper;
 import com.nulp.shymoniak.mastersproject.validation.Validator;
 import lombok.SneakyThrows;
 import org.springframework.transaction.annotation.Transactional;

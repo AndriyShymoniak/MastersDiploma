@@ -5,7 +5,7 @@ import com.nulp.shymoniak.mastersproject.entity.Media;
 import com.nulp.shymoniak.mastersproject.repository.MediaRepository;
 import com.nulp.shymoniak.mastersproject.service.AbstractService;
 import com.nulp.shymoniak.mastersproject.service.MediaService;
-import com.nulp.shymoniak.mastersproject.utility.mapping.MediaMapper;
+import com.nulp.shymoniak.mastersproject.mapping.MediaMapper;
 import com.nulp.shymoniak.mastersproject.validation.MediaValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

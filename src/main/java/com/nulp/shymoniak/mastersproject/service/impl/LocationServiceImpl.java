@@ -5,7 +5,7 @@ import com.nulp.shymoniak.mastersproject.entity.Location;
 import com.nulp.shymoniak.mastersproject.repository.LocationRepository;
 import com.nulp.shymoniak.mastersproject.service.AbstractService;
 import com.nulp.shymoniak.mastersproject.service.LocationService;
-import com.nulp.shymoniak.mastersproject.utility.mapping.LocationMapper;
+import com.nulp.shymoniak.mastersproject.mapping.LocationMapper;
 import com.nulp.shymoniak.mastersproject.validation.LocationValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

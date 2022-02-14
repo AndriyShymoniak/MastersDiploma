@@ -5,7 +5,7 @@ import com.nulp.shymoniak.mastersproject.entity.UserRole;
 import com.nulp.shymoniak.mastersproject.repository.UserRoleRepository;
 import com.nulp.shymoniak.mastersproject.service.AbstractService;
 import com.nulp.shymoniak.mastersproject.service.UserRoleService;
-import com.nulp.shymoniak.mastersproject.utility.mapping.UserRoleMapper;
+import com.nulp.shymoniak.mastersproject.mapping.UserRoleMapper;
 import com.nulp.shymoniak.mastersproject.validation.UserRoleValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
