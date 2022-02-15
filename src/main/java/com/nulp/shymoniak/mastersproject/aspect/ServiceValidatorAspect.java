@@ -1,4 +1,4 @@
-package com.nulp.shymoniak.mastersproject.utility.aspects;
+package com.nulp.shymoniak.mastersproject.aspect;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Pointcut;
