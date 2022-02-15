@@ -1,4 +1,4 @@
-package com.nulp.shymoniak.mastersproject.utility.aspect;
+package com.nulp.shymoniak.mastersproject.utility;
 
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
 import lombok.RequiredArgsConstructor;

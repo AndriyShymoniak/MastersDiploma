@@ -1,6 +1,6 @@
 package com.nulp.shymoniak.mastersproject.aspect;
 
-import com.nulp.shymoniak.mastersproject.utility.aspect.AspectUtility;
+import com.nulp.shymoniak.mastersproject.utility.AspectUtility;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.aspectj.lang.JoinPoint;

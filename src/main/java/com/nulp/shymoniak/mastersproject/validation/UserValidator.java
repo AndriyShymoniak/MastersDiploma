@@ -2,7 +2,7 @@ package com.nulp.shymoniak.mastersproject.validation;
 
 import com.nulp.shymoniak.mastersproject.dto.UserDTO;
 import com.nulp.shymoniak.mastersproject.repository.UserRepository;
-import com.nulp.shymoniak.mastersproject.utility.validation.ValidationUtility;
+import com.nulp.shymoniak.mastersproject.utility.ValidationUtility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

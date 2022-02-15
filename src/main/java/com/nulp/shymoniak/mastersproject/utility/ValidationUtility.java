@@ -1,4 +1,4 @@
-package com.nulp.shymoniak.mastersproject.utility.validation;
+package com.nulp.shymoniak.mastersproject.utility;
 
 public interface ValidationUtility {
     boolean isNotNullAndNotBlank(String str);

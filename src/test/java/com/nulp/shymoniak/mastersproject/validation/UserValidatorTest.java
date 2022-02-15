@@ -2,7 +2,7 @@ package com.nulp.shymoniak.mastersproject.validation;
 
 import com.nulp.shymoniak.mastersproject.dto.UserDTO;
 import com.nulp.shymoniak.mastersproject.repository.UserRepository;
-import com.nulp.shymoniak.mastersproject.utility.validation.ValidationUtilityImpl;
+import com.nulp.shymoniak.mastersproject.utility.ValidationUtilityImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
