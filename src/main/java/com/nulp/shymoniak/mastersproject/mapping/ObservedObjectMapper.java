@@ -5,8 +5,6 @@ import com.nulp.shymoniak.mastersproject.entity.ObservedObject;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
-import java.util.List;
-
 @Named("ObservedObjectMapper")
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ObservedObjectMapper extends AbstractMapper<ObservedObject, ObservedObjectDTO> {

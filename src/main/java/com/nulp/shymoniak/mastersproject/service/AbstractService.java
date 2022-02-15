@@ -73,6 +73,6 @@ public abstract class AbstractService<Entity, DTO> {
                 return (Long) field.get(entity);
             }
         }
-        throw new ApiRequestException("There is no ID field found for entity: " + entity.toString());
+        throw new ApiRequestException("There is no ID field found for entity: " + entity);
     }
 }

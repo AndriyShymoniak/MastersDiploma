@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class MLModelValidatorTest {
-    private MLModelValidator mlModelValidator;
+    private final MLModelValidator mlModelValidator;
     private static String validURL;
 
     @Autowired
