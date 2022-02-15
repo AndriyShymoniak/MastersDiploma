@@ -24,7 +24,7 @@ import org.mapstruct.TargetType;
  */
 public class CycleAvoidingMappingContext {
     private static CycleAvoidingMappingContext INSTANCE;
-    private Map<Object, Object> knownInstances = new IdentityHashMap<Object, Object>();
+    private Map<Object, Object> knownInstances = new IdentityHashMap<>();
 
     public static CycleAvoidingMappingContext getInstance() {
         if (INSTANCE == null){

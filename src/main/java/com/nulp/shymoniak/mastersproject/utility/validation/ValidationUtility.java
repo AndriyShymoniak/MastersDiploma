@@ -7,7 +7,7 @@ public interface ValidationUtility {
 
     boolean isValidEmail(String email);
 
-    boolean isValidStringWithCapitalLettersAndUnderscores(String input);
+    boolean isValidStrCapitalAndUnderscoresOnly(String input);
 
     boolean isValidBooleanRepresentedWithInteger(Integer input);
 }

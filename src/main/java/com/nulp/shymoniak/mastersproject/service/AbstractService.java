@@ -45,17 +45,17 @@ public abstract class AbstractService<Entity, DTO> {
             throw new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND);
         }
         repository.save(entity);
-        return dto;
+        return (DTO) mapper.mapToDTO(entity, CycleAvoidingMappingContext.getInstance());
     }
 
     @Transactional
     public DTO deleteItem(Long id) {
-        Entity entity = (Entity) repository.findById(id);
-        if (entity != null) {
+        Optional<Entity> optionalEntity = repository.findById(id);
+        if (optionalEntity.isEmpty()) {
             throw new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND);
         }
         repository.deleteById(id);
-        return (DTO) mapper.mapToDTO(entity, CycleAvoidingMappingContext.getInstance());
+        return (DTO) mapper.mapToDTO(optionalEntity.get(), CycleAvoidingMappingContext.getInstance());
     }
 
     public void checkIfValid(DTO DTO) {

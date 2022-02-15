@@ -18,21 +18,29 @@ class ValidationUtilityImplTest {
     }
 
     @Test
-    void checkIfStringIsNotNullNotBlank() {
+    void isNotNullAndNotBlank_shouldReturnFalse_whenStringIsBlank() {
         // given
         String nullString = null;
         String emptyString = "";
         String stringWithSpaces = "   ";
-        String validString = "A random string";
         // then
         assertFalse(validationUtilityImpl.isNotNullAndNotBlank(nullString));
         assertFalse(validationUtilityImpl.isNotNullAndNotBlank(emptyString));
         assertFalse(validationUtilityImpl.isNotNullAndNotBlank(stringWithSpaces));
-        assertTrue(validationUtilityImpl.isNotNullAndNotBlank(validString));
     }
 
     @Test
-    void checkIfURLIsValid() {
+    void isNotNullAndNotBlank_shouldReturnTrue_whenStringIsNotBlank() {
+        // given
+        String validString1 = "s";
+        String validString2 = "A random string";
+        // then
+        assertTrue(validationUtilityImpl.isNotNullAndNotBlank(validString1));
+        assertTrue(validationUtilityImpl.isNotNullAndNotBlank(validString2));
+    }
+
+    @Test
+    void isValidURL_shouldReturnFalse_whenBlankRandomOrDoesNotMeetStandards() {
         // given
         String nullString = null;
         String emptyString = "";
@@ -40,7 +48,6 @@ class ValidationUtilityImplTest {
         String randomString = "A random string";
         String invalidURL1 = "https://";
         String invalidURL2 = "github.com/";
-        String validUrl = "https://github.com/";
         // then
         assertFalse(validationUtilityImpl.isValidURL(nullString));
         assertFalse(validationUtilityImpl.isValidURL(emptyString));
@@ -48,11 +55,22 @@ class ValidationUtilityImplTest {
         assertFalse(validationUtilityImpl.isValidURL(randomString));
         assertFalse(validationUtilityImpl.isValidURL(invalidURL1));
         assertFalse(validationUtilityImpl.isValidURL(invalidURL2));
-        assertTrue(validationUtilityImpl.isValidURL(validUrl));
     }
 
     @Test
-    void checkingInvalidEmails() {
+    void isValidURL_shouldReturnTrue_whenMeetsStandards() {
+        // given
+        String validUrl1 = "https://github.com/";
+        String validUrl2 = "https://shorturl.at/elnI5";
+        String validUrl3 = "https://helpx.adobe.com/photoshop/using/convert-color-image-black-white.html";
+        // then
+        assertTrue(validationUtilityImpl.isValidURL(validUrl1));
+        assertTrue(validationUtilityImpl.isValidURL(validUrl2));
+        assertTrue(validationUtilityImpl.isValidURL(validUrl3));
+    }
+
+    @Test
+    void isValidEmail_shouldReturnFalse_whenBlankRandomOrDoesNotMeetStandards() {
         // given
         String nullString = null;
         String emptyString = "";
@@ -80,7 +98,7 @@ class ValidationUtilityImplTest {
     }
 
     @Test
-    void checkingValidEmails(){
+    void isValidEmail_shouldReturnTrue_whenMeetsStandards(){
         // given
         String validEmail1 = "qwerty@mail.com";
         String validEmail2 = "qwerty.asdfg@mail.com";
@@ -108,7 +126,7 @@ class ValidationUtilityImplTest {
     }
 
     @Test
-    void checkIfStringContainsCapitalLettersAndUnderscoreOnly() {
+    void isValidStrCapitalAndUnderscoresOnly_shouldReturnFalse_whenBlankOrNotCapitalLettersUsed() {
         // given
         String nullString = null;
         String emptyString = "";
@@ -117,42 +135,60 @@ class ValidationUtilityImplTest {
         String invalidString2 = "AaAaA";
         String invalidString3 = "AA!@#$%^&*";
         String invalidString4 = "___";
+        // then
+        assertFalse(validationUtilityImpl.isValidStrCapitalAndUnderscoresOnly(nullString));
+        assertFalse(validationUtilityImpl.isValidStrCapitalAndUnderscoresOnly(emptyString));
+        assertFalse(validationUtilityImpl.isValidStrCapitalAndUnderscoresOnly(stringWithSpaces));
+        assertFalse(validationUtilityImpl.isValidStrCapitalAndUnderscoresOnly(invalidString1));
+        assertFalse(validationUtilityImpl.isValidStrCapitalAndUnderscoresOnly(invalidString2));
+        assertFalse(validationUtilityImpl.isValidStrCapitalAndUnderscoresOnly(invalidString3));
+        assertFalse(validationUtilityImpl.isValidStrCapitalAndUnderscoresOnly(invalidString4));
+    }
+
+    @Test
+    void isValidStrCapitalAndUnderscoresOnly_shouldReturnFalse_whenStartsOrEndsWithUnderscoresOrHasSequenceOfThem() {
+        // given
         String invalidString5 = "_AA_A";
         String invalidString6 = "A_AA_";
         String invalidString7 = "AA_______A";
+        // then
+        assertFalse(validationUtilityImpl.isValidStrCapitalAndUnderscoresOnly(invalidString5));
+        assertFalse(validationUtilityImpl.isValidStrCapitalAndUnderscoresOnly(invalidString6));
+        assertFalse(validationUtilityImpl.isValidStrCapitalAndUnderscoresOnly(invalidString7));
+    }
+
+    @Test
+    void isValidStrCapitalAndUnderscoresOnly_shouldReturnTrue_WhenHasUnderscoresBetweenCapitals() {
+        // given
         String validString1 = "AAAA";
         String validString2 = "ABC_ABC";
         String validString3 = "ABC_ABC_A";
         String validString4 = "A_ABC_A";
         // then
-        assertFalse(validationUtilityImpl.isValidStringWithCapitalLettersAndUnderscores(nullString));
-        assertFalse(validationUtilityImpl.isValidStringWithCapitalLettersAndUnderscores(emptyString));
-        assertFalse(validationUtilityImpl.isValidStringWithCapitalLettersAndUnderscores(stringWithSpaces));
-        assertFalse(validationUtilityImpl.isValidStringWithCapitalLettersAndUnderscores(invalidString1));
-        assertFalse(validationUtilityImpl.isValidStringWithCapitalLettersAndUnderscores(invalidString2));
-        assertFalse(validationUtilityImpl.isValidStringWithCapitalLettersAndUnderscores(invalidString3));
-        assertFalse(validationUtilityImpl.isValidStringWithCapitalLettersAndUnderscores(invalidString4));
-        assertFalse(validationUtilityImpl.isValidStringWithCapitalLettersAndUnderscores(invalidString5));
-        assertFalse(validationUtilityImpl.isValidStringWithCapitalLettersAndUnderscores(invalidString6));
-        assertFalse(validationUtilityImpl.isValidStringWithCapitalLettersAndUnderscores(invalidString7));
-        assertTrue(validationUtilityImpl.isValidStringWithCapitalLettersAndUnderscores(validString1));
-        assertTrue(validationUtilityImpl.isValidStringWithCapitalLettersAndUnderscores(validString2));
-        assertTrue(validationUtilityImpl.isValidStringWithCapitalLettersAndUnderscores(validString3));
-        assertTrue(validationUtilityImpl.isValidStringWithCapitalLettersAndUnderscores(validString4));
+        assertTrue(validationUtilityImpl.isValidStrCapitalAndUnderscoresOnly(validString1));
+        assertTrue(validationUtilityImpl.isValidStrCapitalAndUnderscoresOnly(validString2));
+        assertTrue(validationUtilityImpl.isValidStrCapitalAndUnderscoresOnly(validString3));
+        assertTrue(validationUtilityImpl.isValidStrCapitalAndUnderscoresOnly(validString4));
     }
 
     @Test
-    void checkIfBooleanIsRepresentedWithIntegerCorrectly(){
+    void isValidBooleanRepresentedWithInteger_shouldReturnFalse_whenNullOrRandomNumber(){
         // given
         Integer invalid1 = null;
         Integer invalid2 = -5;
         Integer invalid3 = 5;
-        Integer valid1 = ApplicationConstants.DEFAULT_FALSE_FLAG;
-        Integer valid2 = ApplicationConstants.DEFAULT_TRUE_FLAG;
         // then
         assertFalse(validationUtilityImpl.isValidBooleanRepresentedWithInteger(invalid1));
         assertFalse(validationUtilityImpl.isValidBooleanRepresentedWithInteger(invalid2));
         assertFalse(validationUtilityImpl.isValidBooleanRepresentedWithInteger(invalid3));
+    }
+
+    @Test
+    void isValidBooleanRepresentedWithInteger_shouldReturnTrue_whenDefaultFlagsUsed(){
+        // given
+        Integer valid1 = ApplicationConstants.DEFAULT_FALSE_FLAG;
+        Integer valid2 = ApplicationConstants.DEFAULT_TRUE_FLAG;
+        // then
         assertTrue(validationUtilityImpl.isValidBooleanRepresentedWithInteger(valid1));
         assertTrue(validationUtilityImpl.isValidBooleanRepresentedWithInteger(valid2));
     }

@@ -9,7 +9,8 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "recognition_result_observed_object")
 public class RecognitionResultObservedObject {

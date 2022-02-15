@@ -12,6 +12,6 @@ public class UserRoleValidator implements Validator<UserRoleDTO> {
 
     @Override
     public boolean isValid(UserRoleDTO userRoleDTO) {
-        return validationUtility.isValidStringWithCapitalLettersAndUnderscores(userRoleDTO.getRole());
+        return validationUtility.isValidStrCapitalAndUnderscoresOnly(userRoleDTO.getRole());
     }
 }

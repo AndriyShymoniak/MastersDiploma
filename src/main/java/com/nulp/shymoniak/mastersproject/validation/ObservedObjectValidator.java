@@ -12,6 +12,6 @@ public class ObservedObjectValidator implements Validator<ObservedObjectDTO> {
 
     @Override
     public boolean isValid(ObservedObjectDTO observedObjectDTO) {
-        return validationUtility.isValidStringWithCapitalLettersAndUnderscores(observedObjectDTO.getObjectName());
+        return validationUtility.isValidStrCapitalAndUnderscoresOnly(observedObjectDTO.getObjectName());
     }
 }

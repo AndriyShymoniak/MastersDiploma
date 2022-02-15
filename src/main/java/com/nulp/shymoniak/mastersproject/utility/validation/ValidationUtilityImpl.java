@@ -24,7 +24,7 @@ public class ValidationUtilityImpl implements ValidationUtility {
     }
 
     @Override
-    public boolean isValidStringWithCapitalLettersAndUnderscores(String input) {
+    public boolean isValidStrCapitalAndUnderscoresOnly(String input) {
         return isNotNullAndNotBlank(input) && Pattern.matches(CAPITAL_LETTERS_WITH_UNDERSCORE_REGEX_PATTERN, input);
     }
 
