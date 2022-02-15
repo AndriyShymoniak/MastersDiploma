@@ -7,7 +7,6 @@ import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
 import com.nulp.shymoniak.mastersproject.repository.UserRepository;
 import com.nulp.shymoniak.mastersproject.service.AbstractService;
 import com.nulp.shymoniak.mastersproject.service.UserService;
-import com.nulp.shymoniak.mastersproject.utility.CycleAvoidingMappingContext;
 import com.nulp.shymoniak.mastersproject.mapping.UserMapper;
 import com.nulp.shymoniak.mastersproject.validation.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +32,7 @@ public class UserServiceImpl extends AbstractService<User, UserDTO> implements U
     @Override
     public UserDTO findByUsername(String username) {
         Optional<User> optionalUser = userRepository.findByUsername(username);
-        return optionalUser.map(item -> (UserDTO) mapper.mapToDTO(item, CycleAvoidingMappingContext.getInstance()))
+        return optionalUser.map(item -> (UserDTO) mapper.mapToDTO(item))
                 .orElseThrow(() -> new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND));
     }
 }
