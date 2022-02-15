@@ -10,8 +10,8 @@ import org.mapstruct.factory.Mappers;
         componentModel = "spring",
         unmappedTargetPolicy = ReportingPolicy.IGNORE
 )
-public interface MlModelMapper extends AbstractMapper<MLModel, MLModelDTO> {
-    MlModelMapper INSTANCE = Mappers.getMapper(MlModelMapper.class);
+public interface MLModelMapper extends AbstractMapper<MLModel, MLModelDTO> {
+    MLModelMapper INSTANCE = Mappers.getMapper(MLModelMapper.class);
 
     @Named("toDtoWithoutChildren")
     @Mappings({

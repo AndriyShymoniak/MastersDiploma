@@ -27,7 +27,7 @@ public class User {
     private String password;
 
     @Column(name = "registered_date")
-    private LocalDateTime registeredDate;
+    private LocalDateTime createDate;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "person_id", referencedColumnName = "person_id")

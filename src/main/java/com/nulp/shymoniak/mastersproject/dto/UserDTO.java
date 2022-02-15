@@ -13,7 +13,7 @@ public class UserDTO {
     private Long userId;
     private String username;
     private String password;
-    private LocalDateTime registeredDate;
+    private LocalDateTime createDate;
 
     private PersonDTO person;
     private UserRoleDTO userRole;

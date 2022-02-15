@@ -8,4 +8,6 @@ public interface AbstractMapper<Entity, DTO> {
     Entity mapToEntity(DTO dto);
 
     List<DTO> mapToDTO(List<Entity> entityList);
+
+    List<Entity> mapToEntity(List<DTO> dtoList);
 }
