@@ -3,7 +3,6 @@ package com.nulp.shymoniak.mastersproject.service;
 import com.nulp.shymoniak.mastersproject.constant.ApplicationConstants;
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
 import com.nulp.shymoniak.mastersproject.repository.AbstractRepository;
-import com.nulp.shymoniak.mastersproject.utility.CycleAvoidingMappingContext;
 import com.nulp.shymoniak.mastersproject.mapping.AbstractMapper;
 import com.nulp.shymoniak.mastersproject.validation.Validator;
 import lombok.SneakyThrows;
@@ -21,31 +20,31 @@ public abstract class AbstractService<Entity, DTO> {
 
     public List<DTO> findAll() {
         List<Entity> entityList = repository.findAll();
-        return mapper.mapToDTO(entityList, CycleAvoidingMappingContext.getInstance());
+        return mapper.mapToDTO(entityList);
     }
 
     public DTO findById(Long id) {
         Optional<Entity> optionalEntity = repository.findById(id);
-        return optionalEntity.map(item -> (DTO) mapper.mapToDTO(item, CycleAvoidingMappingContext.getInstance()))
+        return optionalEntity.map(item -> (DTO) mapper.mapToDTO(item))
                 .orElseThrow(() -> new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND));
     }
 
     @Transactional
     public DTO createItem(DTO dto) {
-        Entity entity = (Entity) mapper.mapToEntity(dto, CycleAvoidingMappingContext.getInstance());
+        Entity entity = (Entity) mapper.mapToEntity(dto);
         repository.save(entity);
-        return (DTO) mapper.mapToDTO(entity, CycleAvoidingMappingContext.getInstance());
+        return (DTO) mapper.mapToDTO(entity);
     }
 
     @Transactional
     public DTO updateItem(DTO dto) {
-        Entity entity = (Entity) mapper.mapToEntity(dto, CycleAvoidingMappingContext.getInstance());
+        Entity entity = (Entity) mapper.mapToEntity(dto);
         Long entityId = getIdFromEntity(entity);
         if (!repository.existsById(entityId)) {
             throw new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND);
         }
         repository.save(entity);
-        return (DTO) mapper.mapToDTO(entity, CycleAvoidingMappingContext.getInstance());
+        return (DTO) mapper.mapToDTO(entity);
     }
 
     @Transactional
@@ -55,7 +54,7 @@ public abstract class AbstractService<Entity, DTO> {
             throw new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND);
         }
         repository.deleteById(id);
-        return (DTO) mapper.mapToDTO(optionalEntity.get(), CycleAvoidingMappingContext.getInstance());
+        return (DTO) mapper.mapToDTO(optionalEntity.get());
     }
 
     public void checkIfValid(DTO DTO) {

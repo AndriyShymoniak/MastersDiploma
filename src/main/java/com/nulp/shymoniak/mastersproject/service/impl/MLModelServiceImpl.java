@@ -6,7 +6,6 @@ import com.nulp.shymoniak.mastersproject.entity.MLModel;
 import com.nulp.shymoniak.mastersproject.repository.MLModelRepository;
 import com.nulp.shymoniak.mastersproject.service.AbstractService;
 import com.nulp.shymoniak.mastersproject.service.MLModelService;
-import com.nulp.shymoniak.mastersproject.utility.CycleAvoidingMappingContext;
 import com.nulp.shymoniak.mastersproject.mapping.MlModelMapper;
 import com.nulp.shymoniak.mastersproject.validation.MLModelValidator;
 import org.springframework.stereotype.Service;
@@ -19,12 +18,36 @@ import java.util.stream.Collectors;
 public class MLModelServiceImpl extends AbstractService<MLModel, MLModelDTO> implements MLModelService {
     private final MLModelRepository mlModelRepository;
 
-
     public MLModelServiceImpl(MLModelRepository repository, MLModelValidator validator) {
         this.mlModelRepository = repository;
         this.repository = repository;
         this.validator = validator;
         this.mapper = MlModelMapper.INSTANCE;
+    }
+
+    @Override
+    public List<MLModelDTO> findAll() {
+        return super.findAll();
+    }
+
+    @Override
+    public MLModelDTO findById(Long id) {
+        return super.findById(id);
+    }
+
+    @Override
+    public MLModelDTO createItem(MLModelDTO mlModelDTO) {
+        return super.createItem(mlModelDTO);
+    }
+
+    @Override
+    public MLModelDTO updateItem(MLModelDTO mlModelDTO) {
+        return super.updateItem(mlModelDTO);
+    }
+
+    @Override
+    public MLModelDTO deleteItem(Long id) {
+        return super.deleteItem(id);
     }
 
     @Override
@@ -34,7 +57,7 @@ public class MLModelServiceImpl extends AbstractService<MLModel, MLModelDTO> imp
                 .filter(model -> model.getIsActive().equals(ApplicationConstants.DEFAULT_TRUE_FLAG))
                 .filter(model -> doesModelContainAllObservedObjects(model, observedObjectIdSet))
                 .collect(Collectors.toList());
-        return mapper.mapToDTO(modelList, CycleAvoidingMappingContext.getInstance());
+        return mapper.mapToDTO(modelList);
     }
 
     private boolean doesModelContainAllObservedObjects(MLModel model, Set<Long> observedObjectIdSet) {
