@@ -5,7 +5,6 @@ import com.nulp.shymoniak.mastersproject.utility.ValidationUtility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-// TODO: 2/11/22 update test class
 @Component
 @RequiredArgsConstructor
 public class MLModelValidator implements Validator<MLModelDTO> {

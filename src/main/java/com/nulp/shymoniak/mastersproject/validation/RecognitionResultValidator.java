@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 // TODO: 2/9/22 Add aspect on validation relations
-//  AfterTrowing - return specified message in case of exception
 @Component
 @RequiredArgsConstructor
 public class RecognitionResultValidator implements Validator<RecognitionResultDTO> {
