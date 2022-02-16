@@ -8,6 +8,7 @@ import com.nulp.shymoniak.mastersproject.repository.MLModelRepository;
 import com.nulp.shymoniak.mastersproject.service.AbstractService;
 import com.nulp.shymoniak.mastersproject.service.MLModelService;
 import com.nulp.shymoniak.mastersproject.validation.MLModelValidator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +17,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class MLModelServiceImpl extends AbstractService<MLModel, MLModelDTO> implements MLModelService {
+
+    @Autowired
     public MLModelServiceImpl(MLModelRepository repository, MLModelValidator validator) {
         this.repository = repository;
         this.validator = validator;

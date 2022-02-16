@@ -56,7 +56,7 @@ class MediaServiceImplTest {
     }
 
     @Test
-    void findById_shouldThrowException_IfNotFinds() {
+    void findById_shouldThrowException_IfCanNotFind() {
         // given
         when(repository.findById(media.getMediaId())).thenReturn(Optional.empty());
         // when

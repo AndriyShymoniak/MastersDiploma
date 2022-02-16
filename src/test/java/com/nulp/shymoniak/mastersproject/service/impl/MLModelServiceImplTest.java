@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -73,7 +72,7 @@ class MLModelServiceImplTest {
     }
 
     @Test
-    void findById_shouldThrowException_IfNotFinds() {
+    void findById_shouldThrowException_IfCanNotFind() {
         // given
         when(repository.findById(mlModel.getMlModelId())).thenReturn(Optional.empty());
         // when

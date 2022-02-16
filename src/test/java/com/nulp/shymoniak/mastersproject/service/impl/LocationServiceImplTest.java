@@ -55,7 +55,7 @@ class LocationServiceImplTest {
     }
 
     @Test
-    void findById_shouldThrowException_IfNotFinds() {
+    void findById_shouldThrowException_IfCanNotFind() {
         // given
         when(repository.findById(location.getLocationId())).thenReturn(Optional.empty());
         // when

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ObservedObjectServiceImpl extends AbstractService<ObservedObject, ObservedObjectDTO> implements ObservedObjectService {
 
-@Autowired
+    @Autowired
     public ObservedObjectServiceImpl(ObservedObjectRepository repository, ObservedObjectValidator validator) {
         this.repository = repository;
         this.validator = validator;
