@@ -9,5 +9,7 @@ public interface ValidationUtility {
 
     boolean isValidStrCapitalAndUnderscoresOnly(String input);
 
+    boolean isValidUsernameOrPassword(String input);
+
     boolean isValidBooleanRepresentedWithInteger(Integer input);
 }

@@ -12,20 +12,21 @@ public class UserValidator implements Validator<UserDTO> {
     private final UserRepository repository;
     private final ValidationUtility validationUtility;
 
-    // TODO: 2/11/22 add password validation
     @Override
     public boolean isValid(UserDTO userDTO) {
         return isUsernameValid(userDTO.getUsername())
-                && validationUtility.isNotNullAndNotBlank(userDTO.getPassword());
+                && validationUtility.isValidUsernameOrPassword(userDTO.getPassword());
     }
 
     /**
-     * Checks whether username is not blank and unique in DB
+     * Checks whether username is not blank and unique in DB.
+     * Also checks if username is not shorter than 4 symbols,
+     * and contains only letters, numbers and -_. symbols
      * @param username
-     * @return true if username is unique in DB and not blank
+     * @return true if username matches username requirements
      */
     private boolean isUsernameValid(String username) {
-        return validationUtility.isNotNullAndNotBlank(username)
+        return validationUtility.isValidUsernameOrPassword(username)
                 && !repository.existsByUsername(username);
     }
 }

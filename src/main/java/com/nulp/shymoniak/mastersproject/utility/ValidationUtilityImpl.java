@@ -29,6 +29,11 @@ public class ValidationUtilityImpl implements ValidationUtility {
     }
 
     @Override
+    public boolean isValidUsernameOrPassword(String input) {
+        return isNotNullAndNotBlank(input) && Pattern.matches(USERNAME_AND_PASSWORD_REGEX_PATTERN, input);
+    }
+
+    @Override
     public boolean isValidBooleanRepresentedWithInteger(Integer input) {
         return input != null
                 && (input.equals(DEFAULT_FALSE_FLAG) || input.equals(DEFAULT_TRUE_FLAG));
