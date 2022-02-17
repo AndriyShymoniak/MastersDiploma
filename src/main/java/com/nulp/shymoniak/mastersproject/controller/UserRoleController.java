@@ -3,11 +3,13 @@ package com.nulp.shymoniak.mastersproject.controller;
 import com.nulp.shymoniak.mastersproject.dto.UserRoleDTO;
 import com.nulp.shymoniak.mastersproject.service.UserRoleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -16,8 +18,9 @@ public class UserRoleController {
     private final UserRoleService userRoleService;
 
     @GetMapping({"", "/"})
-    public ResponseEntity<List<UserRoleDTO>> findAllUserRoles() {
-        return new ResponseEntity<>(userRoleService.findAll(), HttpStatus.OK);
+    public ResponseEntity<Page<UserRoleDTO>> findAllUserRoles(
+            @PageableDefault(sort = "userRoleId", direction = Sort.Direction.ASC) Pageable pageable) {
+        return new ResponseEntity<>(userRoleService.findAll(pageable), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

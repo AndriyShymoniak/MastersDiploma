@@ -3,11 +3,13 @@ package com.nulp.shymoniak.mastersproject.controller;
 import com.nulp.shymoniak.mastersproject.dto.UserDTO;
 import com.nulp.shymoniak.mastersproject.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -16,8 +18,9 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping({"", "/"})
-    public ResponseEntity<List<UserDTO>> findAllUsers() {
-        return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
+    public ResponseEntity<Page<UserDTO>> findAllUsers(
+            @PageableDefault(sort = "userId", direction = Sort.Direction.DESC) Pageable pageable) {
+        return new ResponseEntity<>(userService.findAll(pageable), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

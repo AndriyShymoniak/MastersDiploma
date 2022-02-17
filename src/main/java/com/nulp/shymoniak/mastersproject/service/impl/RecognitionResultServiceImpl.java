@@ -45,7 +45,7 @@ public class RecognitionResultServiceImpl extends AbstractService<RecognitionRes
 
     @Override
     public Map<LocalDateTime, List<RecognitionResultDTO>> findAllGroupedByDate() {
-        List<RecognitionResult> recognitionResultList = recognitionResultRepository.findAll();
+        List<RecognitionResult> recognitionResultList = recognitionResultRepository.findAllForList();
         List<RecognitionResultDTO> recognitionResultDTOList = mapper.mapToDTO(recognitionResultList);
         Map<LocalDateTime, List<RecognitionResultDTO>> result = recognitionResultDTOList.stream()
                 .collect(Collectors.groupingBy(item -> item.getCreateDate().truncatedTo(ChronoUnit.DAYS)));

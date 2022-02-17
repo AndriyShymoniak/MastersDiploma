@@ -3,6 +3,10 @@ package com.nulp.shymoniak.mastersproject.controller;
 import com.nulp.shymoniak.mastersproject.dto.RecognitionResultDTO;
 import com.nulp.shymoniak.mastersproject.service.RecognitionResultService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +22,9 @@ public class RecognitionResultController {
     private final RecognitionResultService recognitionService;
 
     @GetMapping({"", "/"})
-    public ResponseEntity<List<RecognitionResultDTO>> findAllRecognitionResults() {
-        return new ResponseEntity<>(recognitionService.findAll(), HttpStatus.OK);
+    public ResponseEntity<Page<RecognitionResultDTO>> findAllRecognitionResults(
+            @PageableDefault(sort = "recognitionResultId", direction = Sort.Direction.DESC) Pageable pageable) {
+        return new ResponseEntity<>(recognitionService.findAll(pageable), HttpStatus.OK);
     }
 
     @GetMapping("/groupByDate")

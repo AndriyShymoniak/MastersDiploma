@@ -1,10 +1,11 @@
 package com.nulp.shymoniak.mastersproject.service;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface IAbstractCrudService<DTO> {
 
-    List<DTO> findAll();
+    Page<DTO> findAll(Pageable pageable);
 
     DTO findById(Long id);
 

@@ -3,11 +3,13 @@ package com.nulp.shymoniak.mastersproject.controller;
 import com.nulp.shymoniak.mastersproject.dto.LocationDTO;
 import com.nulp.shymoniak.mastersproject.service.LocationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -16,8 +18,9 @@ public class LocationController {
     private final LocationService locationService;
 
     @GetMapping({"", "/"})
-    public ResponseEntity<List<LocationDTO>> findAllLocations() {
-        return new ResponseEntity<>(locationService.findAll(), HttpStatus.OK);
+    public ResponseEntity<Page<LocationDTO>> findAllLocations(
+            @PageableDefault(sort = "locationId", direction = Sort.Direction.DESC) Pageable pageable) {
+        return new ResponseEntity<>(locationService.findAll(pageable), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

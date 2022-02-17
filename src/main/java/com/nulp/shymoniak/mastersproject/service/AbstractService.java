@@ -6,6 +6,9 @@ import com.nulp.shymoniak.mastersproject.repository.AbstractRepository;
 import com.nulp.shymoniak.mastersproject.mapping.AbstractMapper;
 import com.nulp.shymoniak.mastersproject.validation.Validator;
 import lombok.SneakyThrows;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Id;
@@ -18,9 +21,10 @@ public abstract class AbstractService<Entity, DTO> {
     protected AbstractRepository repository;
     protected AbstractMapper mapper;
 
-    public List<DTO> findAll() {
-        List<Entity> entityList = repository.findAll();
-        return mapper.mapToDTO(entityList);
+    public Page<DTO> findAll(Pageable pageable) {
+        Page<Entity> entityList = repository.findAll(pageable);
+        Page<DTO> resultList = (Page<DTO>) mapper.mapToDTO(entityList);
+        return resultList;
     }
 
     public DTO findById(Long id) {

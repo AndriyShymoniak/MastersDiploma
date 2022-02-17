@@ -3,6 +3,10 @@ package com.nulp.shymoniak.mastersproject.controller;
 import com.nulp.shymoniak.mastersproject.dto.MLModelDTO;
 import com.nulp.shymoniak.mastersproject.service.MLModelService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,8 +21,9 @@ public class MLModelController {
     private final MLModelService mlModelService;
 
     @GetMapping({"", "/"})
-    public ResponseEntity<List<MLModelDTO>> findAllModels() {
-        return new ResponseEntity<>(mlModelService.findAll(), HttpStatus.OK);
+    public ResponseEntity<Page<MLModelDTO>> findAllModels(
+            @PageableDefault(sort = "mlModelId", direction = Sort.Direction.DESC) Pageable pageable) {
+        return new ResponseEntity<>(mlModelService.findAll(pageable), HttpStatus.OK);
     }
 
     @GetMapping("/observedObject")

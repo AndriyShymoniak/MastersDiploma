@@ -17,9 +17,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class MLModelServiceImpl extends AbstractService<MLModel, MLModelDTO> implements MLModelService {
+    private final MLModelRepository mlModelRepository;
 
     @Autowired
     public MLModelServiceImpl(MLModelRepository repository, MLModelValidator validator) {
+        this.mlModelRepository = repository;
         this.repository = repository;
         this.validator = validator;
         this.mapper = MLModelMapper.INSTANCE;
@@ -27,7 +29,7 @@ public class MLModelServiceImpl extends AbstractService<MLModel, MLModelDTO> imp
 
     @Override
     public List<MLModelDTO> findAllModelsByObservedObject(Set<Long> observedObjectIdSet) {
-        List<MLModel> modelList = repository.findAll();
+        List<MLModel> modelList = mlModelRepository.findAllActiveModels();
         modelList = modelList.stream()
                 .filter(model -> model.getIsActive().equals(ApplicationConstants.DEFAULT_TRUE_FLAG))
                 .filter(model -> doesModelContainAllObservedObjects(model, observedObjectIdSet))

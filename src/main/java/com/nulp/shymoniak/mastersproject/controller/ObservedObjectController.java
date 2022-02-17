@@ -3,6 +3,10 @@ package com.nulp.shymoniak.mastersproject.controller;
 import com.nulp.shymoniak.mastersproject.dto.ObservedObjectDTO;
 import com.nulp.shymoniak.mastersproject.service.ObservedObjectService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +20,9 @@ public class ObservedObjectController {
     private final ObservedObjectService observedObjectService;
 
     @GetMapping({"", "/"})
-    public ResponseEntity<List<ObservedObjectDTO>> findAllObservedObjects() {
-        return new ResponseEntity<>(observedObjectService.findAll(), HttpStatus.OK);
+    public ResponseEntity<Page<ObservedObjectDTO>> findAllObservedObjects(
+            @PageableDefault(sort = "observedObjectId", direction = Sort.Direction.DESC) Pageable pageable) {
+        return new ResponseEntity<>(observedObjectService.findAll(pageable), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
