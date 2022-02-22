@@ -1,6 +1,3 @@
--- DROP DATABASE IF EXISTS masters;
--- CREATE DATABASE masters;
-
 -- Contains personal information about users
 CREATE SEQUENCE person_sequence INCREMENT BY 1 MINVALUE 0 MAXVALUE 9223372036854775807 START 0 NO CYCLE;
 CREATE TABLE person
@@ -12,27 +9,17 @@ CREATE TABLE person
     PRIMARY KEY (person_id)
 );
 
--- Contains all possible "user" roles
-CREATE SEQUENCE user_role_sequence INCREMENT BY 1 MINVALUE 0 MAXVALUE 9223372036854775807 START 0 NO CYCLE;
-CREATE TABLE user_role
-(
-    user_role_id NUMERIC(16) NOT NULL DEFAULT NEXTVAL('user_role_sequence'::regclass),
-    role         VARCHAR(50),
-    PRIMARY KEY (user_role_id)
-);
-
 -- Contains all users
 CREATE SEQUENCE user_sequence INCREMENT BY 1 MINVALUE 0 MAXVALUE 9223372036854775807 START 0 NO CYCLE;
-CREATE TABLE "users"
+CREATE TABLE application_user
 (
     user_id         NUMERIC(16)  NOT NULL DEFAULT NEXTVAL('user_sequence'::regclass),
     username        VARCHAR(100) NOT NULL UNIQUE,
     password        VARCHAR(100) NOT NULL,
-    user_role_id    NUMERIC(16),
+    role            VARCHAR(20) NOT NULL,
     person_id       NUMERIC(16),
     registered_date TIMESTAMP,
     PRIMARY KEY (user_id),
-    CONSTRAINT "fk_user_user_role_id" FOREIGN KEY (user_role_id) REFERENCES user_role (user_role_id),
     CONSTRAINT "fk_user_person_id" FOREIGN KEY (person_id) REFERENCES person (person_id)
 );
 
@@ -55,7 +42,7 @@ CREATE TABLE media
     create_user         NUMERIC(16),
     create_date         TIMESTAMP,
     PRIMARY KEY (media_id),
-    CONSTRAINT "fk_media_create_user" FOREIGN KEY (create_user) REFERENCES "users" (user_id)
+    CONSTRAINT "fk_media_create_user" FOREIGN KEY (create_user) REFERENCES application_user (user_id)
 );
 
 -- Contains locations of detected objects
@@ -80,7 +67,7 @@ CREATE TABLE ml_model
     create_user NUMERIC(16),
     create_date TIMESTAMP,
     PRIMARY KEY (ml_model_id),
-    CONSTRAINT "fk_ml_model_create_user" FOREIGN KEY (create_user) REFERENCES "users" (user_id)
+    CONSTRAINT "fk_ml_model_create_user" FOREIGN KEY (create_user) REFERENCES application_user (user_id)
 );
 
 -- Relation between ml_model and observed_object tables
@@ -114,8 +101,8 @@ CREATE TABLE recognition_result
     CONSTRAINT "fk_recognition_result_ml_model_id" FOREIGN KEY (ml_model_id) REFERENCES ml_model (ml_model_id),
     CONSTRAINT "fk_recognition_result_media_id" FOREIGN KEY (media_id) REFERENCES media (media_id),
     CONSTRAINT "fk_recognition_result_location_id" FOREIGN KEY (location_id) REFERENCES location (location_id),
-    CONSTRAINT "fk_recognition_result_create_user" FOREIGN KEY (create_user) REFERENCES "users" (user_id),
-    CONSTRAINT "fk_recognition_result_update_user" FOREIGN KEY (update_user) REFERENCES "users" (user_id)
+    CONSTRAINT "fk_recognition_result_create_user" FOREIGN KEY (create_user) REFERENCES application_user (user_id),
+    CONSTRAINT "fk_recognition_result_update_user" FOREIGN KEY (update_user) REFERENCES application_user (user_id)
 );
 
 -- Relation between recognition_result and observed_object tables

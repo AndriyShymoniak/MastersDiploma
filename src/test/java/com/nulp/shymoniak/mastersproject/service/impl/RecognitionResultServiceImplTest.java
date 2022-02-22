@@ -1,9 +1,9 @@
 package com.nulp.shymoniak.mastersproject.service.impl;
 
 import com.nulp.shymoniak.mastersproject.dto.RecognitionResultDTO;
-import com.nulp.shymoniak.mastersproject.dto.UserDTO;
+import com.nulp.shymoniak.mastersproject.dto.ApplicationUserDTO;
+import com.nulp.shymoniak.mastersproject.entity.ApplicationUser;
 import com.nulp.shymoniak.mastersproject.entity.RecognitionResult;
-import com.nulp.shymoniak.mastersproject.entity.User;
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
 import com.nulp.shymoniak.mastersproject.mapping.RecognitionResultMapper;
 import com.nulp.shymoniak.mastersproject.repository.RecognitionResultRepository;
@@ -155,23 +155,23 @@ class RecognitionResultServiceImplTest {
 //    }
 
 
-    private List<User> generateTestUserListValues() {
+    private List<ApplicationUser> generateTestUserListValues() {
         return Stream.of(
-                new User(1000L, "Username1", "password", null, null, null),
-                new User(1001L, "Username2", "password", null, null, null),
-                new User(1002L, "Username3", "password", null, null, null)
+                new ApplicationUser(1000L, "Username1", "password", null, null, null),
+                new ApplicationUser(1001L, "Username2", "password", null, null, null),
+                new ApplicationUser(1002L, "Username3", "password", null, null, null)
         ).collect(Collectors.toList());
     }
 
-    private List<UserDTO> generateTestUserDTOListValues() {
+    private List<ApplicationUserDTO> generateTestUserDTOListValues() {
         return Stream.of(
-                new UserDTO(1000L, "Username1", "password", null, null, null),
-                new UserDTO(1001L, "Username2", "password", null, null, null),
-                new UserDTO(1002L, "Username3", "password", null, null, null)
+                new ApplicationUserDTO(1000L, "Username1", "password", null, null, null),
+                new ApplicationUserDTO(1001L, "Username2", "password", null, null, null),
+                new ApplicationUserDTO(1002L, "Username3", "password", null, null, null)
         ).collect(Collectors.toList());
     }
 
-    private List<RecognitionResult> generateTestRecognitionResultListValues(List<User> users) {
+    private List<RecognitionResult> generateTestRecognitionResultListValues(List<ApplicationUser> users) {
         return Stream.of(
                 new RecognitionResult(1001L, "description ...", 1, 1, null, null, null, null, null, users.get(0), users.get(1), null),
                 new RecognitionResult(1002L, "description ...", 1, 1, null, null, null, null, null, users.get(0), users.get(1), null),
@@ -181,7 +181,7 @@ class RecognitionResultServiceImplTest {
         ).collect(Collectors.toList());
     }
 
-    private List<RecognitionResultDTO> generateTestRecognitionResultDTOListValues(List<UserDTO> users) {
+    private List<RecognitionResultDTO> generateTestRecognitionResultDTOListValues(List<ApplicationUserDTO> users) {
         return Stream.of(
                 new RecognitionResultDTO(1001L, "description ...", 1, 1, null, null, null, null, null, users.get(0), users.get(1), null),
                 new RecognitionResultDTO(1002L, "description ...", 1, 1, null, null, null, null, null, users.get(0), users.get(1), null),

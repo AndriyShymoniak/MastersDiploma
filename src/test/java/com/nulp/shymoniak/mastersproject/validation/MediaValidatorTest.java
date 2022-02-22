@@ -1,7 +1,7 @@
 package com.nulp.shymoniak.mastersproject.validation;
 
+import com.nulp.shymoniak.mastersproject.dto.ApplicationUserDTO;
 import com.nulp.shymoniak.mastersproject.dto.MediaDTO;
-import com.nulp.shymoniak.mastersproject.dto.UserDTO;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +29,13 @@ class MediaValidatorTest {
     @Test
     void validateMediaURL() {
         // given
-        MediaDTO invalidMedia1 = new MediaDTO(999L, null, validUrl, LocalDateTime.now(), new UserDTO());
-        MediaDTO invalidMedia2 = new MediaDTO(999L, "", validUrl, LocalDateTime.now(), new UserDTO());
-        MediaDTO invalidMedia3 = new MediaDTO(999L, "random word", validUrl, LocalDateTime.now(), new UserDTO());
-        MediaDTO invalidMedia4 = new MediaDTO(999L, validUrl, null, LocalDateTime.now(), new UserDTO());
-        MediaDTO invalidMedia5 = new MediaDTO(999L, validUrl, "", LocalDateTime.now(), new UserDTO());
-        MediaDTO invalidMedia6 = new MediaDTO(999L, validUrl, "random word", LocalDateTime.now(), new UserDTO());
-        MediaDTO validMedia1 = new MediaDTO(999L, validUrl, validUrl, LocalDateTime.now(), new UserDTO());
+        MediaDTO invalidMedia1 = new MediaDTO(999L, null, validUrl, LocalDateTime.now(), new ApplicationUserDTO());
+        MediaDTO invalidMedia2 = new MediaDTO(999L, "", validUrl, LocalDateTime.now(), new ApplicationUserDTO());
+        MediaDTO invalidMedia3 = new MediaDTO(999L, "random word", validUrl, LocalDateTime.now(), new ApplicationUserDTO());
+        MediaDTO invalidMedia4 = new MediaDTO(999L, validUrl, null, LocalDateTime.now(), new ApplicationUserDTO());
+        MediaDTO invalidMedia5 = new MediaDTO(999L, validUrl, "", LocalDateTime.now(), new ApplicationUserDTO());
+        MediaDTO invalidMedia6 = new MediaDTO(999L, validUrl, "random word", LocalDateTime.now(), new ApplicationUserDTO());
+        MediaDTO validMedia1 = new MediaDTO(999L, validUrl, validUrl, LocalDateTime.now(), new ApplicationUserDTO());
         // then
         assertFalse(mediaValidator.isValid(invalidMedia1));
         assertFalse(mediaValidator.isValid(invalidMedia2));

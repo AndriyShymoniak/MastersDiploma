@@ -55,12 +55,12 @@ public class RecognitionResult {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "create_user", referencedColumnName = "user_id")
     @ToString.Exclude
-    private User createUser;
+    private ApplicationUser createUser;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "update_user", referencedColumnName = "user_id")
     @ToString.Exclude
-    private User updateUser;
+    private ApplicationUser updateUser;
 
     @OneToMany(mappedBy = "observedObject", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude

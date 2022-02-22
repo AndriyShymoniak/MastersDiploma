@@ -3,7 +3,7 @@ package com.nulp.shymoniak.mastersproject.service.impl;
 import com.nulp.shymoniak.mastersproject.constant.ApplicationConstants;
 import com.nulp.shymoniak.mastersproject.dto.RecognitionResultDTO;
 import com.nulp.shymoniak.mastersproject.entity.RecognitionResult;
-import com.nulp.shymoniak.mastersproject.entity.User;
+import com.nulp.shymoniak.mastersproject.entity.ApplicationUser;
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
 import com.nulp.shymoniak.mastersproject.repository.RecognitionResultRepository;
 import com.nulp.shymoniak.mastersproject.repository.UserRepository;
@@ -35,7 +35,7 @@ public class RecognitionResultServiceImpl extends AbstractService<RecognitionRes
 
     @Override
     public List<RecognitionResultDTO> findAllByUserId(Long userId) {
-        Optional<User> user = userRepository.findById(userId);
+        Optional<ApplicationUser> user = userRepository.findById(userId);
         if (user.isEmpty()) {
             throw new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND);
         }

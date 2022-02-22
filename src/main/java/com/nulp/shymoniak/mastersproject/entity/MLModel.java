@@ -40,7 +40,7 @@ public class MLModel {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "create_user", referencedColumnName = "user_id")
     @ToString.Exclude
-    private User createUser;
+    private ApplicationUser createUser;
 
     @OneToMany(mappedBy = "observedObject", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude

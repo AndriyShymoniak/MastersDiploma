@@ -25,7 +25,7 @@ public class RecognitionResultDTO {
     private MLModelDTO mlModel;
     private MediaDTO media;
     private LocationDTO location;
-    private UserDTO createUser;
-    private UserDTO updateUser;
+    private ApplicationUserDTO createUser;
+    private ApplicationUserDTO updateUser;
     private List<RecognitionResultObservedObjectDTO> observedObjectList = new ArrayList<>();
 }

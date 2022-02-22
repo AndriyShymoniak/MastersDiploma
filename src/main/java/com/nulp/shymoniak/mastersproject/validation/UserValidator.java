@@ -1,6 +1,6 @@
 package com.nulp.shymoniak.mastersproject.validation;
 
-import com.nulp.shymoniak.mastersproject.dto.UserDTO;
+import com.nulp.shymoniak.mastersproject.dto.ApplicationUserDTO;
 import com.nulp.shymoniak.mastersproject.repository.UserRepository;
 import com.nulp.shymoniak.mastersproject.utility.ValidationUtility;
 import lombok.RequiredArgsConstructor;
@@ -8,12 +8,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class UserValidator implements Validator<UserDTO> {
+public class UserValidator implements Validator<ApplicationUserDTO> {
     private final UserRepository repository;
     private final ValidationUtility validationUtility;
 
     @Override
-    public boolean isValid(UserDTO userDTO) {
+    public boolean isValid(ApplicationUserDTO userDTO) {
         return isUsernameValid(userDTO.getUsername())
                 && validationUtility.isValidUsernameOrPassword(userDTO.getPassword());
     }

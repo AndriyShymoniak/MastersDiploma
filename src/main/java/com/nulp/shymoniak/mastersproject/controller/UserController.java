@@ -1,6 +1,6 @@
 package com.nulp.shymoniak.mastersproject.controller;
 
-import com.nulp.shymoniak.mastersproject.dto.UserDTO;
+import com.nulp.shymoniak.mastersproject.dto.ApplicationUserDTO;
 import com.nulp.shymoniak.mastersproject.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,33 +18,33 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping({"", "/"})
-    public ResponseEntity<Page<UserDTO>> findAllUsers(
+    public ResponseEntity<Page<ApplicationUserDTO>> findAllUsers(
             @PageableDefault(sort = "userId", direction = Sort.Direction.DESC) Pageable pageable) {
         return new ResponseEntity<>(userService.findAll(pageable), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> findUserById(@PathVariable Long id) {
+    public ResponseEntity<ApplicationUserDTO> findUserById(@PathVariable Long id) {
         return new ResponseEntity<>(userService.findById(id), HttpStatus.OK);
     }
 
     @GetMapping("/username/{username}")
-    public ResponseEntity<UserDTO> findUserByUsername(@PathVariable String username) {
+    public ResponseEntity<ApplicationUserDTO> findUserByUsername(@PathVariable String username) {
         return new ResponseEntity<>(userService.findByUsername(username), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO user) {
+    public ResponseEntity<ApplicationUserDTO> createUser(@RequestBody ApplicationUserDTO user) {
         return new ResponseEntity<>(userService.createItem(user), HttpStatus.CREATED);
     }
 
     @PutMapping
-    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO user) {
+    public ResponseEntity<ApplicationUserDTO> updateUser(@RequestBody ApplicationUserDTO user) {
         return new ResponseEntity<>(userService.updateItem(user), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<UserDTO> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<ApplicationUserDTO> deleteUser(@PathVariable Long id) {
         return new ResponseEntity<>(userService.deleteItem(id), HttpStatus.OK);
     }
 }

@@ -32,7 +32,7 @@ public class Media {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "create_user", referencedColumnName = "user_id")
     @ToString.Exclude
-    private User createUser;
+    private ApplicationUser createUser;
 
     @Override
     public boolean equals(Object o) {

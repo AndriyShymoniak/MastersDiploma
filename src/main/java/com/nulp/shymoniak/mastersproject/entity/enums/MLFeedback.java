@@ -9,8 +9,10 @@ public enum MLFeedback {
     INCORRECT("Incorrect", 3);
 
     private final Integer id;
+    private final String feedback;
 
     MLFeedback(String feedback, Integer id) {
         this.id = id;
+        this.feedback = feedback;
     }
 }

@@ -1,7 +1,7 @@
 package com.nulp.shymoniak.mastersproject.service.impl;
 
-import com.nulp.shymoniak.mastersproject.dto.UserDTO;
-import com.nulp.shymoniak.mastersproject.entity.User;
+import com.nulp.shymoniak.mastersproject.dto.ApplicationUserDTO;
+import com.nulp.shymoniak.mastersproject.entity.ApplicationUser;
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
 import com.nulp.shymoniak.mastersproject.mapping.UserMapper;
 import com.nulp.shymoniak.mastersproject.repository.UserRepository;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
-class UserServiceImplTest {
+class ApplicationUserServiceImplTest {
     @Mock
     private UserRepository repository;
 
@@ -32,14 +32,14 @@ class UserServiceImplTest {
     @InjectMocks
     private UserServiceImpl service;
     
-    private User user;
-    private UserDTO userDTO;
+    private ApplicationUser user;
+    private ApplicationUserDTO userDTO;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        user = new User(999L, "Username", "password", null, null, null);
-        userDTO = new UserDTO(999L, "Username", "password", null, null, null);
+        user = new ApplicationUser(999L, "Username", "password", null, null, null);
+        userDTO = new ApplicationUserDTO(999L, "Username", "password", null, null, null);
     }
 
     @Test
@@ -48,7 +48,7 @@ class UserServiceImplTest {
         when(repository.findById(user.getUserId())).thenReturn(Optional.of(user));
         when(mapper.mapToDTO(user)).thenReturn(userDTO);
         // when
-        UserDTO result = service.findById(user.getUserId());
+        ApplicationUserDTO result = service.findById(user.getUserId());
         // then
         verify(repository).findById(user.getUserId());
         verify(mapper).mapToDTO(user);
@@ -71,7 +71,7 @@ class UserServiceImplTest {
         when(mapper.mapToEntity(userDTO)).thenReturn(user);
         when(mapper.mapToDTO(user)).thenReturn(userDTO);
         // when
-        UserDTO result = service.createItem(userDTO);
+        ApplicationUserDTO result = service.createItem(userDTO);
         // then
         verify(mapper).mapToEntity(userDTO);
         verify(mapper).mapToDTO(user);
@@ -82,13 +82,13 @@ class UserServiceImplTest {
     @Test
     void updateItem_shouldUpdateUser_ifExist() {
         // given
-        User newUserEntity = new User(999L, "NewUsername", "password", null, null, null);
-        UserDTO newUserDTO = new UserDTO(999L, "NewUsername", "password", null, null, null);
+        ApplicationUser newUserEntity = new ApplicationUser(999L, "NewUsername", "password", null, null, null);
+        ApplicationUserDTO newUserDTO = new ApplicationUserDTO(999L, "NewUsername", "password", null, null, null);
         when(repository.existsById(user.getUserId())).thenReturn(true);
         when(mapper.mapToEntity(newUserDTO)).thenReturn(newUserEntity);
         when(mapper.mapToDTO(newUserEntity)).thenReturn(newUserDTO);
         // when
-        UserDTO result = service.updateItem(newUserDTO);
+        ApplicationUserDTO result = service.updateItem(newUserDTO);
         // then
         verify(mapper).mapToEntity(newUserDTO);
         verify(repository).existsById(user.getUserId());
@@ -114,7 +114,7 @@ class UserServiceImplTest {
         when(repository.findById(user.getUserId())).thenReturn(Optional.of(user));
         when(mapper.mapToDTO(user)).thenReturn(userDTO);
         // when
-        UserDTO result = service.deleteItem(user.getUserId());
+        ApplicationUserDTO result = service.deleteItem(user.getUserId());
         // then
         verify(repository).findById(user.getUserId());
         verify(repository).deleteById(user.getUserId());

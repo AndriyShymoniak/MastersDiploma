@@ -22,12 +22,12 @@ class DTOFieldFillerImplTest {
         MediaDTO media = new MediaDTO();
         MLModelDTO mlModel = new MLModelDTO();
         RecognitionResultDTO recognitionResult = new RecognitionResultDTO();
-        UserDTO user = new UserDTO();
+        ApplicationUserDTO user = new ApplicationUserDTO();
         // when
         media = (MediaDTO) fieldFiller.fillCreateFields(media);
         mlModel = (MLModelDTO) fieldFiller.fillCreateFields(mlModel);
         recognitionResult = (RecognitionResultDTO) fieldFiller.fillCreateFields(recognitionResult);
-        user = (UserDTO) fieldFiller.fillCreateFields(user);
+        user = (ApplicationUserDTO) fieldFiller.fillCreateFields(user);
         // then
         assertNotNull(media.getCreateDate());
         assertNotNull(mlModel.getCreateDate());

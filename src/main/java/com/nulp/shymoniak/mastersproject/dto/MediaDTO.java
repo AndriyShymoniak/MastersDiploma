@@ -15,5 +15,5 @@ public class MediaDTO {
     private String processedMediaUrl;
     private LocalDateTime createDate;
 
-    private UserDTO createUser;
+    private ApplicationUserDTO createUser;
 }

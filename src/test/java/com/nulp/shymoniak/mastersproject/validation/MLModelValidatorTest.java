@@ -29,10 +29,10 @@ class MLModelValidatorTest {
     @Test
     void validateMLModelName() {
         // given
-        MLModelDTO invalidMLModel1 = new MLModelDTO(999L, null, validURL, 1, 1, LocalDateTime.now(), new UserDTO(), new ArrayList<>());
-        MLModelDTO invalidMLModel2 = new MLModelDTO(999L, "", validURL, 1, 1, LocalDateTime.now(), new UserDTO(), new ArrayList<>());
-        MLModelDTO invalidMLModel3 = new MLModelDTO(999L, " ", validURL, 1, 1, LocalDateTime.now(), new UserDTO(), new ArrayList<>());
-        MLModelDTO validMLModel1 = new MLModelDTO(999L, "NEW_MODEL", validURL, 1, 1, LocalDateTime.now(), new UserDTO(), new ArrayList<>());
+        MLModelDTO invalidMLModel1 = new MLModelDTO(999L, null, validURL, 1, 1, LocalDateTime.now(), new ApplicationUserDTO(), new ArrayList<>());
+        MLModelDTO invalidMLModel2 = new MLModelDTO(999L, "", validURL, 1, 1, LocalDateTime.now(), new ApplicationUserDTO(), new ArrayList<>());
+        MLModelDTO invalidMLModel3 = new MLModelDTO(999L, " ", validURL, 1, 1, LocalDateTime.now(), new ApplicationUserDTO(), new ArrayList<>());
+        MLModelDTO validMLModel1 = new MLModelDTO(999L, "NEW_MODEL", validURL, 1, 1, LocalDateTime.now(), new ApplicationUserDTO(), new ArrayList<>());
         // then
         assertFalse(mlModelValidator.isValid(invalidMLModel1));
         assertFalse(mlModelValidator.isValid(invalidMLModel2));
@@ -43,10 +43,10 @@ class MLModelValidatorTest {
     @Test
     void validateMLModelPath() {
         // given
-        MLModelDTO invalidMLModel1 = new MLModelDTO(999L, "NEW_MODEL", null, 1, 1, LocalDateTime.now(), new UserDTO(), new ArrayList<>());
-        MLModelDTO invalidMLModel2 = new MLModelDTO(999L, "NEW_MODEL", "", 1, 1, LocalDateTime.now(), new UserDTO(), new ArrayList<>());
-        MLModelDTO invalidMLModel3 = new MLModelDTO(999L, "NEW_MODEL", "   ", 1, 1, LocalDateTime.now(), new UserDTO(), new ArrayList<>());
-        MLModelDTO validMLModel1 = new MLModelDTO(999L, "NEW_MODEL", validURL, 1, 1, LocalDateTime.now(), new UserDTO(), new ArrayList<>());
+        MLModelDTO invalidMLModel1 = new MLModelDTO(999L, "NEW_MODEL", null, 1, 1, LocalDateTime.now(), new ApplicationUserDTO(), new ArrayList<>());
+        MLModelDTO invalidMLModel2 = new MLModelDTO(999L, "NEW_MODEL", "", 1, 1, LocalDateTime.now(), new ApplicationUserDTO(), new ArrayList<>());
+        MLModelDTO invalidMLModel3 = new MLModelDTO(999L, "NEW_MODEL", "   ", 1, 1, LocalDateTime.now(), new ApplicationUserDTO(), new ArrayList<>());
+        MLModelDTO validMLModel1 = new MLModelDTO(999L, "NEW_MODEL", validURL, 1, 1, LocalDateTime.now(), new ApplicationUserDTO(), new ArrayList<>());
         // then
         assertFalse(mlModelValidator.isValid(invalidMLModel1));
         assertFalse(mlModelValidator.isValid(invalidMLModel2));

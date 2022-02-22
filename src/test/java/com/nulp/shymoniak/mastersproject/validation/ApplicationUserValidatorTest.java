@@ -1,6 +1,6 @@
 package com.nulp.shymoniak.mastersproject.validation;
 
-import com.nulp.shymoniak.mastersproject.dto.UserDTO;
+import com.nulp.shymoniak.mastersproject.dto.ApplicationUserDTO;
 import com.nulp.shymoniak.mastersproject.repository.UserRepository;
 import com.nulp.shymoniak.mastersproject.utility.ValidationUtilityImpl;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class UserValidatorTest {
+class ApplicationUserValidatorTest {
     private final UserValidator userValidator;
     private final ValidationUtilityImpl validationUtilityImpl;
 
@@ -22,7 +22,7 @@ class UserValidatorTest {
     private UserRepository userRepository;
 
     @Autowired
-    public UserValidatorTest(UserValidator userValidator, ValidationUtilityImpl validationUtilityImpl) {
+    public ApplicationUserValidatorTest(UserValidator userValidator, ValidationUtilityImpl validationUtilityImpl) {
         this.userValidator = userValidator;
         this.validationUtilityImpl = validationUtilityImpl;
     }
@@ -30,9 +30,9 @@ class UserValidatorTest {
     @Test
     public void validateUsernameOnNotBeingBlank() {
         // given
-        UserDTO invalidUser1 = new UserDTO(999L, null, "password", LocalDateTime.now(), null, null);
-        UserDTO invalidUser2 = new UserDTO(999L, "", "password", LocalDateTime.now(), null, null);
-        UserDTO validUser1 = new UserDTO(999L, "username", "password", LocalDateTime.now(), null, null);
+        ApplicationUserDTO invalidUser1 = new ApplicationUserDTO(999L, null, "password", LocalDateTime.now(), null, null);
+        ApplicationUserDTO invalidUser2 = new ApplicationUserDTO(999L, "", "password", LocalDateTime.now(), null, null);
+        ApplicationUserDTO validUser1 = new ApplicationUserDTO(999L, "username", "password", LocalDateTime.now(), null, null);
         // then
         assertFalse(userValidator.isValid(invalidUser1));
         assertFalse(userValidator.isValid(invalidUser2));
@@ -42,8 +42,8 @@ class UserValidatorTest {
     @Test
     public void validateUsernameOnBeingUniqueInDB(){
         //given
-        UserDTO existingUser = new UserDTO(999L, "existingUser", "password", LocalDateTime.now(), null, null);
-        UserDTO newUser = new UserDTO(999L, "newUser", "password", LocalDateTime.now(), null, null);
+        ApplicationUserDTO existingUser = new ApplicationUserDTO(999L, "existingUser", "password", LocalDateTime.now(), null, null);
+        ApplicationUserDTO newUser = new ApplicationUserDTO(999L, "newUser", "password", LocalDateTime.now(), null, null);
         //when
         Mockito.when(userRepository.existsByUsername(existingUser.getUsername())).thenReturn(true);
         Mockito.when(userRepository.existsByUsername(newUser.getUsername())).thenReturn(false);

@@ -1,19 +1,14 @@
-INSERT INTO user_role (user_role_id, role)
-VALUES (1, 'ADMIN'),
-       (2, 'PRIVILEGED_USER'),
-       (3, 'USER');
-
 INSERT INTO person (person_id, name, surname, email)
 VALUES (1, 'Anton', 'Stefaniv', 'anton_s@email.com'),
        (2, 'Bohdan', 'Juk', 'bohdan_j@email.com'),
        (3, 'Dmytro', 'Levytskyy', 'dmytro_l@email.com'),
        (4, 'Evgen', 'Vovchuk', 'evgen_v@email.com');
 
-INSERT INTO users (user_id, username, password, user_role_id, person_id, registered_date)
-VALUES (1, 'admin', 'admin', 1, 1, current_timestamp),
-       (2, 'puser', 'puser', 2, 2, current_timestamp),
-       (3, 'user', 'user', 3, 3, current_timestamp),
-       (4, 'engenvovk', 'password', 3, 4, current_timestamp);
+INSERT INTO application_user (user_id, username, password, role, person_id, registered_date)
+VALUES (1, 'admin', 'admin', 'ADMIN', 1, current_timestamp),
+       (2, 'puser', 'puser', 'PRIVILEGED_USER', 2, current_timestamp),
+       (3, 'user', 'user', 'USER', 3, current_timestamp),
+       (4, 'engenvovk', 'password', 'USER', 4, current_timestamp);
 
 INSERT INTO location (location_id, longitude, latitude)
 VALUES (1, '49.444452', '39.847446'),

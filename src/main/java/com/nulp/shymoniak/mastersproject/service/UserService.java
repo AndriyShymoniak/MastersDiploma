@@ -1,9 +1,9 @@
 package com.nulp.shymoniak.mastersproject.service;
 
-import com.nulp.shymoniak.mastersproject.dto.UserDTO;
+import com.nulp.shymoniak.mastersproject.dto.ApplicationUserDTO;
 
-public interface UserService extends IAbstractCrudService<UserDTO> {
+public interface UserService extends IAbstractCrudService<ApplicationUserDTO> {
 
-    UserDTO findByUsername(String username);
+    ApplicationUserDTO findByUsername(String username);
 
 }

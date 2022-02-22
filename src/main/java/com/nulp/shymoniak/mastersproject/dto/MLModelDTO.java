@@ -20,6 +20,6 @@ public class MLModelDTO {
     private Integer isActive;
     private LocalDateTime createDate;
 
-    private UserDTO createUser;
+    private ApplicationUserDTO createUser;
     private List<MLModelObservedObjectDTO> observedObjectList;
 }
