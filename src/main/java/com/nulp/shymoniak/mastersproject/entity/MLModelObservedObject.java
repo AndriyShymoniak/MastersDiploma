@@ -2,6 +2,7 @@ package com.nulp.shymoniak.mastersproject.entity;
 
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -13,7 +14,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @Entity
 @Table(name = "ml_model_observed_object")
-public class MLModelObservedObject {
+public class MLModelObservedObject implements Persistable<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ml_model_observed_object_id")
@@ -40,5 +41,15 @@ public class MLModelObservedObject {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    @Override
+    public Long getId() {
+        return mlModelObservedObjectId;
+    }
+
+    @Override
+    public boolean isNew() {
+        return mlModelObservedObjectId == null;
     }
 }

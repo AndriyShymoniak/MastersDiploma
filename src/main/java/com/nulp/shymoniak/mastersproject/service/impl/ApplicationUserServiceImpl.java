@@ -4,9 +4,9 @@ import com.nulp.shymoniak.mastersproject.constant.ApplicationConstants;
 import com.nulp.shymoniak.mastersproject.dto.ApplicationUserDTO;
 import com.nulp.shymoniak.mastersproject.entity.ApplicationUser;
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
-import com.nulp.shymoniak.mastersproject.repository.UserRepository;
+import com.nulp.shymoniak.mastersproject.repository.ApplicationUserRepository;
 import com.nulp.shymoniak.mastersproject.service.AbstractService;
-import com.nulp.shymoniak.mastersproject.service.UserService;
+import com.nulp.shymoniak.mastersproject.service.ApplicationUserService;
 import com.nulp.shymoniak.mastersproject.mapping.UserMapper;
 import com.nulp.shymoniak.mastersproject.validation.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +15,11 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class UserServiceImpl extends AbstractService<ApplicationUser, ApplicationUserDTO> implements UserService {
-    private final UserRepository userRepository;
+public class ApplicationUserServiceImpl extends AbstractService<ApplicationUser, ApplicationUserDTO> implements ApplicationUserService {
+    private final ApplicationUserRepository userRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository repository, UserValidator validator) {
+    public ApplicationUserServiceImpl(ApplicationUserRepository repository, UserValidator validator) {
         this.userRepository = repository;
         this.repository = repository;
         this.validator = validator;

@@ -2,6 +2,7 @@ package com.nulp.shymoniak.mastersproject.entity;
 
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -14,7 +15,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @Entity
 @Table(name = "media")
-public class Media {
+public class Media implements Persistable<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "media_id")
@@ -45,5 +46,15 @@ public class Media {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    @Override
+    public Long getId() {
+        return mediaId;
+    }
+
+    @Override
+    public boolean isNew() {
+        return mediaId == null;
     }
 }

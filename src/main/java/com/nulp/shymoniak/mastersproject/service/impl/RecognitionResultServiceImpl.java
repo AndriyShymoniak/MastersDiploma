@@ -6,7 +6,7 @@ import com.nulp.shymoniak.mastersproject.entity.RecognitionResult;
 import com.nulp.shymoniak.mastersproject.entity.ApplicationUser;
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
 import com.nulp.shymoniak.mastersproject.repository.RecognitionResultRepository;
-import com.nulp.shymoniak.mastersproject.repository.UserRepository;
+import com.nulp.shymoniak.mastersproject.repository.ApplicationUserRepository;
 import com.nulp.shymoniak.mastersproject.service.AbstractService;
 import com.nulp.shymoniak.mastersproject.service.RecognitionResultService;
 import com.nulp.shymoniak.mastersproject.mapping.RecognitionResultMapper;
@@ -22,10 +22,10 @@ import java.util.stream.Collectors;
 @Service
 public class RecognitionResultServiceImpl extends AbstractService<RecognitionResult, RecognitionResultDTO> implements RecognitionResultService {
     private final RecognitionResultRepository recognitionResultRepository;
-    private final UserRepository userRepository;
+    private final ApplicationUserRepository userRepository;
 
     @Autowired
-    public RecognitionResultServiceImpl(RecognitionResultRepository repository, RecognitionResultValidator validator, UserRepository userRepository) {
+    public RecognitionResultServiceImpl(RecognitionResultRepository repository, RecognitionResultValidator validator, ApplicationUserRepository userRepository) {
         this.recognitionResultRepository = repository;
         this.repository = repository;
         this.userRepository = userRepository;

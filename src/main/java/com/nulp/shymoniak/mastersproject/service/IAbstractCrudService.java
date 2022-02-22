@@ -3,8 +3,7 @@ package com.nulp.shymoniak.mastersproject.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-public interface IAbstractCrudService<DTO> {
-
+public interface IAbstractCrudService<DTO > {
     Page<DTO> findAll(Pageable pageable);
 
     DTO findById(Long id);

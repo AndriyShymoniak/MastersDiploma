@@ -1,7 +1,7 @@
 package com.nulp.shymoniak.mastersproject.validation;
 
 import com.nulp.shymoniak.mastersproject.dto.ApplicationUserDTO;
-import com.nulp.shymoniak.mastersproject.repository.UserRepository;
+import com.nulp.shymoniak.mastersproject.repository.ApplicationUserRepository;
 import com.nulp.shymoniak.mastersproject.utility.ValidationUtilityImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -19,7 +19,7 @@ class ApplicationUserValidatorTest {
     private final ValidationUtilityImpl validationUtilityImpl;
 
     @Mock
-    private UserRepository userRepository;
+    private ApplicationUserRepository userRepository;
 
     @Autowired
     public ApplicationUserValidatorTest(UserValidator userValidator, ValidationUtilityImpl validationUtilityImpl) {

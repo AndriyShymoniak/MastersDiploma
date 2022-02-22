@@ -2,6 +2,7 @@ package com.nulp.shymoniak.mastersproject.entity;
 
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -16,7 +17,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @Entity
 @Table(name = "recognition_result")
-public class RecognitionResult {
+public class RecognitionResult implements Persistable<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "recognition_result_id")
@@ -77,5 +78,15 @@ public class RecognitionResult {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    @Override
+    public Long getId() {
+        return recognitionResultId;
+    }
+
+    @Override
+    public boolean isNew() {
+        return recognitionResultId == null;
     }
 }

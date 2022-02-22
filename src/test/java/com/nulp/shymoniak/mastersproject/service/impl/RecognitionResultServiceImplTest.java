@@ -7,7 +7,7 @@ import com.nulp.shymoniak.mastersproject.entity.RecognitionResult;
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
 import com.nulp.shymoniak.mastersproject.mapping.RecognitionResultMapper;
 import com.nulp.shymoniak.mastersproject.repository.RecognitionResultRepository;
-import com.nulp.shymoniak.mastersproject.repository.UserRepository;
+import com.nulp.shymoniak.mastersproject.repository.ApplicationUserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,7 +34,7 @@ class RecognitionResultServiceImplTest {
     private RecognitionResultRepository repository;
 
     @Mock
-    private UserRepository userRepository;
+    private ApplicationUserRepository userRepository;
 
     @Mock
     private RecognitionResultMapper mapper;

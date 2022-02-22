@@ -4,7 +4,7 @@ import com.nulp.shymoniak.mastersproject.dto.ApplicationUserDTO;
 import com.nulp.shymoniak.mastersproject.entity.ApplicationUser;
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
 import com.nulp.shymoniak.mastersproject.mapping.UserMapper;
-import com.nulp.shymoniak.mastersproject.repository.UserRepository;
+import com.nulp.shymoniak.mastersproject.repository.ApplicationUserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,15 +22,15 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
-class ApplicationUserServiceImplTest {
+class ApplicationApplicationUserServiceImplTest {
     @Mock
-    private UserRepository repository;
+    private ApplicationUserRepository repository;
 
     @Mock
     private UserMapper mapper;
     
     @InjectMocks
-    private UserServiceImpl service;
+    private ApplicationUserServiceImpl service;
     
     private ApplicationUser user;
     private ApplicationUserDTO userDTO;

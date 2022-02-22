@@ -2,6 +2,7 @@ package com.nulp.shymoniak.mastersproject.entity;
 
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -16,7 +17,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @Entity
 @Table(name = "ml_model")
-public class MLModel {
+public class MLModel implements Persistable<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ml_model_id")
@@ -57,5 +58,15 @@ public class MLModel {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    @Override
+    public Long getId() {
+        return mlModelId;
+    }
+
+    @Override
+    public boolean isNew() {
+        return mlModelId == null;
     }
 }

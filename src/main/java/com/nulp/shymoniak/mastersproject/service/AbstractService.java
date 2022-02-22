@@ -7,16 +7,14 @@ import com.nulp.shymoniak.mastersproject.mapping.AbstractMapper;
 import com.nulp.shymoniak.mastersproject.validation.Validator;
 import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Id;
 import java.lang.reflect.Field;
-import java.util.List;
 import java.util.Optional;
 
-public abstract class AbstractService<Entity, DTO> {
+public abstract class AbstractService<Entity, DTO > {
     protected Validator validator;
     protected AbstractRepository repository;
     protected AbstractMapper mapper;

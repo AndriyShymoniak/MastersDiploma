@@ -2,6 +2,7 @@ package com.nulp.shymoniak.mastersproject.entity;
 
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -13,7 +14,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @Entity
 @Table(name = "location")
-public class Location {
+public class Location implements Persistable<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "location_id")
@@ -36,5 +37,15 @@ public class Location {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    @Override
+    public Long getId() {
+        return locationId;
+    }
+
+    @Override
+    public boolean isNew() {
+        return locationId == null;
     }
 }

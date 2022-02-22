@@ -3,6 +3,7 @@ package com.nulp.shymoniak.mastersproject.entity;
 import com.nulp.shymoniak.mastersproject.entity.enums.ApplicationUserRole;
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -15,7 +16,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @Entity
 @Table(name = "application_user")
-public class ApplicationUser {
+public class ApplicationUser implements Persistable<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
@@ -50,5 +51,15 @@ public class ApplicationUser {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    @Override
+    public Long getId() {
+        return userId;
+    }
+
+    @Override
+    public boolean isNew() {
+        return userId == null;
     }
 }

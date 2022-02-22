@@ -1,7 +1,7 @@
 package com.nulp.shymoniak.mastersproject.validation;
 
 import com.nulp.shymoniak.mastersproject.dto.ApplicationUserDTO;
-import com.nulp.shymoniak.mastersproject.repository.UserRepository;
+import com.nulp.shymoniak.mastersproject.repository.ApplicationUserRepository;
 import com.nulp.shymoniak.mastersproject.utility.ValidationUtility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class UserValidator implements Validator<ApplicationUserDTO> {
-    private final UserRepository repository;
+    private final ApplicationUserRepository repository;
     private final ValidationUtility validationUtility;
 
     @Override
