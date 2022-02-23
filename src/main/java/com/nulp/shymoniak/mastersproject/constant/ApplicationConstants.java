@@ -17,4 +17,11 @@ public class ApplicationConstants {
     // Default flag values
     public static final Integer DEFAULT_TRUE_FLAG = 1;
     public static final Integer DEFAULT_FALSE_FLAG = 0;
+
+    // JWT
+    public static final String JWT_KEY = "secretSecureKeyForMastersProject";
+    public static final String JWT_BEARER = "Bearer ";
+    public static final String JWT_AUTHORIZATION = "Authorization";
+    public static final String JWT_AUTHORITIES = "authorities";
+    public static final String JWT_AUTHORITY = "authority";
 }

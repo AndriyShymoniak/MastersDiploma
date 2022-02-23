@@ -1,0 +1,54 @@
+package com.nulp.shymoniak.mastersproject.jwt;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.util.Date;
+
+import static com.nulp.shymoniak.mastersproject.constant.ApplicationConstants.*;
+
+@RequiredArgsConstructor
+public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+    private final AuthenticationManager authenticationManager;
+
+    // Receiving credentials from client and validating them
+    @Override
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+        try {
+            UsernameAndPasswordAuthenticationRequest authRequest = new ObjectMapper().readValue(request.getInputStream(), UsernameAndPasswordAuthenticationRequest.class);
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword());
+            return authenticationManager.authenticate(authenticationToken);
+        } catch (IOException e) {
+            throw new ApiRequestException(e.getMessage());
+        }
+    }
+
+    // Generating and sending a token to a client after successful validation
+    @Override
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+        String token = Jwts.builder()
+                .setSubject(authResult.getName())                                       // username of client
+                .claim(JWT_AUTHORITIES, authResult.getAuthorities())                    // role of client
+                .setIssuedAt(new Date())                                                // token start date
+                .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusWeeks(2)))     // token end date
+                .signWith(Keys.hmacShaKeyFor(JWT_KEY.getBytes(StandardCharsets.UTF_8))) // setting secret encryption key
+                .compact();
+        response.addHeader(JWT_AUTHORIZATION, JWT_BEARER + token);
+    }
+}
