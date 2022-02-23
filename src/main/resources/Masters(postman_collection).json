@@ -17,7 +17,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8080/user",
+									"raw": "http://localhost:8080/user?page=0&size=2&sort=username,asc",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -25,6 +25,20 @@
 									"port": "8080",
 									"path": [
 										"user"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "size",
+											"value": "2"
+										},
+										{
+											"key": "sort",
+											"value": "username,asc"
+										}
 									]
 								}
 							},
@@ -56,7 +70,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8080/user/admin",
+									"raw": "http://localhost:8080/user/username/admin",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -64,6 +78,7 @@
 									"port": "8080",
 									"path": [
 										"user",
+										"username",
 										"admin"
 									]
 								}
@@ -196,7 +211,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8080/recognitionResult/user/1",
+									"raw": "http://localhost:8080/recognitionResult/user/2",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -205,7 +220,7 @@
 									"path": [
 										"recognitionResult",
 										"user",
-										"1"
+										"2"
 									]
 								}
 							},
@@ -467,6 +482,21 @@
 						{
 							"name": "Find all locations",
 							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "admin",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "admin",
+											"type": "string"
+										}
+									]
+								},
 								"method": "GET",
 								"header": [],
 								"url": {
@@ -526,6 +556,21 @@
 						{
 							"name": "Create location",
 							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "admin",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "admin",
+											"type": "string"
+										}
+									]
+								},
 								"method": "POST",
 								"header": [],
 								"body": {
@@ -942,124 +987,60 @@
 					]
 				},
 				{
-					"name": "User Role",
-					"item": [
-						{
-							"name": "Find all user roles",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "http://localhost:8080/userRole",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"userRole"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Find user role by ID",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "http://localhost:8080/userRole/1",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"userRole",
-										"1"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Delete user role by ID",
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "http://localhost:8080/userRole/1",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"userRole",
-										"1"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Create user role",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"role\": \"SUPER_USER\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "default"
 								},
-								"url": {
-									"raw": "http://localhost:8080/userRole",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"userRole"
-									]
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "default"
 								}
-							},
-							"response": []
+							]
 						},
-						{
-							"name": "Update user role",
-							"request": {
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"userRoleId\": 1,\n    \"role\": \"ADMIN_NEW\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://localhost:8080/userRole",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"userRole"
-									]
-								}
-							},
-							"response": []
+						"url": {
+							"raw": "http://localhost:8080/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"login"
+							]
 						}
-					]
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"logout"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
