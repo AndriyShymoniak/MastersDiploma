@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,9 +32,9 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
-            UsernameAndPasswordAuthenticationRequest authRequest = new ObjectMapper().readValue(request.getInputStream(), UsernameAndPasswordAuthenticationRequest.class);
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword());
-            return authenticationManager.authenticate(authenticationToken);
+            UsernamePasswordAuthenticationRequest authRequest = new ObjectMapper().readValue(request.getInputStream(), UsernamePasswordAuthenticationRequest.class);
+            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword());
+            return authenticationManager.authenticate(authToken);
         } catch (IOException e) {
             throw new ApiRequestException(e.getMessage());
         }

@@ -5,7 +5,6 @@ import com.nulp.shymoniak.mastersproject.jwt.JwtTokenVerifier;
 import com.nulp.shymoniak.mastersproject.jwt.JwtUsernameAndPasswordAuthenticationFilter;
 import com.nulp.shymoniak.mastersproject.service.ApplicationUserDetailsService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -22,7 +21,6 @@ import javax.crypto.SecretKey;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-@EnableConfigurationProperties
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     private final ApplicationUserDetailsService userDetailsService;
