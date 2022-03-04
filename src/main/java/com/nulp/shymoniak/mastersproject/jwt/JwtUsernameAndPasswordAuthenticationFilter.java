@@ -49,7 +49,7 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
                 .claim(JWT_AUTHORITIES, authResult.getAuthorities())                    // role of client
                 .setIssuedAt(new Date())                                                // token start date
                 .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusWeeks(2)))     // token end date
-                .signWith(secretKey) // setting secret encryption key
+                .signWith(secretKey)                                                    // setting secret encryption key
                 .compact();
         response.addHeader(config.getAuthorizationHeader(), config.getTokenPrefix() + token);
     }

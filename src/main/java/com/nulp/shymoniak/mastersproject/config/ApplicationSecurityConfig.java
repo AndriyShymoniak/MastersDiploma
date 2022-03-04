@@ -34,12 +34,10 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)         // session will not be stored in DB
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // session will not be stored in DB
                 .and()
                 .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey)) // using custom filter
                 .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig), JwtUsernameAndPasswordAuthenticationFilter.class) // filter which will be triggered after JwtUsernameAndPasswordAuthenticationFilter
-
                 .authorizeHttpRequests()
                 .antMatchers("/*").permitAll()
                 .anyRequest().authenticated();
