@@ -12,12 +12,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import javax.crypto.SecretKey;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -26,6 +26,8 @@ import static com.nulp.shymoniak.mastersproject.constant.ApplicationConstants.*;
 @RequiredArgsConstructor
 public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
+    private final JwtConfig config;
+    private final SecretKey secretKey;
 
     // Receiving credentials from client and validating them
     @Override
@@ -47,8 +49,8 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
                 .claim(JWT_AUTHORITIES, authResult.getAuthorities())                    // role of client
                 .setIssuedAt(new Date())                                                // token start date
                 .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusWeeks(2)))     // token end date
-                .signWith(Keys.hmacShaKeyFor(JWT_KEY.getBytes(StandardCharsets.UTF_8))) // setting secret encryption key
+                .signWith(secretKey) // setting secret encryption key
                 .compact();
-        response.addHeader(JWT_AUTHORIZATION, JWT_BEARER + token);
+        response.addHeader(config.getAuthorizationHeader(), config.getTokenPrefix() + token);
     }
 }

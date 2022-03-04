@@ -2,33 +2,37 @@ package com.nulp.shymoniak.mastersproject.jwt;
 
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import javax.crypto.SecretKey;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.nulp.shymoniak.mastersproject.constant.ApplicationConstants.*;
+import static com.nulp.shymoniak.mastersproject.constant.ApplicationConstants.JWT_AUTHORITIES;
+import static com.nulp.shymoniak.mastersproject.constant.ApplicationConstants.JWT_AUTHORITY;
 
-
+@RequiredArgsConstructor
 public class JwtTokenVerifier extends OncePerRequestFilter {
+    private final SecretKey secretKey;
+    private final JwtConfig config;
+
     // This method will be invoked for each request
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String authorizationHeader = request.getHeader(JWT_AUTHORIZATION);
-        if (authorizationHeader.isBlank() || !authorizationHeader.startsWith(JWT_BEARER)) {
+        String authorizationHeader = request.getHeader(config.getAuthorizationHeader());
+        if (authorizationHeader.isBlank() || !authorizationHeader.startsWith(config.getTokenPrefix())) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -36,9 +40,9 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
         String token = null;
         try {
             // Extracting and decoding token
-            token = authorizationHeader.replace(JWT_BEARER, "");
+            token = authorizationHeader.replace(config.getTokenPrefix(), "");
             Jwt<Header, Claims> headerClaimsJwt = Jwts.parserBuilder()
-                    .setSigningKey(Keys.hmacShaKeyFor(JWT_KEY.getBytes(StandardCharsets.UTF_8)))
+                    .setSigningKey(secretKey)
                     .build()
                     .parse(token);
             // Receiving username from token
