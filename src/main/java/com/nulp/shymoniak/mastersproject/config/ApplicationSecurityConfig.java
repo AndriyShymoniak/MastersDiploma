@@ -1,5 +1,7 @@
 package com.nulp.shymoniak.mastersproject.config;
 
+import com.nulp.shymoniak.mastersproject.jwt.JwtTokenVerifier;
+import com.nulp.shymoniak.mastersproject.jwt.JwtUsernameAndPasswordAuthenticationFilter;
 import com.nulp.shymoniak.mastersproject.service.ApplicationUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -10,8 +12,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -26,22 +28,14 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
 
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)         // session will not be stored in DB
+                .and()
+                .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager())) // using custom filter
+                .addFilterAfter(new JwtTokenVerifier(), JwtUsernameAndPasswordAuthenticationFilter.class) // filter which will be triggered after JwtUsernameAndPasswordAuthenticationFilter
+
                 .authorizeHttpRequests()
                 .antMatchers("/*").permitAll()
-                .anyRequest().authenticated()
-
-                .and()
-                .formLogin()
-                .defaultSuccessUrl("/", true)
-
-                .and()
-                .logout()
-                .logoutUrl("/logout")
-                .clearAuthentication(true)
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID")
-                .logoutSuccessUrl("/login")
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"));
+                .anyRequest().authenticated();
     }
 
     @Override
