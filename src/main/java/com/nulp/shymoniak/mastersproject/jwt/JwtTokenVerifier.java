@@ -40,7 +40,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
             Jwt<Header, Claims> headerClaimsJwt = Jwts.parserBuilder()
                     .setSigningKey(Keys.hmacShaKeyFor(JWT_KEY.getBytes(StandardCharsets.UTF_8)))
                     .build()
-                    .parseClaimsJwt(token);
+                    .parse(token);
             // Receiving username from token
             String username = headerClaimsJwt.getBody().getSubject();
             // Receiving all user authorities
@@ -56,9 +56,9 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
             );
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
-
         } catch (JwtException ex) {
             throw new ApiRequestException("Token cannot be trusted: " + token);
         }
+        filterChain.doFilter(request, response);    // passes to the next filter of the application
     }
 }
