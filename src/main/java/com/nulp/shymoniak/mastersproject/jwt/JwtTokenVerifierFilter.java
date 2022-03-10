@@ -24,7 +24,7 @@ import static com.nulp.shymoniak.mastersproject.constant.ApplicationConstants.JW
 import static com.nulp.shymoniak.mastersproject.constant.ApplicationConstants.JWT_AUTHORITY;
 
 @RequiredArgsConstructor
-public class JwtTokenVerifier extends OncePerRequestFilter {
+public class JwtTokenVerifierFilter extends OncePerRequestFilter {
     private final SecretKey secretKey;
     private final JwtConfig config;
 

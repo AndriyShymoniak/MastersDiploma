@@ -1,7 +1,7 @@
 package com.nulp.shymoniak.mastersproject.config;
 
 import com.nulp.shymoniak.mastersproject.jwt.JwtConfig;
-import com.nulp.shymoniak.mastersproject.jwt.JwtTokenVerifier;
+import com.nulp.shymoniak.mastersproject.jwt.JwtTokenVerifierFilter;
 import com.nulp.shymoniak.mastersproject.jwt.JwtUsernameAndPasswordAuthenticationFilter;
 import com.nulp.shymoniak.mastersproject.service.ApplicationUserDetailsService;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +35,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // session will not be stored in DB
                 .and()
                 .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey)) // using custom filter
-                .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig), JwtUsernameAndPasswordAuthenticationFilter.class) // filter which will be triggered after JwtUsernameAndPasswordAuthenticationFilter
+                .addFilterAfter(new JwtTokenVerifierFilter(secretKey, jwtConfig), JwtUsernameAndPasswordAuthenticationFilter.class) // filter which will be triggered after JwtUsernameAndPasswordAuthenticationFilter
                 .authorizeHttpRequests()
                 .antMatchers("/*").permitAll()
                 .anyRequest().authenticated();

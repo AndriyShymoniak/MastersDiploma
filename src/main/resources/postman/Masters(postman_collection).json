@@ -15,9 +15,15 @@
 							"name": "Find all users",
 							"request": {
 								"method": "GET",
-								"header": [],
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGhvcml0aWVzIjpbeyJhdXRob3JpdHkiOiJST0xFX0FETUlOIn1dLCJpYXQiOjE2NDYzODQyMjUsImV4cCI6MTY0NzU1NDQwMH0.ADupRNDIU9VaPt0ekLeI1RHI-YVV1weCovlTTT308Ro",
+										"type": "default"
+									}
+								],
 								"url": {
-									"raw": "http://localhost:8080/user?page=0&size=2&sort=username,asc",
+									"raw": "http://localhost:8080/user?page=0&size=5&sort=username,asc",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -33,7 +39,7 @@
 										},
 										{
 											"key": "size",
-											"value": "2"
+											"value": "5"
 										},
 										{
 											"key": "sort",
@@ -68,9 +74,15 @@
 							"name": "Find user by username",
 							"request": {
 								"method": "GET",
-								"header": [],
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGhvcml0aWVzIjpbeyJhdXRob3JpdHkiOiJST0xFX0FETUlOIn1dLCJpYXQiOjE2NDY2NDM2NjksImV4cCI6MTY0NzgxMzYwMH0.d5n5pmESnrovHWHjUZY0cE5_cjcPIaaUP6I5pUtpj8c",
+										"type": "default"
+									}
+								],
 								"url": {
-									"raw": "http://localhost:8080/user/username/admin",
+									"raw": "http://localhost:8080/user/username/admin?",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -80,6 +92,12 @@
 										"user",
 										"username",
 										"admin"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": null
+										}
 									]
 								}
 							},
@@ -89,9 +107,15 @@
 							"name": "Delete user by ID",
 							"request": {
 								"method": "DELETE",
-								"header": [],
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGhvcml0aWVzIjpbeyJhdXRob3JpdHkiOiJST0xFX0FETUlOIn1dLCJpYXQiOjE2NDYzODk0MjgsImV4cCI6MTY0NzU1NDQwMH0.cjsDFa42nMArAWHkskNWwZXY8ODxxoiIh_rk1nVZZQw",
+										"type": "default"
+									}
+								],
 								"url": {
-									"raw": "http://localhost:8080/user/1",
+									"raw": "http://localhost:8080/user/4",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -99,7 +123,7 @@
 									"port": "8080",
 									"path": [
 										"user",
-										"1"
+										"4"
 									]
 								}
 							},
@@ -109,10 +133,16 @@
 							"name": "Create user",
 							"request": {
 								"method": "POST",
-								"header": [],
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGhvcml0aWVzIjpbeyJhdXRob3JpdHkiOiJST0xFX0FETUlOIn1dLCJpYXQiOjE2NDYzODk0MjgsImV4cCI6MTY0NzU1NDQwMH0.cjsDFa42nMArAWHkskNWwZXY8ODxxoiIh_rk1nVZZQw",
+										"type": "default"
+									}
+								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"username\": \"newUser\",\n    \"password\": \"newUser\"\n}",
+									"raw": "{\n    \"username\": \"newUser\",\n    \"password\": \"newUser\",\n    \"role\": \"USER\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -873,9 +903,15 @@
 							"name": "Find all peolple",
 							"request": {
 								"method": "GET",
-								"header": [],
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGhvcml0aWVzIjpbeyJhdXRob3JpdHkiOiJST0xFX0FETUlOIn1dLCJpYXQiOjE2NDYzOTAwNzQsImV4cCI6MTY0NzU1NDQwMH0.cxh_3nUUveI8qz1NciuwKidiZmUvEojdy-fXdlHDC6M",
+										"type": "default"
+									}
+								],
 								"url": {
-									"raw": "http://localhost:8080/person",
+									"raw": "http://localhost:8080/person?",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -883,6 +919,12 @@
 									"port": "8080",
 									"path": [
 										"person"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": null
+										}
 									]
 								}
 							},
@@ -992,19 +1034,13 @@
 						"method": "POST",
 						"header": [],
 						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "username",
-									"value": "admin",
-									"type": "default"
-								},
-								{
-									"key": "password",
-									"value": "admin",
-									"type": "default"
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"admin\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
 								}
-							]
+							}
 						},
 						"url": {
 							"raw": "http://localhost:8080/login",
