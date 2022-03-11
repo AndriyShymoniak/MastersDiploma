@@ -37,10 +37,9 @@ public class JwtTokenVerifierFilter extends OncePerRequestFilter {
             return;
         }
 
-        String token = null;
         try {
             // Extracting and decoding token
-            token = authorizationHeader.replace(config.getTokenPrefix(), "");
+            String token = authorizationHeader.replace(config.getTokenPrefix(), "");
             Jwt<Header, Claims> headerClaimsJwt = Jwts.parserBuilder()
                     .setSigningKey(secretKey)
                     .build()
@@ -58,11 +57,14 @@ public class JwtTokenVerifierFilter extends OncePerRequestFilter {
                     null,
                     simpleGrantedAuthoritySet
             );
-
             SecurityContextHolder.getContext().setAuthentication(authentication);
-        } catch (JwtException ex) {
-            throw new ApiRequestException("Token cannot be trusted: " + token);
+            filterChain.doFilter(request, response);    // passes to the next filter of the application
+        } catch (IllegalArgumentException ex) {
+            throw new ApiRequestException("Unable to fetch JWT Token");
+        } catch (ExpiredJwtException ex) {
+            throw new ApiRequestException("JWT Token is expired");
+        } catch (Exception ex) {
+            throw new ApiRequestException("Token cannot be trusted: " + ex.getMessage());
         }
-        filterChain.doFilter(request, response);    // passes to the next filter of the application
     }
 }

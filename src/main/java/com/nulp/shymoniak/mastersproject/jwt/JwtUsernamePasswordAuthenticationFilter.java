@@ -23,7 +23,7 @@ import java.util.Date;
 import static com.nulp.shymoniak.mastersproject.constant.ApplicationConstants.*;
 
 @RequiredArgsConstructor
-public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final JwtConfig config;
     private final SecretKey secretKey;
