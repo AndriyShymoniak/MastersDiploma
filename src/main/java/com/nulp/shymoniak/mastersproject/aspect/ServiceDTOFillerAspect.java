@@ -5,19 +5,19 @@ import org.aspectj.lang.annotation.Pointcut;
 
 public interface ServiceDTOFillerAspect {
 
-    @Pointcut("execution(* com.nulp.shymoniak.mastersproject.service.impl*..*create*(..))")
+    @Pointcut("execution(* com.nulp.shymoniak.mastersproject.service*..*create*(..))")
     default void callCreateMethod() {
     }
 
-    @Pointcut("execution(* com.nulp.shymoniak.mastersproject.service.impl*..*update*(..))")
+    @Pointcut("execution(* com.nulp.shymoniak.mastersproject.service*..*update*(..))")
     default void callUpdateMethod() {
     }
 
-    @Pointcut("execution(* com.nulp.shymoniak.mastersproject.service.impl*..*delete*(..))")
+    @Pointcut("execution(* com.nulp.shymoniak.mastersproject.service*..*delete*(..))")
     default void callDeleteMethod() {
     }
 
-    void fillDTOFieldsOnCreate(ProceedingJoinPoint proceedingJoinPoint);
+    Object fillDTOFieldsOnCreate(ProceedingJoinPoint proceedingJoinPoint);
 
-    void fillDTOFieldsOnUpdateOrDelete(ProceedingJoinPoint proceedingJoinPoint);
+    Object fillDTOFieldsOnUpdateOrDelete(ProceedingJoinPoint proceedingJoinPoint);
 }

@@ -19,18 +19,18 @@ public class ServiceDTOFillerAspectImpl implements ServiceDTOFillerAspect {
     @Override
     @SneakyThrows
     @Around("callCreateMethod()")
-    public void fillDTOFieldsOnCreate(ProceedingJoinPoint proceedingJoinPoint) {
+    public Object fillDTOFieldsOnCreate(ProceedingJoinPoint proceedingJoinPoint) {
         Object dtoEntity = aspectUtility.getDTOEntityFromParameters(proceedingJoinPoint);
         dtoEntity = fieldFiller.fillCreateFields(dtoEntity);
-        proceedingJoinPoint.proceed(new Object[]{dtoEntity});
+        return proceedingJoinPoint.proceed(new Object[]{dtoEntity});
     }
 
     @Override
     @SneakyThrows
     @Around("callUpdateMethod() || callDeleteMethod()")
-    public void fillDTOFieldsOnUpdateOrDelete(ProceedingJoinPoint proceedingJoinPoint) {
+    public Object fillDTOFieldsOnUpdateOrDelete(ProceedingJoinPoint proceedingJoinPoint) {
         Object dtoEntity = aspectUtility.getDTOEntityFromParameters(proceedingJoinPoint);
         dtoEntity = fieldFiller.fillUpdateFields(dtoEntity);
-        proceedingJoinPoint.proceed(new Object[]{dtoEntity});
+        return proceedingJoinPoint.proceed(new Object[]{dtoEntity});
     }
 }

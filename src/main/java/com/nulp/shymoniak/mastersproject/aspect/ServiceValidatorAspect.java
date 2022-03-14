@@ -5,11 +5,11 @@ import org.aspectj.lang.annotation.Pointcut;
 
 public interface ServiceValidatorAspect {
 
-    @Pointcut("execution(* com.nulp.shymoniak.mastersproject.service.impl*..*create*(..))")
+    @Pointcut("execution(* com.nulp.shymoniak.mastersproject.service*..*create*(..))")
     default void callCreateMethod() {
     }
 
-    @Pointcut("execution(* com.nulp.shymoniak.mastersproject.service.impl*..*update*(..))")
+    @Pointcut("execution(* com.nulp.shymoniak.mastersproject.service*..*update*(..))")
     default void callUpdateMethod() {
     }
 
