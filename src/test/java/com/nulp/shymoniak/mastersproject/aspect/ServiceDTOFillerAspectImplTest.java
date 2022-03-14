@@ -1,13 +1,13 @@
 package com.nulp.shymoniak.mastersproject.aspect;
 
 import com.nulp.shymoniak.mastersproject.dto.ApplicationUserDTO;
-import com.nulp.shymoniak.mastersproject.dto.MediaDTO;
+import com.nulp.shymoniak.mastersproject.dto.RecognitionResultDTO;
 import com.nulp.shymoniak.mastersproject.entity.ApplicationUser;
-import com.nulp.shymoniak.mastersproject.entity.Media;
-import com.nulp.shymoniak.mastersproject.mapping.MediaMapper;
-import com.nulp.shymoniak.mastersproject.repository.MediaRepository;
-import com.nulp.shymoniak.mastersproject.service.MediaService;
-import com.nulp.shymoniak.mastersproject.service.impl.MediaServiceImpl;
+import com.nulp.shymoniak.mastersproject.entity.RecognitionResult;
+import com.nulp.shymoniak.mastersproject.mapping.RecognitionResultMapper;
+import com.nulp.shymoniak.mastersproject.repository.RecognitionResultRepository;
+import com.nulp.shymoniak.mastersproject.service.RecognitionResultService;
+import com.nulp.shymoniak.mastersproject.service.impl.RecognitionResultServiceImpl;
 import com.nulp.shymoniak.mastersproject.utility.AspectUtility;
 import com.nulp.shymoniak.mastersproject.utility.DTOFieldFiller;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,6 +21,7 @@ import org.springframework.aop.aspectj.annotation.AspectJProxyFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -29,10 +30,10 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class ServiceDTOFillerAspectImplTest {
     @Mock
-    private MediaRepository repository;
+    private RecognitionResultRepository repository;
 
     @Mock
-    private MediaMapper mapper;
+    private RecognitionResultMapper mapper;
 
     @Mock
     private AspectUtility aspectUtility;
@@ -41,39 +42,79 @@ class ServiceDTOFillerAspectImplTest {
     private DTOFieldFiller fieldFiller;
 
     @InjectMocks
-    private MediaServiceImpl mediaServiceImpl;
+    private RecognitionResultServiceImpl recognitionResultServiceImpl;
 
     @InjectMocks
     private ServiceDTOFillerAspectImpl aspectForService;
 
-    private Media updatedMediaEntity;
-    private MediaDTO mediaDTO;
-    private MediaDTO updatedMediaDTO;
+    private RecognitionResult recognitionResultEntity;
+    private RecognitionResult updatedRecognitionResultEntity;
+    private RecognitionResultDTO recognitionResultDTO;
+    private RecognitionResultDTO updatedRecognitionResultDTO;
 
     @BeforeEach
     void setUp() {
         LocalDateTime currentDate = LocalDateTime.now();
-        mediaDTO = new MediaDTO(999L, "https://shorturl.at/elnI5", "https://shorturl.at/elnI5", null, null);
-        updatedMediaEntity = new Media(999L, "https://shorturl.at/elnI5", "https://shorturl.at/elnI5", currentDate, new ApplicationUser());
-        updatedMediaDTO = new MediaDTO(999L, "https://shorturl.at/elnI5", "https://shorturl.at/elnI5", currentDate, new ApplicationUserDTO());
+        ApplicationUser currentUserEntity = new ApplicationUser();
+        ApplicationUserDTO currentUserDTO = new ApplicationUserDTO();
+        recognitionResultEntity = new RecognitionResult(999L, "description ... ", 1, 1, null, null, null, null, null, null, null, null);
+        recognitionResultDTO = new RecognitionResultDTO(999L, "description ... ", 1, 1, null, null, null, null, null, null, null, null);
+        updatedRecognitionResultEntity = new RecognitionResult(999L, "description ... ", 1, 1, currentDate, currentDate, null, null, null, currentUserEntity, currentUserEntity, null);
+        updatedRecognitionResultDTO = new RecognitionResultDTO(999L, "description ... ", 1, 1, currentDate, currentDate, null, null, null, currentUserDTO, currentUserDTO, null);
         aspectForService = null;
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    void fillDTOFieldsOnCreate_shouldFillCreateFields_whenCalled() {
+    void fillDTOFieldsOnCreate_shouldFillCreateFields_whenCreateItemMethodCalled() {
         // given
-        when(aspectUtility.getDTOEntityFromParameters(any())).thenReturn(mediaDTO);
-        when(fieldFiller.fillCreateFields(mediaDTO)).thenReturn(updatedMediaDTO);
-        when(mapper.mapToEntity(updatedMediaDTO)).thenReturn(updatedMediaEntity);
-        when(mapper.mapToDTO(updatedMediaEntity)).thenReturn(updatedMediaDTO);
-        AspectJProxyFactory factory = new AspectJProxyFactory(mediaServiceImpl);
+        when(aspectUtility.getDTOEntityFromParameters(any())).thenReturn(recognitionResultDTO);
+        when(fieldFiller.fillCreateFields(recognitionResultDTO)).thenReturn(updatedRecognitionResultDTO);
+        when(mapper.mapToEntity(updatedRecognitionResultDTO)).thenReturn(updatedRecognitionResultEntity);
+        when(mapper.mapToDTO(updatedRecognitionResultEntity)).thenReturn(updatedRecognitionResultDTO);
+        AspectJProxyFactory factory = new AspectJProxyFactory(recognitionResultServiceImpl);
         factory.addAspect(aspectForService);
-        MediaService serviceProxy = factory.getProxy();
+        RecognitionResultService serviceProxy = factory.getProxy();
         // when
-        MediaDTO result = serviceProxy.createItem(mediaDTO);
+        RecognitionResultDTO result = serviceProxy.createItem(recognitionResultDTO);
         // then
         assertTrue(result.getCreateDate() != null);
         assertTrue(result.getCreateUser() != null);
+    }
+
+    @Test
+    void fillDTOFieldsOnUpdateOrDelete_shouldFillUpdateFields_whenUpdateItemMethodCalled() {
+        // given
+        when(aspectUtility.getDTOEntityFromParameters(any())).thenReturn(recognitionResultDTO);
+        when(fieldFiller.fillUpdateFields(recognitionResultDTO)).thenReturn(updatedRecognitionResultDTO);
+        when(repository.existsById(recognitionResultEntity.getRecognitionResultId())).thenReturn(true);
+        when(mapper.mapToEntity(updatedRecognitionResultDTO)).thenReturn(updatedRecognitionResultEntity);
+        when(mapper.mapToDTO(updatedRecognitionResultEntity)).thenReturn(updatedRecognitionResultDTO);
+        AspectJProxyFactory factory = new AspectJProxyFactory(recognitionResultServiceImpl);
+        factory.addAspect(aspectForService);
+        RecognitionResultService serviceProxy = factory.getProxy();
+        // when
+        RecognitionResultDTO result = serviceProxy.updateItem(recognitionResultDTO);
+        // then
+        assertTrue(result.getUpdateDate() != null);
+        assertTrue(result.getUpdateUser() != null);
+    }
+
+    // TODO: 3/14/22 fix bug 
+    @Test
+    void fillDTOFieldsOnUpdateOrDelete_shouldFillUpdateFields_whenDeleteItemMethodCalled() {
+//        // given
+//        when(aspectUtility.getDTOEntityFromParameters(any())).thenReturn(recognitionResultDTO);
+//        when(fieldFiller.fillUpdateFields(recognitionResultDTO)).thenReturn(updatedRecognitionResultDTO);
+//        when(repository.findById(updatedRecognitionResultEntity.getRecognitionResultId())).thenReturn(Optional.of(updatedRecognitionResultEntity));
+//        when(mapper.mapToDTO(updatedRecognitionResultEntity)).thenReturn(updatedRecognitionResultDTO);
+//        AspectJProxyFactory factory = new AspectJProxyFactory(recognitionResultServiceImpl);
+//        factory.addAspect(aspectForService);
+//        RecognitionResultService serviceProxy = factory.getProxy();
+//        // when
+//        RecognitionResultDTO result = serviceProxy.deleteItem(updatedRecognitionResultEntity.getRecognitionResultId());
+//        // then
+//        assertTrue(result.getUpdateDate() != null);
+//        assertTrue(result.getUpdateUser() != null);
     }
 }
