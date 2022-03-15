@@ -5,7 +5,7 @@ import com.nulp.shymoniak.mastersproject.dto.MLModelDTO;
 import java.util.List;
 import java.util.Set;
 
-public interface MLModelService extends IAbstractCrudService<MLModelDTO>{
+public interface MLModelService extends AbstractCrudService<MLModelDTO> {
 
     List<MLModelDTO> findAllModelsByObservedObject(Set<Long> observedObjectIdSet);
 

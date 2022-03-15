@@ -1,6 +1,6 @@
 package com.nulp.shymoniak.mastersproject.controller;
 
-import com.nulp.shymoniak.mastersproject.service.IAbstractCrudService;
+import com.nulp.shymoniak.mastersproject.service.AbstractCrudService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 public abstract class AbstractCrudController<DTO> {
-    protected IAbstractCrudService<DTO> abstractService;
+    protected AbstractCrudService<DTO> abstractService;
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PRIVILEGED_USER', 'ROLE_USER')")
     @GetMapping("/{id}")

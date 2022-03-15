@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
-public interface RecognitionResultService extends IAbstractCrudService<RecognitionResultDTO> {
+public interface RecognitionResultService extends AbstractCrudService<RecognitionResultDTO> {
 
     List<RecognitionResultDTO> findAllByUserId(Long userId);
 

@@ -27,8 +27,14 @@ public class ServiceValidatorAspectImpl implements ServiceValidatorAspect{
     public void validateDTOs(JoinPoint joinPoint) {
         Object serviceImplInstance = aspectUtility.getInstanceOfClassWithJoinPoint(joinPoint);
         Object dtoEntity = aspectUtility.getDTOEntityFromParameters(joinPoint);
-        Method checkIfValid = serviceImplInstance.getClass()
-                .getDeclaredMethod("checkIfValid", Object.class);
+        Method checkIfValid;
+        try {
+            checkIfValid = serviceImplInstance.getClass()
+                    .getDeclaredMethod("checkIfValid", Object.class);
+        } catch (NoSuchMethodException ex) {
+            checkIfValid = serviceImplInstance.getClass().getSuperclass()
+                    .getDeclaredMethod("checkIfValid", Object.class);
+        }
         checkIfValid.invoke(serviceImplInstance, dtoEntity);
     }
 }

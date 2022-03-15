@@ -60,9 +60,9 @@ public abstract class AbstractService<Entity, DTO > {
     }
 
     // TODO: AfterTrowing - return specified message in case of exception
-    public void checkIfValid(DTO DTO) {
-        if (!validator.isValid(DTO)) {
-            throw new ApiRequestException(ApplicationConstants.ERROR_INVALID_ENTITY + ": " + DTO.toString());
+    public void checkIfValid(DTO dto) {
+        if (!validator.isValid(dto)) {
+            throw new ApiRequestException(ApplicationConstants.ERROR_INVALID_ENTITY + ": " + dto.toString());
         }
     }
 
