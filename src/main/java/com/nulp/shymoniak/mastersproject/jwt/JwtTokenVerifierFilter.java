@@ -63,8 +63,6 @@ public class JwtTokenVerifierFilter extends OncePerRequestFilter {
             throw new ApiRequestException("Unable to fetch JWT Token");
         } catch (ExpiredJwtException ex) {
             throw new ApiRequestException("JWT Token is expired");
-        } catch (Exception ex) {
-            throw new ApiRequestException("Token cannot be trusted: " + ex.getMessage());
         }
     }
 }

@@ -25,9 +25,10 @@ public class ServiceDTOFillerAspectImpl implements ServiceDTOFillerAspect {
         return proceedingJoinPoint.proceed(new Object[]{dtoEntity});
     }
 
+    // TODO: 3/15/22 make a separate method for delete or change arguments in deleteItem()
     @Override
     @SneakyThrows
-    @Around("callUpdateMethod() || callDeleteMethod()")
+    @Around("callUpdateMethod()")
     public Object fillDTOFieldsOnUpdateOrDelete(ProceedingJoinPoint proceedingJoinPoint) {
         Object dtoEntity = aspectUtility.getDTOEntityFromParameters(proceedingJoinPoint);
         dtoEntity = fieldFiller.fillUpdateFields(dtoEntity);

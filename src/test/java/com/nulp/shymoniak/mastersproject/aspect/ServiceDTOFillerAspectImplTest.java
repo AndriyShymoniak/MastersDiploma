@@ -100,11 +100,11 @@ class ServiceDTOFillerAspectImplTest {
         assertTrue(result.getUpdateUser() != null);
     }
 
-    // TODO: 3/14/22 fix bug 
+    // TODO: 3/14/22 create separate method for delete
     @Test
     void fillDTOFieldsOnUpdateOrDelete_shouldFillUpdateFields_whenDeleteItemMethodCalled() {
 //        // given
-//        when(aspectUtility.getDTOEntityFromParameters(any())).thenReturn(recognitionResultDTO);
+//        when(aspectUtility.getDTOEntityFromParameters(any())).thenReturn(recognitionResultDTO.getRecognitionResultId());
 //        when(fieldFiller.fillUpdateFields(recognitionResultDTO)).thenReturn(updatedRecognitionResultDTO);
 //        when(repository.findById(updatedRecognitionResultEntity.getRecognitionResultId())).thenReturn(Optional.of(updatedRecognitionResultEntity));
 //        when(mapper.mapToDTO(updatedRecognitionResultEntity)).thenReturn(updatedRecognitionResultDTO);
