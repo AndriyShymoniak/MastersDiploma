@@ -1,6 +1,5 @@
 package com.nulp.shymoniak.mastersproject.service;
 
-import com.nulp.shymoniak.mastersproject.constant.ApplicationConstants;
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
 import com.nulp.shymoniak.mastersproject.repository.AbstractRepository;
 import com.nulp.shymoniak.mastersproject.mapping.AbstractMapper;
@@ -13,6 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.Id;
 import java.lang.reflect.Field;
 import java.util.Optional;
+
+import static com.nulp.shymoniak.mastersproject.constant.ApplicationConstants.ERROR_INVALID_ENTITY;
+import static com.nulp.shymoniak.mastersproject.constant.ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND;
 
 public abstract class AbstractService<Entity, DTO > {
     protected Validator validator;
@@ -28,7 +30,7 @@ public abstract class AbstractService<Entity, DTO > {
     public DTO findById(Long id) {
         Optional<Entity> optionalEntity = repository.findById(id);
         return optionalEntity.map(item -> (DTO) mapper.mapToDTO(item))
-                .orElseThrow(() -> new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND));
+                .orElseThrow(() -> new ApiRequestException(ERROR_MESSAGE_RECORD_NOT_FOUND));
     }
 
     @Transactional
@@ -43,7 +45,7 @@ public abstract class AbstractService<Entity, DTO > {
         Entity entity = (Entity) mapper.mapToEntity(dto);
         Long entityId = getIdFromEntity(entity);
         if (!repository.existsById(entityId)) {
-            throw new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND);
+            throw new ApiRequestException(ERROR_MESSAGE_RECORD_NOT_FOUND);
         }
         repository.save(entity);
         return (DTO) mapper.mapToDTO(entity);
@@ -53,7 +55,7 @@ public abstract class AbstractService<Entity, DTO > {
     public DTO deleteItem(Long id) {
         Optional<Entity> optionalEntity = repository.findById(id);
         if (optionalEntity.isEmpty()) {
-            throw new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND);
+            throw new ApiRequestException(ERROR_MESSAGE_RECORD_NOT_FOUND);
         }
         repository.deleteById(id);
         return (DTO) mapper.mapToDTO(optionalEntity.get());
@@ -62,7 +64,7 @@ public abstract class AbstractService<Entity, DTO > {
     // TODO: AfterTrowing - return specified message in case of exception
     public void checkIfValid(DTO dto) {
         if (!validator.isValid(dto)) {
-            throw new ApiRequestException(ApplicationConstants.ERROR_INVALID_ENTITY + ": " + dto.toString());
+            throw new ApiRequestException(ERROR_INVALID_ENTITY + ": " + dto.toString());
         }
     }
 

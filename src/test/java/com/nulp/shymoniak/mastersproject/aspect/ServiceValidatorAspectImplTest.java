@@ -55,7 +55,7 @@ class ServiceValidatorAspectImplTest {
     }
 
     @Test
-    void validateDTOs_shouldNotThrowException_whenCreateItemMethodIsCalledAndDTOIsValid() {
+    void validateDTOs_shouldNotThrowException_whenDTOIsValid() {
         // given
         when(aspectUtility.getInstanceOfClassWithJoinPoint(any())).thenReturn(recognitionResultServiceImpl);
         when(aspectUtility.getDTOEntityFromParameters(any())).thenReturn(recognitionResultDTO);
@@ -73,7 +73,7 @@ class ServiceValidatorAspectImplTest {
     }
 
     @Test
-    void validateDTOs_shouldThrowException_ifDTOIsInvalid() {
+    void validateDTOs_shouldThrowException_whenDTOIsInvalid() {
         // given
         when(aspectUtility.getInstanceOfClassWithJoinPoint(any())).thenReturn(recognitionResultServiceImpl);
         when(aspectUtility.getDTOEntityFromParameters(any())).thenReturn(recognitionResultDTO);
