@@ -22,6 +22,7 @@ public class MLModelController extends AbstractCrudController<MLModelDTO> {
 
     @Autowired
     public MLModelController(MLModelService mlModelService) {
+        this.abstractService = mlModelService;
         this.mlModelService = mlModelService;
     }
 
