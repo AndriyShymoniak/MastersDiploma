@@ -27,5 +27,5 @@ public class RecognitionResultDTO {
     private LocationDTO location;
     private ApplicationUserDTO createUser;
     private ApplicationUserDTO updateUser;
-    private List<RecognitionResultObservedObjectDTO> observedObjectList = new ArrayList<>();
+    private List<RecognitionResultObservedObjectDTO> observedObjectList;
 }

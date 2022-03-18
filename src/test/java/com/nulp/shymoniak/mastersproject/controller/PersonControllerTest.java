@@ -1,7 +1,11 @@
 package com.nulp.shymoniak.mastersproject.controller;
 
+import com.google.gson.Gson;
 import com.nulp.shymoniak.mastersproject.dto.PersonDTO;
+import com.nulp.shymoniak.mastersproject.exception.ApiExceptionHandler;
+import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
 import com.nulp.shymoniak.mastersproject.service.PersonService;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,102 +13,149 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
 import java.util.List;
 
+import static com.nulp.shymoniak.mastersproject.constant.ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
+@AutoConfigureMockMvc
 @ExtendWith(MockitoExtension.class)
 class PersonControllerTest {
+    @Autowired
+    private MockMvc mockMvc;
+    
     @Mock
     private PersonService service;
 
     @InjectMocks
     private PersonController controller;
 
-    private PersonDTO person;
+    private static Gson gson;
+    private static PersonDTO person;
+
+    @BeforeAll
+    static void beforeAll() {
+        gson = new Gson();
+        person = new PersonDTO(999L, "Vitalii", "Kachmar", "vitalii_k@mail.com");
+    }
 
     @BeforeEach
     void setUp() {
         controller = null;
-        person = new PersonDTO(999L, "Vitalii", "Kachmar", "vitalii_k@mail.com");
         MockitoAnnotations.openMocks(this);
+        this.mockMvc = MockMvcBuilders.standaloneSetup(controller)
+                .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
+                .setControllerAdvice(new ApiExceptionHandler())
+                .build();
     }
 
     @Test
-    void findAllPersons_shouldReturnResponseEntityOfFoundPersons_ifPersonsExist() {
+    void findAllPersons_shouldReturnPersonListAndStatusCode200_ifPersonsExist() throws Exception {
         // Given
         List<PersonDTO> personList = Arrays.asList(
+                person,
                 new PersonDTO(1000L, null, null, null),
-                new PersonDTO(1001L, null, null, null),
-                new PersonDTO(1002L, null, null, null));
+                new PersonDTO(1001L, null, null, null));
         Pageable pageable = PageRequest.of(0, 10);
-        Page<PersonDTO> resultPage = new PageImpl<>(personList, pageable, personList.size());
-        when(service.findAll(pageable)).thenReturn(resultPage);
+        when(service.findAll(any())).thenReturn(new PageImpl<>(personList, pageable, personList.size()));
         // When
-        ResponseEntity<Page<PersonDTO>> requestResult = controller.findAllPersons(pageable);
         // Then
-        verify(service).findAll(pageable);
-        assertTrue(requestResult.getStatusCode().equals(HttpStatus.OK));
-        assertTrue(requestResult.getBody().equals(resultPage));
+        mockMvc.perform(get("/person")
+                        .param("page", String.valueOf(pageable.getPageNumber()))
+                        .param("size", String.valueOf(pageable.getPageSize())))
+                .andDo(log())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(result -> result.getResponse().getContentAsString().contains(gson.toJson(person)));
     }
 
     @Test
-    void findItemById_shouldReturnResponseEntityOfFoundPerson_ifPersonExists() {
+    void findItemById_shouldReturnPersonAndStatusCode200_ifPersonFoundById() throws Exception {
         // Given
         when(service.findById(person.getPersonId())).thenReturn(person);
         // When
-        ResponseEntity<PersonDTO> requestResult = controller.findItemById(person.getPersonId());
         // Then
-        verify(service).findById(person.getPersonId());
-        assertTrue(requestResult.getStatusCode().equals(HttpStatus.OK));
-        assertTrue(requestResult.getBody().equals(person));
+        mockMvc.perform(get("/person/{id}", person.getPersonId()))
+                .andDo(log())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(gson.toJson(person)));
     }
 
     @Test
-    void createItem_shouldReturnResponseEntityOfCreatedPerson_ifCreationWasSuccessful() {
+    void findItemById_shouldReturnPersonAndStatusCode400_ifPersonNotFoundById() throws Exception {
+        // Given
+        when(service.findById(person.getPersonId())).thenThrow(new ApiRequestException(ERROR_MESSAGE_RECORD_NOT_FOUND));
+        // When
+        // Then
+        mockMvc.perform(get("/person/{id}", person.getPersonId()))
+                .andDo(log())
+                .andExpect(status().isBadRequest())
+                .andExpect(result -> assertEquals(ERROR_MESSAGE_RECORD_NOT_FOUND, result.getResolvedException().getMessage()));
+    }
+
+    @Test
+    void createItem_shouldReturnPersonAndStatusCode201_ifCreationWasSuccessful() throws Exception {
         // Given
         when(service.createItem(person)).thenReturn(person);
         // When
-        ResponseEntity<PersonDTO> requestResult = controller.createItem(person);
         // Then
-        verify(service).createItem(person);
-        assertTrue(requestResult.getStatusCode().equals(HttpStatus.CREATED));
-        assertTrue(requestResult.getBody().equals(person));
+        mockMvc.perform(post("/person")
+                        .content(gson.toJson(person))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(log())
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(gson.toJson(person)));
     }
 
     @Test
-    void updateItem_shouldReturnResponseEntityOfUpdatedPerson_ifUpdatingWasSuccessful() {
+    void updateItem_shouldReturnPersonAndStatusCode201_ifUpdateWasSuccessful() throws Exception {
         // Given
         when(service.updateItem(person)).thenReturn(person);
         // When
-        ResponseEntity<PersonDTO> requestResult = controller.updateItem(person);
         // Then
-        verify(service).updateItem(person);
-        assertTrue(requestResult.getStatusCode().equals(HttpStatus.CREATED));
-        assertTrue(requestResult.getBody().equals(person));
+        mockMvc.perform(put("/person")
+                        .content(gson.toJson(person))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(log())
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(gson.toJson(person)));
     }
 
     @Test
-    void updateItem_shouldReturnResponseEntityOfUpdatedPerson_ifDeletionWasSuccessful() {
+    void deleteItem_shouldReturnPersonAndStatusCode200_ifDeletionWasSuccessful() throws Exception {
         // Given
         when(service.deleteItem(person.getPersonId())).thenReturn(person);
         // When
-        ResponseEntity<PersonDTO> requestResult = controller.deleteItem(person.getPersonId());
         // Then
-        verify(service).deleteItem(person.getPersonId());
-        assertTrue(requestResult.getStatusCode().equals(HttpStatus.OK));
-        assertTrue(requestResult.getBody().equals(person));
+        mockMvc.perform(delete("/person/{id}", person.getPersonId()))
+                .andDo(log())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(gson.toJson(person)));
     }
 }

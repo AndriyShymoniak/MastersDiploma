@@ -8,9 +8,11 @@ import com.nulp.shymoniak.mastersproject.service.ApplicationUserService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,6 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@ExtendWith(MockitoExtension.class)
 class ApplicationUserControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -45,13 +48,13 @@ class ApplicationUserControllerTest {
     @InjectMocks
     private ApplicationUserController controller;
 
-    private static ApplicationUserDTO user;
     private static Gson gson;
+    private static ApplicationUserDTO user;
 
     @BeforeAll
     static void beforeAll() {
-        user = new ApplicationUserDTO(999L, "Username", "password", null, null, null);
         gson = new Gson();
+        user = new ApplicationUserDTO(999L, "Username", "password", null, null, null);
     }
 
     @BeforeEach
@@ -131,11 +134,11 @@ class ApplicationUserControllerTest {
         mockMvc.perform(get("/user/{id}", user.getUserId()))
                 .andDo(log())
                 .andExpect(status().isBadRequest())
-                .andExpect(result -> assertTrue(result.getResolvedException().getMessage().equals(ERROR_MESSAGE_RECORD_NOT_FOUND)));
+                .andExpect(result -> assertEquals(ERROR_MESSAGE_RECORD_NOT_FOUND, result.getResolvedException().getMessage()));
     }
 
     @Test
-    void createItem_shouldReturnApplicationUserAndStatusCode201_ifUserWasSuccessfullyCreated() throws Exception {
+    void createItem_shouldReturnApplicationUserAndStatusCode201_ifCreationWasSuccessful() throws Exception {
         // Given
         when(service.createItem(user)).thenReturn(user);
         // When
@@ -151,7 +154,7 @@ class ApplicationUserControllerTest {
     }
 
     @Test
-    void updateItem_shouldReturnApplicationUserAndStatusCode201_ifUserWasSuccessfullyUpdated() throws Exception {
+    void updateItem_shouldReturnApplicationUserAndStatusCode201_ifUpdateWasSuccessful() throws Exception {
         // Given
         when(service.updateItem(user)).thenReturn(user);
         // When
@@ -167,7 +170,7 @@ class ApplicationUserControllerTest {
     }
 
     @Test
-    void deleteItem_shouldReturnApplicationUserAndStatusCode200_ifUserWasSuccessfullyDeleted() throws Exception {
+    void deleteItem_shouldReturnApplicationUserAndStatusCode200_ifDeletionWasSuccessful() throws Exception {
         // Given
         when(service.deleteItem(user.getUserId())).thenReturn(user);
         // When

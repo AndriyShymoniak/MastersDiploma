@@ -15,18 +15,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("media")
 public class MediaController extends AbstractCrudController<MediaDTO> {
-    private final MediaService mediaService;
-
     @Autowired
     public MediaController(MediaService mediaService) {
         this.abstractService = mediaService;
-        this.mediaService = mediaService;
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PRIVILEGED_USER', 'ROLE_USER')")
     @GetMapping({"", "/"})
     public ResponseEntity<Page<MediaDTO>> findAllMedias(
             @PageableDefault(sort = "mediaId", direction = Sort.Direction.DESC) Pageable pageable) {
-        return new ResponseEntity<>(mediaService.findAll(pageable), HttpStatus.OK);
+        return new ResponseEntity<>(abstractService.findAll(pageable), HttpStatus.OK);
     }
 }

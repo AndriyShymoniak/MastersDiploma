@@ -15,18 +15,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("observedObject")
 public class ObservedObjectController extends AbstractCrudController<ObservedObjectDTO> {
-    private final ObservedObjectService observedObjectService;
-
     @Autowired
     public ObservedObjectController(ObservedObjectService observedObjectService) {
         this.abstractService = observedObjectService;
-        this.observedObjectService = observedObjectService;
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PRIVILEGED_USER', 'ROLE_USER')")
     @GetMapping({"", "/"})
     public ResponseEntity<Page<ObservedObjectDTO>> findAllObservedObjects(
             @PageableDefault(sort = "observedObjectId", direction = Sort.Direction.DESC) Pageable pageable) {
-        return new ResponseEntity<>(observedObjectService.findAll(pageable), HttpStatus.OK);
+        return new ResponseEntity<>(abstractService.findAll(pageable), HttpStatus.OK);
     }
 }

@@ -15,18 +15,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("location")
 public class LocationController extends AbstractCrudController<LocationDTO>{
-    private final LocationService locationService;
-
     @Autowired
     public LocationController(LocationService locationService) {
         this.abstractService = locationService;
-        this.locationService = locationService;
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_PRIVILEGED_USER', 'ROLE_USER')")
     @GetMapping({"", "/"})
     public ResponseEntity<Page<LocationDTO>> findAllLocations(
             @PageableDefault(sort = "locationId", direction = Sort.Direction.DESC) Pageable pageable) {
-        return new ResponseEntity<>(locationService.findAll(pageable), HttpStatus.OK);
+        return new ResponseEntity<>(abstractService.findAll(pageable), HttpStatus.OK);
     }
 }

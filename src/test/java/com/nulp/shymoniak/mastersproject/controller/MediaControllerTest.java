@@ -1,7 +1,11 @@
 package com.nulp.shymoniak.mastersproject.controller;
 
+import com.google.gson.Gson;
 import com.nulp.shymoniak.mastersproject.dto.MediaDTO;
+import com.nulp.shymoniak.mastersproject.exception.ApiExceptionHandler;
+import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
 import com.nulp.shymoniak.mastersproject.service.MediaService;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,102 +13,146 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
 import java.util.List;
 
+import static com.nulp.shymoniak.mastersproject.constant.ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
+@AutoConfigureMockMvc
 @ExtendWith(MockitoExtension.class)
 class MediaControllerTest {
+    @Autowired
+    private MockMvc mockMvc;
+
     @Mock
     private MediaService service;
 
     @InjectMocks
     private MediaController controller;
 
-    private MediaDTO media;
+    private static Gson gson;
+    private static MediaDTO media;
 
+    @BeforeAll
+    static void beforeAll() {
+        gson = new Gson();
+        media = new MediaDTO(999L, "https://shorturl.at/elnI5", "https://shorturl.at/elnI5", null, null);
+    }
+    
     @BeforeEach
     void setUp() {
         controller = null;
-        media = new MediaDTO(999L, "https://shorturl.at/elnI5", "https://shorturl.at/elnI5", null, null);
         MockitoAnnotations.openMocks(this);
+        this.mockMvc = MockMvcBuilders.standaloneSetup(controller)
+                .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
+                .setControllerAdvice(new ApiExceptionHandler())
+                .build();
     }
 
     @Test
-    void findAllMedias_shouldReturnResponseEntityOfFoundMedias_ifMediasExist() {
+    void findAllMedias_shouldReturnMediaListAndStatusCode200_ifMediasExist() throws Exception {
         // Given
         List<MediaDTO> mediaList = Arrays.asList(
+                media,
                 new MediaDTO(1000L, null, null, null, null),
-                new MediaDTO(1001L, null, null, null, null),
-                new MediaDTO(1002L, null, null, null, null));
+                new MediaDTO(1001L, null, null, null, null));
         Pageable pageable = PageRequest.of(0, 10);
-        Page<MediaDTO> resultPage = new PageImpl<>(mediaList, pageable, mediaList.size());
-        when(service.findAll(pageable)).thenReturn(resultPage);
+        when(service.findAll(any())).thenReturn(new PageImpl<>(mediaList, pageable, mediaList.size()));
         // When
-        ResponseEntity<Page<MediaDTO>> requestResult = controller.findAllMedias(pageable);
         // Then
-        verify(service).findAll(pageable);
-        assertTrue(requestResult.getStatusCode().equals(HttpStatus.OK));
-        assertTrue(requestResult.getBody().equals(resultPage));
+        mockMvc.perform(get("/media")
+                        .param("page", String.valueOf(pageable.getPageNumber()))
+                        .param("size", String.valueOf(pageable.getPageSize())))
+                .andDo(log())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(result -> result.getResponse().getContentAsString().contains(gson.toJson(media)));
     }
 
     @Test
-    void findItemById_shouldReturnResponseEntityOfFoundMedia_ifMediaExists() {
+    void findItemById_shouldReturnMediaAndStatusCode200_ifMediaFoundById() throws Exception {
         // Given
         when(service.findById(media.getMediaId())).thenReturn(media);
         // When
-        ResponseEntity<MediaDTO> requestResult = controller.findItemById(media.getMediaId());
         // Then
-        verify(service).findById(media.getMediaId());
-        assertTrue(requestResult.getStatusCode().equals(HttpStatus.OK));
-        assertTrue(requestResult.getBody().equals(media));
+        mockMvc.perform(get("/media/{id}", media.getMediaId()))
+                .andDo(log())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(gson.toJson(media)));
     }
 
     @Test
-    void createItem_shouldReturnResponseEntityOfCreatedMedia_ifCreationWasSuccessful() {
+    void findItemById_shouldReturnMediaAndStatusCode400_ifMediaNotFoundById() throws Exception {
+        // Given
+        when(service.findById(media.getMediaId())).thenThrow(new ApiRequestException(ERROR_MESSAGE_RECORD_NOT_FOUND));
+        // When
+        // Then
+        mockMvc.perform(get("/media/{id}", media.getMediaId()))
+                .andDo(log())
+                .andExpect(status().isBadRequest())
+                .andExpect(result -> assertTrue(result.getResolvedException().getMessage().equals(ERROR_MESSAGE_RECORD_NOT_FOUND)));
+    }
+
+    @Test
+    void createItem_shouldReturnMediaAndStatusCode201_ifCreationWasSuccessful() throws Exception {
         // Given
         when(service.createItem(media)).thenReturn(media);
         // When
-        ResponseEntity<MediaDTO> requestResult = controller.createItem(media);
         // Then
-        verify(service).createItem(media);
-        assertTrue(requestResult.getStatusCode().equals(HttpStatus.CREATED));
-        assertTrue(requestResult.getBody().equals(media));
+        mockMvc.perform(post("/media")
+                        .content(gson.toJson(media))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(log())
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(gson.toJson(media)));
     }
 
     @Test
-    void updateItem_shouldReturnResponseEntityOfUpdatedMedia_ifUpdatingWasSuccessful() {
+    void updateItem_shouldReturnMediaAndStatusCode201_ifUpdateWasSuccessful() throws Exception {
         // Given
         when(service.updateItem(media)).thenReturn(media);
         // When
-        ResponseEntity<MediaDTO> requestResult = controller.updateItem(media);
         // Then
-        verify(service).updateItem(media);
-        assertTrue(requestResult.getStatusCode().equals(HttpStatus.CREATED));
-        assertTrue(requestResult.getBody().equals(media));
+        mockMvc.perform(put("/media")
+                        .content(gson.toJson(media))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(log())
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(gson.toJson(media)));
     }
 
     @Test
-    void updateItem_shouldReturnResponseEntityOfUpdatedMedia_ifDeletionWasSuccessful() {
+    void deleteItem_shouldReturnMediaAndStatusCode200_ifDeletionWasSuccessful() throws Exception {
         // Given
         when(service.deleteItem(media.getMediaId())).thenReturn(media);
         // When
-        ResponseEntity<MediaDTO> requestResult = controller.deleteItem(media.getMediaId());
         // Then
-        verify(service).deleteItem(media.getMediaId());
-        assertTrue(requestResult.getStatusCode().equals(HttpStatus.OK));
-        assertTrue(requestResult.getBody().equals(media));
+        mockMvc.perform(delete("/media/{id}", media.getMediaId()))
+                .andDo(log())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(gson.toJson(media)));
     }
 }
