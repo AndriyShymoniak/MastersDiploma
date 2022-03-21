@@ -16,17 +16,19 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
@@ -37,6 +39,7 @@ class MLModelServiceImplTest {
     @Mock
     private MLModelMapper mapper;
 
+    @Spy
     @InjectMocks
     private MLModelServiceImpl service;
 
@@ -44,6 +47,8 @@ class MLModelServiceImplTest {
     private static MLModelDTO mlModelDTO;
     private static List<ObservedObject> observedObjectList;
     private static List<ObservedObjectDTO> observedObjectDTOList;
+    private static List<MLModel> mlModelList;
+    private static List<MLModelDTO> mlModelDTOList;
 
     @BeforeAll
     static void beforeAll() {
@@ -51,10 +56,13 @@ class MLModelServiceImplTest {
         mlModelDTO = new MLModelDTO(999L, "MODEL_NAME", "https://github.com/", 1, 1, null, null, null);
         observedObjectList = generateTestValuesForObservedObject();
         observedObjectDTOList = generateTestValuesForObservedObjectDTO();
+        mlModelList = generateTestValuesForMLModelList(observedObjectList);
+        mlModelDTOList = generateTestValuesForMLModelDTOList(observedObjectDTOList);
     }
 
     @BeforeEach
     void setUp() {
+//        service = null;
         MockitoAnnotations.openMocks(this);
     }
 
@@ -137,29 +145,65 @@ class MLModelServiceImplTest {
         assertEquals(mlModelDTO, result);
     }
 
-    // TODO: 2/17/22 rewrite test
     @Test
     void findAllModelsByObservedObject_shouldReturnMLModels_ifTheyContainAllObservedObjects() {
-//        // Given
-//        List<MLModel> mlModelList = generateTestValuesForMLModelList(observedObjectList);
-//        List<MLModelDTO> mlModelDTOList = generateTestValuesForMLModelDTOList(observedObjectDTOList);
-//        Set<Long> observedObjectIdSet = Stream.of(
-//                observedObjectDTOList.get(0).getObservedObjectId(),
-//                observedObjectDTOList.get(1).getObservedObjectId()
-//        ).collect(Collectors.toSet());
-//        when(repository.findAllActiveModels()).thenReturn(mlModelList);
-//        List<MLModel> mockedMlModelList = Stream.of(mlModelList.get(0), mlModelList.get(1), mlModelList.get(3)).collect(Collectors.toList());
-//        List<MLModelDTO> mockedMlModelDTOList = Stream.of(mlModelDTOList.get(0), mlModelDTOList.get(1), mlModelDTOList.get(3)).collect(Collectors.toList());
-//        when(mapper.mapToDTO(mockedMlModelList)).thenReturn(mockedMlModelDTOList);
-//        // When
-//        List<MLModelDTO> result = service.findAllModelsByObservedObject(observedObjectIdSet);
-//        // Then
-//        verify(repository).findAllActiveModels();
-//        assertTrue(result.contains(mlModelDTOList.get(0)));
-//        assertTrue(result.contains(mlModelDTOList.get(1)));
-//        assertTrue(result.contains(mlModelDTOList.get(3)));
-//        assertFalse(result.contains(mlModelDTOList.get(2)));
-//        assertFalse(result.contains(mlModelDTOList.get(4)));
+        // Given
+        Set<Long> observedObjectIdSet = new HashSet<>();
+
+        List<MLModel> expectedTrueResultList = Stream.of(mlModelList.get(0), mlModelList.get(1), mlModelList.get(3)).collect(Collectors.toList());
+        List<MLModelDTO> expectedTrueResultDtoList = Stream.of(mlModelDTOList.get(0), mlModelDTOList.get(1), mlModelDTOList.get(3)).collect(Collectors.toList());
+        List<MLModel> expectedFalseResultList = Stream.of(mlModelList.get(2), mlModelList.get(4)).collect(Collectors.toList());
+        List<MLModelDTO> expectedFalseResultDtoList = Stream.of(mlModelDTOList.get(2), mlModelDTOList.get(4)).collect(Collectors.toList());
+
+        when(repository.findAllActiveModels()).thenReturn(mlModelList);
+        when(mapper.mapToDTO(expectedTrueResultList)).thenReturn(expectedTrueResultDtoList);
+        for (MLModel model : expectedTrueResultList) {
+            doReturn(true).when(service).doesModelContainAllObservedObjects(model, observedObjectIdSet);
+        }
+        for (MLModel model : expectedFalseResultList) {
+            doReturn(false).when(service).doesModelContainAllObservedObjects(model, observedObjectIdSet);
+        }
+        // When
+        List<MLModelDTO> result = service.findAllModelsByObservedObject(observedObjectIdSet);
+        // Then
+        for (MLModelDTO model : expectedTrueResultDtoList) {
+            assertTrue(result.contains(model));
+        }
+        for (MLModelDTO model : expectedFalseResultDtoList) {
+            assertFalse(result.contains(model));
+        }
+    }
+
+    @Test
+    void doesModelContainAllObservedObjects_shouldReturnTrue_ifModelContainsAllObservedAbjects() {
+        // Given
+        Set<Long> observedObjectIdSet = Stream.of(
+                observedObjectDTOList.get(0).getObservedObjectId(),
+                observedObjectDTOList.get(1).getObservedObjectId()
+        ).collect(Collectors.toSet());
+        List<MLModel> expectedTrueResultList = Stream.of(mlModelList.get(0), mlModelList.get(1), mlModelList.get(3)).collect(Collectors.toList());
+        // When
+        Set<MLModel> result = mlModelList.stream()
+                .filter(model -> service.doesModelContainAllObservedObjects(model, observedObjectIdSet))
+                .collect(Collectors.toSet());
+        // Then
+        assertTrue(result.containsAll(expectedTrueResultList));
+    }
+
+    @Test
+    void doesModelContainAllObservedObjects_shouldReturnFalse_ifModelDoesNotContainAllObservedAbjects() {
+        // Given
+        Set<Long> observedObjectIdSet = Stream.of(
+                observedObjectDTOList.get(0).getObservedObjectId(),
+                observedObjectDTOList.get(1).getObservedObjectId()
+        ).collect(Collectors.toSet());
+        List<MLModel> expectedFalseResultList = Stream.of(mlModelList.get(2), mlModelList.get(4)).collect(Collectors.toList());
+        // When
+        Set<MLModel> result = mlModelList.stream()
+                .filter(model -> !service.doesModelContainAllObservedObjects(model, observedObjectIdSet))
+                .collect(Collectors.toSet());
+        // Then
+        assertTrue(result.containsAll(expectedFalseResultList));
     }
 
     private static List<ObservedObjectDTO> generateTestValuesForObservedObjectDTO() {
@@ -184,7 +228,7 @@ class MLModelServiceImplTest {
                 .collect(Collectors.toList());
     }
 
-    private List<MLModel> generateTestValuesForMLModelList(List<ObservedObject> observedObjectList) {
+    private static List<MLModel> generateTestValuesForMLModelList(List<ObservedObject> observedObjectList) {
         // MLModel instances
         MLModel mlModel1 = new MLModel(1000L, "MODEL_NAME", "", 1, 1, null, null, null);
         MLModel mlModel2 = new MLModel(1001L, "MODEL_NAME", "", 1, 1, null, null, null);
@@ -223,11 +267,10 @@ class MLModelServiceImplTest {
         MLModelObservedObject mlModelObservedObject52 = new MLModelObservedObject(1000L, mlModel5, ooList.get(3));
         MLModelObservedObject mlModelObservedObject53 = new MLModelObservedObject(1000L, mlModel5, ooList.get(4));
         mlModel5.setObservedObjectList(Stream.of(mlModelObservedObject51, mlModelObservedObject52, mlModelObservedObject53).collect(Collectors.toList()));
-        return Stream.of(mlModel1, mlModel2, mlModel3, mlModel4, mlModel5)
-                .collect(Collectors.toList());
+        return Stream.of(mlModel1, mlModel2, mlModel3, mlModel4, mlModel5).collect(Collectors.toList());
     }
 
-    private List<MLModelDTO> generateTestValuesForMLModelDTOList(List<ObservedObjectDTO> observedObjectList) {
+    private static List<MLModelDTO> generateTestValuesForMLModelDTOList(List<ObservedObjectDTO> observedObjectList) {
         // MLModel instances
         MLModelDTO mlModel1 = new MLModelDTO(1000L, "MODEL_NAME", "", 1, 1, null, null, null);
         MLModelDTO mlModel2 = new MLModelDTO(1001L, "MODEL_NAME", "", 1, 1, null, null, null);
@@ -266,7 +309,6 @@ class MLModelServiceImplTest {
         MLModelObservedObjectDTO mlModelObservedObject52 = new MLModelObservedObjectDTO(1000L, mlModel5, ooList.get(3));
         MLModelObservedObjectDTO mlModelObservedObject53 = new MLModelObservedObjectDTO(1000L, mlModel5, ooList.get(4));
         mlModel5.setObservedObjectList(Stream.of(mlModelObservedObject51, mlModelObservedObject52, mlModelObservedObject53).collect(Collectors.toList()));
-        return Stream.of(mlModel1, mlModel2, mlModel3, mlModel4, mlModel5)
-                .collect(Collectors.toList());
+        return Stream.of(mlModel1, mlModel2, mlModel3, mlModel4, mlModel5).collect(Collectors.toList());
     }
 }

@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class MLModelServiceImpl extends AbstractService<MLModel, MLModelDTO> implements MLModelService {
-    private final MLModelRepository mlModelRepository;
+    private MLModelRepository mlModelRepository;
 
     @Autowired
     public MLModelServiceImpl(MLModelRepository repository, MLModelValidator validator) {
@@ -37,7 +37,7 @@ public class MLModelServiceImpl extends AbstractService<MLModel, MLModelDTO> imp
         return mapper.mapToDTO(modelList);
     }
 
-    private boolean doesModelContainAllObservedObjects(MLModel model, Set<Long> observedObjectIdSet) {
+    protected boolean doesModelContainAllObservedObjects(MLModel model, Set<Long> observedObjectIdSet) {
         return model.getObservedObjectList().stream()
                 .map(observedObject -> observedObject.getObservedObject().getObservedObjectId())
                 .collect(Collectors.toList())

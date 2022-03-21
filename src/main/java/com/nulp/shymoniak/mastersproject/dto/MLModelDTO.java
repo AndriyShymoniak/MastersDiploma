@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,5 +22,7 @@ public class MLModelDTO {
     private LocalDateTime createDate;
 
     private ApplicationUserDTO createUser;
+
+    @ToString.Exclude
     private List<MLModelObservedObjectDTO> observedObjectList;
 }
