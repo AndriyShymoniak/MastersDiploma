@@ -10,6 +10,7 @@ import com.nulp.shymoniak.mastersproject.service.RecognitionResultService;
 import com.nulp.shymoniak.mastersproject.service.impl.RecognitionResultServiceImpl;
 import com.nulp.shymoniak.mastersproject.utility.AspectUtility;
 import com.nulp.shymoniak.mastersproject.utility.DTOFieldFiller;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -46,57 +47,63 @@ class ServiceDTOFillerAspectImplTest {
     @InjectMocks
     private ServiceDTOFillerAspectImpl aspectForService;
 
-    private RecognitionResult recognitionResultEntity;
-    private RecognitionResult updatedRecognitionResultEntity;
-    private RecognitionResultDTO recognitionResultDTO;
-    private RecognitionResultDTO updatedRecognitionResultDTO;
+    private RecognitionResultService serviceProxy;
 
-    @BeforeEach
-    void setUp() {
-        LocalDateTime currentDate = LocalDateTime.now();
-        ApplicationUser currentUserEntity = new ApplicationUser();
-        ApplicationUserDTO currentUserDTO = new ApplicationUserDTO();
+    private static LocalDateTime currentDate;
+    private static ApplicationUser currentUserEntity;
+    private static ApplicationUserDTO currentUserDTO;
+    private static RecognitionResult recognitionResultEntity;
+    private static RecognitionResult updatedRecognitionResultEntity;
+    private static RecognitionResultDTO recognitionResultDTO;
+    private static RecognitionResultDTO updatedRecognitionResultDTO;
+
+    @BeforeAll
+    static void beforeAll() {
+        currentDate = LocalDateTime.now();
+        currentUserEntity = new ApplicationUser();
+        currentUserDTO = new ApplicationUserDTO();
         recognitionResultEntity = new RecognitionResult(999L, "description ... ", 1, 1, null, null, null, null, null, null, null, null);
         recognitionResultDTO = new RecognitionResultDTO(999L, "description ... ", 1, 1, null, null, null, null, null, null, null, null);
         updatedRecognitionResultEntity = new RecognitionResult(999L, "description ... ", 1, 1, currentDate, currentDate, null, null, null, currentUserEntity, currentUserEntity, null);
         updatedRecognitionResultDTO = new RecognitionResultDTO(999L, "description ... ", 1, 1, currentDate, currentDate, null, null, null, currentUserDTO, currentUserDTO, null);
+    }
+
+    @BeforeEach
+    void setUp() {
         aspectForService = null;
         MockitoAnnotations.openMocks(this);
+        AspectJProxyFactory aspectFactory = new AspectJProxyFactory(recognitionResultServiceImpl);
+        aspectFactory.addAspect(aspectForService);
+        serviceProxy = aspectFactory.getProxy();
     }
 
     @Test
     void fillDTOFieldsOnCreate_shouldFillCreateFields_whenCreateItemMethodCalled() {
-        // given
+        // Given
         when(aspectUtility.getDTOEntityFromParameters(any())).thenReturn(recognitionResultDTO);
         when(fieldFiller.fillCreateFields(recognitionResultDTO)).thenReturn(updatedRecognitionResultDTO);
         when(mapper.mapToEntity(updatedRecognitionResultDTO)).thenReturn(updatedRecognitionResultEntity);
         when(mapper.mapToDTO(updatedRecognitionResultEntity)).thenReturn(updatedRecognitionResultDTO);
-        AspectJProxyFactory factory = new AspectJProxyFactory(recognitionResultServiceImpl);
-        factory.addAspect(aspectForService);
-        RecognitionResultService serviceProxy = factory.getProxy();
-        // when
+        // When
         RecognitionResultDTO result = serviceProxy.createItem(recognitionResultDTO);
-        // then
-        assertTrue(result.getCreateDate() != null);
-        assertTrue(result.getCreateUser() != null);
+        // Then
+        assertEquals(currentDate, result.getCreateDate());
+        assertEquals(currentUserDTO, result.getCreateUser());
     }
 
     @Test
     void fillDTOFieldsOnUpdateOrDelete_shouldFillUpdateFields_whenUpdateItemMethodCalled() {
-        // given
+        // Given
         when(aspectUtility.getDTOEntityFromParameters(any())).thenReturn(recognitionResultDTO);
         when(fieldFiller.fillUpdateFields(recognitionResultDTO)).thenReturn(updatedRecognitionResultDTO);
         when(repository.existsById(recognitionResultEntity.getRecognitionResultId())).thenReturn(true);
         when(mapper.mapToEntity(updatedRecognitionResultDTO)).thenReturn(updatedRecognitionResultEntity);
         when(mapper.mapToDTO(updatedRecognitionResultEntity)).thenReturn(updatedRecognitionResultDTO);
-        AspectJProxyFactory factory = new AspectJProxyFactory(recognitionResultServiceImpl);
-        factory.addAspect(aspectForService);
-        RecognitionResultService serviceProxy = factory.getProxy();
-        // when
+        // When
         RecognitionResultDTO result = serviceProxy.updateItem(recognitionResultDTO);
-        // then
-        assertTrue(result.getUpdateDate() != null);
-        assertTrue(result.getUpdateUser() != null);
+        // Then
+        assertEquals(currentDate, result.getUpdateDate());
+        assertEquals(currentUserDTO, result.getUpdateUser());
     }
 
     // TODO: 3/14/22 create separate method for delete

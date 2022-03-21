@@ -8,6 +8,7 @@ import com.nulp.shymoniak.mastersproject.service.RecognitionResultService;
 import com.nulp.shymoniak.mastersproject.service.impl.RecognitionResultServiceImpl;
 import com.nulp.shymoniak.mastersproject.utility.AspectUtility;
 import com.nulp.shymoniak.mastersproject.validation.RecognitionResultValidator;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,16 +43,24 @@ class ServiceValidatorAspectImplTest {
     @InjectMocks
     private ServiceValidatorAspectImpl aspectForService;
 
-    private RecognitionResult recognitionResultEntity;
-    private RecognitionResultDTO recognitionResultDTO;
+    private RecognitionResultService serviceProxy;
+
+    private static RecognitionResult recognitionResultEntity;
+    private static RecognitionResultDTO recognitionResultDTO;
+
+    @BeforeAll
+    static void beforeAll() {
+        recognitionResultEntity = new RecognitionResult(999L, "description ... ", 1, 1, null, null, null, null, null, null, null, null);
+        recognitionResultDTO = new RecognitionResultDTO(999L, "description ... ", 1, 1, null, null, null, null, null, null, null, null);
+    }
 
     @BeforeEach
     void setUp() {
-        recognitionResultEntity = new RecognitionResult(999L, "description ... ", 1, 1, null, null, null, null, null, null, null, null);
-        recognitionResultDTO = new RecognitionResultDTO(999L, "description ... ", 1, 1, null, null, null, null, null, null, null, null);
         aspectForService = null;
-        validator = null;
         MockitoAnnotations.openMocks(this);
+        AspectJProxyFactory aspectFactory = new AspectJProxyFactory(recognitionResultServiceImpl);
+        aspectFactory.addAspect(aspectForService);
+        serviceProxy = aspectFactory.getProxy();
     }
 
     @Test
@@ -63,9 +72,6 @@ class ServiceValidatorAspectImplTest {
         when(mapper.mapToEntity(recognitionResultDTO)).thenReturn(recognitionResultEntity);
         when(mapper.mapToDTO(recognitionResultEntity)).thenReturn(recognitionResultDTO);
         when(repository.existsById(recognitionResultEntity.getRecognitionResultId())).thenReturn(true);
-        AspectJProxyFactory factory = new AspectJProxyFactory(recognitionResultServiceImpl);
-        factory.addAspect(aspectForService);
-        RecognitionResultService serviceProxy = factory.getProxy();
         // when
         // then
         serviceProxy.createItem(recognitionResultDTO);
@@ -78,9 +84,6 @@ class ServiceValidatorAspectImplTest {
         when(aspectUtility.getInstanceOfClassWithJoinPoint(any())).thenReturn(recognitionResultServiceImpl);
         when(aspectUtility.getDTOEntityFromParameters(any())).thenReturn(recognitionResultDTO);
         when(validator.isValid(any())).thenReturn(false);
-        AspectJProxyFactory factory = new AspectJProxyFactory(recognitionResultServiceImpl);
-        factory.addAspect(aspectForService);
-        RecognitionResultService serviceProxy = factory.getProxy();
         // when
         // then
         assertThrows(Exception.class, () -> serviceProxy.createItem(recognitionResultDTO));
