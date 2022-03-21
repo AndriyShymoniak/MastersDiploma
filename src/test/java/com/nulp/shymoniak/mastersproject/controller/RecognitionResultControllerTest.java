@@ -24,8 +24,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.nulp.shymoniak.mastersproject.constant.ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND;
 import static org.junit.jupiter.api.Assertions.*;
@@ -86,41 +89,43 @@ class RecognitionResultControllerTest {
                 .andExpect(result -> result.getResponse().getContentAsString().contains(gson.toJson(recognitionResult)));
     }
 
-    // TODO: 3/18/22 fix error, add wrong request case
     @Test
-    void findAllRecognitionResultsGroupedByDate_shouldReturnResponseEntityOfFoundRecognitionResults_ifRecognitionResultsExist() {
-//        // Given
-//        List<RecognitionResultDTO> recognitionResultList = Arrays.asList(
-//                new RecognitionResultDTO(1000L, null, null, null, null, null, null, null, null, null, null, null),
-//                new RecognitionResultDTO(1001L, null, null, null, null, null, null, null, null, null, null, null),
-//                new RecognitionResultDTO(1002L, null, null, null, null, null, null, null, null, null, null, null));
-//        Map<LocalDateTime, List<RecognitionResultDTO>> result = new HashMap<>();
-//        result.put(LocalDateTime.now(), recognitionResultList);
-//        when(service.findAllGroupedByDate()).thenReturn(result);
-//        // When
-//        ResponseEntity<Map<LocalDateTime, List<RecognitionResultDTO>>> requestResult = controller.findAllRecognitionResultsGroupedByDate();
-//        // Then
-//        verify(service).findAllGroupedByDate();
-//        assertTrue(requestResult.getStatusCode().equals(HttpStatus.OK));
-//        assertTrue(requestResult.getBody().equals(result));
+    void findAllRecognitionResultsGroupedByDate_shouldReturnResponseEntityOfFoundRecognitionResults_ifRecognitionResultsExist() throws Exception {
+        // Given
+        List<RecognitionResultDTO> recognitionResultList = Arrays.asList(
+                recognitionResult,
+                new RecognitionResultDTO(1000L, null, null, null, null, null, null, null, null, null, null, null),
+                new RecognitionResultDTO(1001L, null, null, null, null, null, null, null, null, null, null, null));
+        Map<LocalDateTime, List<RecognitionResultDTO>> resultMap = new HashMap<>();
+        LocalDateTime currentDate = LocalDateTime.now();
+        resultMap.put(currentDate, recognitionResultList);
+        when(service.findAllGroupedByDate()).thenReturn(resultMap);
+        // When
+        // Then
+        mockMvc.perform(get("/recognitionResult/groupByDate"))
+                .andDo(log())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(result -> result.getResponse().getContentAsString().contains(gson.toJson(currentDate)))
+                .andExpect(result -> result.getResponse().getContentAsString().contains(gson.toJson(recognitionResult)));
     }
 
-    // TODO: 3/18/22 fix error, add wrong request case
     @Test
-    void findRecognitionResultsByUserId_shouldReturnResponseEntityOfFoundRecognitionResults_ifRecognitionResultsExist() {
-//        // Given
-//        Long randomUserId = 999L;
-//        List<RecognitionResultDTO> recognitionResultList = Arrays.asList(
-//                new RecognitionResultDTO(1000L, null, null, null, null, null, null, null, null, null, null, null),
-//                new RecognitionResultDTO(1001L, null, null, null, null, null, null, null, null, null, null, null),
-//                new RecognitionResultDTO(1002L, null, null, null, null, null, null, null, null, null, null, null));
-//        when(service.findAllByUserId(anyLong())).thenReturn(recognitionResultList);
-//        // When
-//        ResponseEntity<List<RecognitionResultDTO>> requestResult = controller.findRecognitionResultsByUserId(randomUserId);
-//        // Then
-//        verify(service).findAllByUserId(randomUserId);
-//        assertTrue(requestResult.getStatusCode().equals(HttpStatus.OK));
-//        assertTrue(requestResult.getBody().equals(recognitionResultList));
+    void findRecognitionResultsByUserId_shouldReturnResponseEntityOfFoundRecognitionResults_ifRecognitionResultsExist() throws Exception {
+        // Given
+        List<RecognitionResultDTO> recognitionResultList = Arrays.asList(
+                recognitionResult,
+                new RecognitionResultDTO(1000L, null, null, null, null, null, null, null, null, null, null, null),
+                new RecognitionResultDTO(1001L, null, null, null, null, null, null, null, null, null, null, null));
+        Long userId = 999L;
+        when(service.findAllByUserId(userId)).thenReturn(recognitionResultList);
+        // When
+        // Then
+        mockMvc.perform(get("/recognitionResult/user/{userId}", userId))
+                .andDo(log())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(result -> result.getResponse().getContentAsString().contains(gson.toJson(recognitionResult)));
     }
 
     @Test

@@ -26,11 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.nulp.shymoniak.mastersproject.constant.ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND;
 import static org.junit.jupiter.api.Assertions.*;
@@ -91,24 +87,22 @@ class MLModelControllerTest {
                 .andExpect(result -> result.getResponse().getContentAsString().contains(gson.toJson(mlModel)));
     }
 
-    // TODO: 3/18/22 fix error, add wrong request case 
     @Test
     void findAllModelsByObservedObject_shouldReturnMLModelListAndStatusCode200_ifMLModelsExist() throws Exception {
-//        // Given
-//        List<MLModelDTO> mlModelList = Arrays.asList(
-//                mlModel,
-//                new MLModelDTO(1000L, null, null, null, null, null, null, null),
-//                new MLModelDTO(1001L, null, null, null, null, null, null, null));
-//        when(service.findAllModelsByObservedObject(any())).thenReturn(mlModelList);
-//        // When
-//        // Then
-//        mockMvc.perform(get("/mlModel/observedObject")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(gson.toJson("[]")))
-//                .andDo(log())
-//                .andExpect(status().isOk())
-//                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(result -> result.getResponse().getContentAsString().contains(gson.toJson(mlModel)));
+        // Given
+        List<MLModelDTO> mlModelList = Arrays.asList(
+                mlModel,
+                new MLModelDTO(1000L, null, null, null, null, null, null, null),
+                new MLModelDTO(1001L, null, null, null, null, null, null, null));
+        when(service.findAllModelsByObservedObject(any())).thenReturn(mlModelList);
+        // When
+        // Then
+        mockMvc.perform(get("/mlModel/observedObject")
+                        .param("observedObjectIdSet", ""))
+                .andDo(log())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(result -> result.getResponse().getContentAsString().contains(gson.toJson(mlModel)));
     }
 
     @Test
