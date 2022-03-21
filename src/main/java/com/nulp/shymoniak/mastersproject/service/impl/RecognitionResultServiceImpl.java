@@ -21,8 +21,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class RecognitionResultServiceImpl extends AbstractService<RecognitionResult, RecognitionResultDTO> implements RecognitionResultService {
-    private final RecognitionResultRepository recognitionResultRepository;
-    private final ApplicationUserRepository userRepository;
+    private RecognitionResultRepository recognitionResultRepository;
+    private ApplicationUserRepository userRepository;
 
     @Autowired
     public RecognitionResultServiceImpl(RecognitionResultRepository repository, RecognitionResultValidator validator, ApplicationUserRepository userRepository) {

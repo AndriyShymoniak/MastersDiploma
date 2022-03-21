@@ -40,7 +40,6 @@ class PersonServiceImplTest {
     static void beforeAll() {
         person = new Person(999L, "Vitalii", "Kachmar", "vitalii_k@mail.com");
         personDTO = new PersonDTO(999L, "Vitalii", "Kachmar", "vitalii_k@mail.com");
-
     }
 
     @BeforeEach

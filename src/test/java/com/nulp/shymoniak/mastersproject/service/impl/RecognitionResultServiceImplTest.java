@@ -18,16 +18,20 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-// TODO: 2/16/22 finish test
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
 class RecognitionResultServiceImplTest {
@@ -136,29 +140,75 @@ class RecognitionResultServiceImplTest {
         assertEquals(recognitionResultDTO, result);
     }
 
-//    @Test
-//    void findAllByUserId_shouldThrowException_IfUserDoNotExist() {
-//        // Given
-//        List<User> userList = generateTestUserListValues();
-//        for (User user : userList) {
-//            when(userRepository.findById(user.getUserId())).thenReturn(Optional.of(new User()));
-//        }
-//        when(repository.findAll()).thenReturn(generateTestRecognitionResultListValues(generateTestUserListValues()));
-//        when(userRepository.findAll()).thenReturn(userList);
-//        // When
-//        // Then
-//        assertThrows(ApiRequestException.class, () -> service.findAllByUserId(userList.get(0).getUserId()));
-//        assertThrows(ApiRequestException.class, () -> service.findAllByUserId(userList.get(1).getUserId()));
-//        assertThrows(ApiRequestException.class, () -> service.findAllByUserId(userList.get(2).getUserId()));
-//        verify(userRepository).findById(userList.get(0).getUserId());
-//        verify(userRepository).findById(userList.get(1).getUserId());
-//        verify(userRepository).findById(userList.get(2).getUserId());
-//    }
-//
-//    @Test
-//    void findAllGroupedByDate_shouldReturnRecognitionResultList_whenUpdateUserIdMatches() {
-//    }
+    @Test
+    void findAllByUserId_shouldReturnRecognitionResultListWhichUserCreatedOrUpdated_ifSuchRecordsExist() {
+        // Given
+        List<RecognitionResult> expectedResultList = Arrays.asList(
+                recognitionResult,
+                new RecognitionResult(1000L, null, null, null, null, null, null, null, null, null, null, null),
+                new RecognitionResult(1001L, null, null, null, null, null, null, null, null, null, null, null));
+        List<RecognitionResultDTO> expectedResultDtoList = Arrays.asList(
+                recognitionResultDTO,
+                new RecognitionResultDTO(1000L, null, null, null, null, null, null, null, null, null, null, null),
+                new RecognitionResultDTO(1001L, null, null, null, null, null, null, null, null, null, null, null));
 
+        Long userId = 999L;
+        when(userRepository.findById(userId)).thenReturn(Optional.of(new ApplicationUser()));
+        when(repository.findAllByCreateUserOrUpdateUser(any(), any())).thenReturn(expectedResultList);
+        when(mapper.mapToDTO(expectedResultList)).thenReturn(expectedResultDtoList);
+        // When
+        List<RecognitionResultDTO> result = service.findAllByUserId(userId);
+        // Then
+        assertEquals(expectedResultDtoList, result);
+    }
+
+    @Test
+    void findAllByUserId_shouldThrowException_IfUserDoesNotExist() {
+        // Given
+        Long userId = 999L;
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+        // When
+        // Then
+        assertThrows(ApiRequestException.class, () -> service.findAllByUserId(userId));
+    }
+
+    @Test
+    void findAllGroupedByDate_shouldReturnMapOfDateAndRecognitionResultList_whenCreateUserIdMatches() {
+        // Given
+        LocalDateTime today = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS);
+        LocalDateTime yesterday = LocalDateTime.now().minusDays(1).truncatedTo(ChronoUnit.DAYS);
+        List<RecognitionResult> recognitionResults = generateTestRecognitionResultListValues(today, yesterday);
+        List<RecognitionResultDTO> recognitionResultDTOList = generateTestRecognitionResultDTOListValues(today, yesterday);
+        when(repository.findAllForList()).thenReturn(recognitionResults);
+        when(mapper.mapToDTO(recognitionResults)).thenReturn(recognitionResultDTOList);
+        // When
+        Map<LocalDateTime, List<RecognitionResultDTO>> result = service.findAllGroupedByDate();
+        // Then
+        assertEquals(3, result.get(today).size());
+        assertEquals(2, result.get(yesterday).size());
+    }
+
+    private List<RecognitionResult> generateTestRecognitionResultListValues(LocalDateTime date1, LocalDateTime date2) {
+        List<ApplicationUser> users = generateTestUserListValues();
+        return Stream.of(
+                new RecognitionResult(1001L, "description ...", 1, 1, date1, null, null, null, null, users.get(0), users.get(1), null),
+                new RecognitionResult(1002L, "description ...", 1, 1, date1, null, null, null, null, users.get(0), users.get(1), null),
+                new RecognitionResult(1003L, "description ...", 1, 1, date1, null, null, null, null, users.get(1), users.get(2), null),
+                new RecognitionResult(1004L, "description ...", 1, 1, date2, null, null, null, null, users.get(1), users.get(2), null),
+                new RecognitionResult(1005L, "description ...", 1, 1, date2, null, null, null, null, users.get(1), users.get(2), null)
+        ).collect(Collectors.toList());
+    }
+
+    private List<RecognitionResultDTO> generateTestRecognitionResultDTOListValues(LocalDateTime date1, LocalDateTime date2) {
+        List<ApplicationUserDTO> users = generateTestUserDTOListValues();
+        return Stream.of(
+                new RecognitionResultDTO(1001L, "description ...", 1, 1, date1, null, null, null, null, users.get(0), users.get(1), null),
+                new RecognitionResultDTO(1002L, "description ...", 1, 1, date1, null, null, null, null, users.get(0), users.get(1), null),
+                new RecognitionResultDTO(1003L, "description ...", 1, 1, date1, null, null, null, null, users.get(1), users.get(2), null),
+                new RecognitionResultDTO(1004L, "description ...", 1, 1, date2, null, null, null, null, users.get(1), users.get(2), null),
+                new RecognitionResultDTO(1005L, "description ...", 1, 1, date2, null, null, null, null, users.get(1), users.get(2), null)
+        ).collect(Collectors.toList());
+    }
 
     private List<ApplicationUser> generateTestUserListValues() {
         return Stream.of(
@@ -173,26 +223,6 @@ class RecognitionResultServiceImplTest {
                 new ApplicationUserDTO(1000L, "Username1", "password", null, null, null),
                 new ApplicationUserDTO(1001L, "Username2", "password", null, null, null),
                 new ApplicationUserDTO(1002L, "Username3", "password", null, null, null)
-        ).collect(Collectors.toList());
-    }
-
-    private List<RecognitionResult> generateTestRecognitionResultListValues(List<ApplicationUser> users) {
-        return Stream.of(
-                new RecognitionResult(1001L, "description ...", 1, 1, null, null, null, null, null, users.get(0), users.get(1), null),
-                new RecognitionResult(1002L, "description ...", 1, 1, null, null, null, null, null, users.get(0), users.get(1), null),
-                new RecognitionResult(1003L, "description ...", 1, 1, null, null, null, null, null, users.get(1), users.get(2), null),
-                new RecognitionResult(1004L, "description ...", 1, 1, null, null, null, null, null, users.get(1), users.get(2), null),
-                new RecognitionResult(1005L, "description ...", 1, 1, null, null, null, null, null, users.get(1), users.get(2), null)
-        ).collect(Collectors.toList());
-    }
-
-    private List<RecognitionResultDTO> generateTestRecognitionResultDTOListValues(List<ApplicationUserDTO> users) {
-        return Stream.of(
-                new RecognitionResultDTO(1001L, "description ...", 1, 1, null, null, null, null, null, users.get(0), users.get(1), null),
-                new RecognitionResultDTO(1002L, "description ...", 1, 1, null, null, null, null, null, users.get(0), users.get(1), null),
-                new RecognitionResultDTO(1003L, "description ...", 1, 1, null, null, null, null, null, users.get(1), users.get(2), null),
-                new RecognitionResultDTO(1004L, "description ...", 1, 1, null, null, null, null, null, users.get(1), users.get(2), null),
-                new RecognitionResultDTO(1005L, "description ...", 1, 1, null, null, null, null, null, users.get(1), users.get(2), null)
         ).collect(Collectors.toList());
     }
 }
