@@ -5,6 +5,7 @@ import com.nulp.shymoniak.mastersproject.entity.ObservedObject;
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
 import com.nulp.shymoniak.mastersproject.mapping.ObservedObjectMapper;
 import com.nulp.shymoniak.mastersproject.repository.ObservedObjectRepository;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,24 +33,28 @@ class ObservedObjectServiceImplTest {
     @InjectMocks
     private ObservedObjectServiceImpl service;
     
-    private ObservedObject observedObject;
-    private ObservedObjectDTO observedObjectDTO;
+    private static ObservedObject observedObject;
+    private static ObservedObjectDTO observedObjectDTO;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
+    @BeforeAll
+    static void beforeAll() {
         observedObject = new ObservedObject(999L, "OBJ_NAME", null, null);
         observedObjectDTO = new ObservedObjectDTO(999L, "OBJ_NAME", null, null);
     }
 
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
+
     @Test
     void findById_shouldReturnObservedObject_IfFinds() {
-        // given
+        // Given
         when(repository.findById(observedObject.getObservedObjectId())).thenReturn(Optional.of(observedObject));
         when(mapper.mapToDTO(observedObject)).thenReturn(observedObjectDTO);
-        // when
+        // When
         ObservedObjectDTO result = service.findById(observedObject.getObservedObjectId());
-        // then
+        // Then
         verify(repository).findById(observedObject.getObservedObjectId());
         verify(mapper).mapToDTO(observedObject);
         assertEquals(observedObjectDTO, result);
@@ -57,22 +62,22 @@ class ObservedObjectServiceImplTest {
 
     @Test
     void findById_shouldThrowException_IfCanNotFind() {
-        // given
+        // Given
         when(repository.findById(observedObject.getObservedObjectId())).thenReturn(Optional.empty());
-        // when
-        // then
+        // When
+        // Then
         assertThrows(ApiRequestException.class, () -> service.findById(observedObject.getObservedObjectId()));
         verify(repository).findById(observedObject.getObservedObjectId());
     }
 
     @Test
     void createItem_shouldSaveObservedObject() {
-        // given
+        // Given
         when(mapper.mapToEntity(observedObjectDTO)).thenReturn(observedObject);
         when(mapper.mapToDTO(observedObject)).thenReturn(observedObjectDTO);
-        // when
+        // When
         ObservedObjectDTO result = service.createItem(observedObjectDTO);
-        // then
+        // Then
         verify(mapper).mapToEntity(observedObjectDTO);
         verify(mapper).mapToDTO(observedObject);
         verify(repository).save(observedObject);
@@ -81,15 +86,15 @@ class ObservedObjectServiceImplTest {
 
     @Test
     void updateItem_shouldUpdateObservedObject_ifExist() {
-        // given
+        // Given
         ObservedObject newObservedObjectEntity = new ObservedObject(999L, "NEW_OBJ_NAME", null, null);
         ObservedObjectDTO newObservedObjectDTO = new ObservedObjectDTO(999L, "NEW_OBJ_NAME", null, null);
         when(repository.existsById(observedObject.getObservedObjectId())).thenReturn(true);
         when(mapper.mapToEntity(newObservedObjectDTO)).thenReturn(newObservedObjectEntity);
         when(mapper.mapToDTO(newObservedObjectEntity)).thenReturn(newObservedObjectDTO);
-        // when
+        // When
         ObservedObjectDTO result = service.updateItem(newObservedObjectDTO);
-        // then
+        // Then
         verify(mapper).mapToEntity(newObservedObjectDTO);
         verify(repository).existsById(observedObject.getObservedObjectId());
         verify(repository).save(newObservedObjectEntity);
@@ -98,11 +103,11 @@ class ObservedObjectServiceImplTest {
 
     @Test
     void updateItem_shouldThrowException_ifDoesNotExist() {
-        // given
+        // Given
         when(mapper.mapToEntity(observedObjectDTO)).thenReturn(observedObject);
         when(repository.existsById(observedObject.getObservedObjectId())).thenReturn(false);
-        // when
-        // then
+        // When
+        // Then
         assertThrows(ApiRequestException.class, () -> service.updateItem(observedObjectDTO));
         verify(mapper).mapToEntity(observedObjectDTO);
         verify(repository).existsById(observedObject.getObservedObjectId());
@@ -110,12 +115,12 @@ class ObservedObjectServiceImplTest {
 
     @Test
     void deleteItem_shouldDeleteObservedObject_IfFinds() {
-        // given
+        // Given
         when(repository.findById(observedObject.getObservedObjectId())).thenReturn(Optional.of(observedObject));
         when(mapper.mapToDTO(observedObject)).thenReturn(observedObjectDTO);
-        // when
+        // When
         ObservedObjectDTO result = service.deleteItem(observedObject.getObservedObjectId());
-        // then
+        // Then
         verify(repository).findById(observedObject.getObservedObjectId());
         verify(repository).deleteById(observedObject.getObservedObjectId());
         assertEquals(observedObjectDTO, result);

@@ -5,6 +5,7 @@ import com.nulp.shymoniak.mastersproject.entity.Location;
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
 import com.nulp.shymoniak.mastersproject.mapping.LocationMapper;
 import com.nulp.shymoniak.mastersproject.repository.LocationRepository;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,24 +32,28 @@ class LocationServiceImplTest {
     @InjectMocks
     private LocationServiceImpl service;
 
-    private Location location;
-    private LocationDTO locationDTO;
+    private static Location location;
+    private static LocationDTO locationDTO;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
+    @BeforeAll
+    static void beforeAll() {
         location = new Location(999L, "39.12345", "39.12345");
         locationDTO = new LocationDTO(999L, "39.12345", "39.12345");
     }
 
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
+
     @Test
     void findById_shouldReturnLocation_IfFinds() {
-        // given
+        // Given
         when(repository.findById(location.getLocationId())).thenReturn(Optional.of(location));
         when(mapper.mapToDTO(location)).thenReturn(locationDTO);
-        // when
+        // When
         LocationDTO result = service.findById(location.getLocationId());
-        // then
+        // Then
         verify(repository).findById(location.getLocationId());
         verify(mapper).mapToDTO(location);
         assertEquals(locationDTO, result);
@@ -56,22 +61,22 @@ class LocationServiceImplTest {
 
     @Test
     void findById_shouldThrowException_IfCanNotFind() {
-        // given
+        // Given
         when(repository.findById(location.getLocationId())).thenReturn(Optional.empty());
-        // when
-        // then
+        // When
+        // Then
         assertThrows(ApiRequestException.class, () -> service.findById(location.getLocationId()));
         verify(repository).findById(location.getLocationId());
     }
 
     @Test
     void createItem_shouldSaveLocation() {
-        // given
+        // Given
         when(mapper.mapToEntity(locationDTO)).thenReturn(location);
         when(mapper.mapToDTO(location)).thenReturn(locationDTO);
-        // when
+        // When
         LocationDTO result = service.createItem(locationDTO);
-        // then
+        // Then
         verify(mapper).mapToEntity(locationDTO);
         verify(mapper).mapToDTO(location);
         verify(repository).save(location);
@@ -80,15 +85,15 @@ class LocationServiceImplTest {
 
     @Test
     void updateItem_shouldUpdateLocation_ifExist() {
-        // given
+        // Given
         Location newLocationEntity = new Location(999L, "40.54321", "40.54321");
         LocationDTO newLocationDTO = new LocationDTO(999L, "40.54321", "40.54321");
         when(repository.existsById(location.getLocationId())).thenReturn(true);
         when(mapper.mapToEntity(newLocationDTO)).thenReturn(newLocationEntity);
         when(mapper.mapToDTO(newLocationEntity)).thenReturn(newLocationDTO);
-        // when
+        // When
         LocationDTO result = service.updateItem(newLocationDTO);
-        // then
+        // Then
         verify(mapper).mapToEntity(newLocationDTO);
         verify(repository).existsById(location.getLocationId());
         verify(repository).save(newLocationEntity);
@@ -97,11 +102,11 @@ class LocationServiceImplTest {
 
     @Test
     void updateItem_shouldThrowException_ifDoesNotExist() {
-        // given
+        // Given
         when(mapper.mapToEntity(locationDTO)).thenReturn(location);
         when(repository.existsById(location.getLocationId())).thenReturn(false);
-        // when
-        // then
+        // When
+        // Then
         assertThrows(ApiRequestException.class, () -> service.updateItem(locationDTO));
         verify(mapper).mapToEntity(locationDTO);
         verify(repository).existsById(location.getLocationId());
@@ -109,12 +114,12 @@ class LocationServiceImplTest {
 
     @Test
     void deleteItem_shouldDeleteLocation_IfFinds() {
-        // given
+        // Given
         when(repository.findById(location.getLocationId())).thenReturn(Optional.of(location));
         when(mapper.mapToDTO(location)).thenReturn(locationDTO);
-        // when
+        // When
         LocationDTO result = service.deleteItem(location.getLocationId());
-        // then
+        // Then
         verify(repository).findById(location.getLocationId());
         verify(repository).deleteById(location.getLocationId());
         assertEquals(locationDTO, result);

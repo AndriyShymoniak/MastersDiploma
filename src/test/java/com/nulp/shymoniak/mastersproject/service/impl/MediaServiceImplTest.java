@@ -5,6 +5,7 @@ import com.nulp.shymoniak.mastersproject.entity.Media;
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
 import com.nulp.shymoniak.mastersproject.mapping.MediaMapper;
 import com.nulp.shymoniak.mastersproject.repository.MediaRepository;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,24 +33,28 @@ class MediaServiceImplTest {
     @InjectMocks
     private MediaServiceImpl service;
 
-    private Media media;
-    private MediaDTO mediaDTO;
+    private static Media media;
+    private static MediaDTO mediaDTO;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
+    @BeforeAll
+    static void beforeAll() {
         media = new Media(999L, "https://shorturl.at/elnI5", "https://shorturl.at/elnI5", null, null);
         mediaDTO = new MediaDTO(999L, "https://shorturl.at/elnI5", "https://shorturl.at/elnI5", null, null);
     }
 
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
+
     @Test
     void findById_shouldReturnMedia_IfFinds() {
-        // given
+        // Given
         when(repository.findById(media.getMediaId())).thenReturn(Optional.of(media));
         when(mapper.mapToDTO(media)).thenReturn(mediaDTO);
-        // when
+        // When
         MediaDTO result = service.findById(media.getMediaId());
-        // then
+        // Then
         verify(repository).findById(media.getMediaId());
         verify(mapper).mapToDTO(media);
         assertEquals(mediaDTO, result);
@@ -57,22 +62,22 @@ class MediaServiceImplTest {
 
     @Test
     void findById_shouldThrowException_IfCanNotFind() {
-        // given
+        // Given
         when(repository.findById(media.getMediaId())).thenReturn(Optional.empty());
-        // when
-        // then
+        // When
+        // Then
         assertThrows(ApiRequestException.class, () -> service.findById(media.getMediaId()));
         verify(repository).findById(media.getMediaId());
     }
 
     @Test
     void createItem_shouldSaveMedia() {
-        // given
+        // Given
         when(mapper.mapToEntity(mediaDTO)).thenReturn(media);
         when(mapper.mapToDTO(media)).thenReturn(mediaDTO);
-        // when
+        // When
         MediaDTO result = service.createItem(mediaDTO);
-        // then
+        // Then
         verify(mapper).mapToEntity(mediaDTO);
         verify(mapper).mapToDTO(media);
         verify(repository).save(media);
@@ -81,15 +86,15 @@ class MediaServiceImplTest {
 
     @Test
     void updateItem_shouldUpdateMedia_ifExist() {
-        // given
+        // Given
         Media newMediaEntity = new Media(999L, "https://github.com/", "", null, null);
         MediaDTO newMediaDTO = new MediaDTO(999L, "https://github.com/", "", null, null);
         when(repository.existsById(media.getMediaId())).thenReturn(true);
         when(mapper.mapToEntity(newMediaDTO)).thenReturn(newMediaEntity);
         when(mapper.mapToDTO(newMediaEntity)).thenReturn(newMediaDTO);
-        // when
+        // When
         MediaDTO result = service.updateItem(newMediaDTO);
-        // then
+        // Then
         verify(mapper).mapToEntity(newMediaDTO);
         verify(repository).existsById(media.getMediaId());
         verify(repository).save(newMediaEntity);
@@ -98,11 +103,11 @@ class MediaServiceImplTest {
 
     @Test
     void updateItem_shouldThrowException_ifDoesNotExist() {
-        // given
+        // Given
         when(mapper.mapToEntity(mediaDTO)).thenReturn(media);
         when(repository.existsById(media.getMediaId())).thenReturn(false);
-        // when
-        // then
+        // When
+        // Then
         assertThrows(ApiRequestException.class, () -> service.updateItem(mediaDTO));
         verify(mapper).mapToEntity(mediaDTO);
         verify(repository).existsById(media.getMediaId());
@@ -110,12 +115,12 @@ class MediaServiceImplTest {
 
     @Test
     void deleteItem_shouldDeleteMedia_IfFinds() {
-        // given
+        // Given
         when(repository.findById(media.getMediaId())).thenReturn(Optional.of(media));
         when(mapper.mapToDTO(media)).thenReturn(mediaDTO);
-        // when
+        // When
         MediaDTO result = service.deleteItem(media.getMediaId());
-        // then
+        // Then
         verify(repository).findById(media.getMediaId());
         verify(repository).deleteById(media.getMediaId());
         assertEquals(mediaDTO, result);

@@ -9,6 +9,7 @@ import com.nulp.shymoniak.mastersproject.entity.ObservedObject;
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
 import com.nulp.shymoniak.mastersproject.mapping.MLModelMapper;
 import com.nulp.shymoniak.mastersproject.repository.MLModelRepository;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,7 +21,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -40,28 +40,32 @@ class MLModelServiceImplTest {
     @InjectMocks
     private MLModelServiceImpl service;
 
-    private MLModel mlModel;
-    private MLModelDTO mlModelDTO;
-    private List<ObservedObject> observedObjectList;
-    private List<ObservedObjectDTO> observedObjectDTOList;
+    private static MLModel mlModel;
+    private static MLModelDTO mlModelDTO;
+    private static List<ObservedObject> observedObjectList;
+    private static List<ObservedObjectDTO> observedObjectDTOList;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
+    @BeforeAll
+    static void beforeAll() {
         mlModel = new MLModel(999L, "MODEL_NAME", "https://github.com/", 1, 1, null, null, null);
         mlModelDTO = new MLModelDTO(999L, "MODEL_NAME", "https://github.com/", 1, 1, null, null, null);
         observedObjectList = generateTestValuesForObservedObject();
         observedObjectDTOList = generateTestValuesForObservedObjectDTO();
     }
 
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
+
     @Test
     void findById_shouldReturnMLModel_IfFinds() {
-        // given
+        // Given
         when(repository.findById(mlModel.getMlModelId())).thenReturn(Optional.of(mlModel));
         when(mapper.mapToDTO(mlModel)).thenReturn(mlModelDTO);
-        // when
+        // When
         MLModelDTO result = service.findById(mlModel.getMlModelId());
-        // then
+        // Then
         verify(repository).findById(mlModel.getMlModelId());
         verify(mapper).mapToDTO(mlModel);
         assertEquals(mlModelDTO, result);
@@ -69,22 +73,22 @@ class MLModelServiceImplTest {
 
     @Test
     void findById_shouldThrowException_IfCanNotFind() {
-        // given
+        // Given
         when(repository.findById(mlModel.getMlModelId())).thenReturn(Optional.empty());
-        // when
-        // then
+        // When
+        // Then
         assertThrows(ApiRequestException.class, () -> service.findById(mlModel.getMlModelId()));
         verify(repository).findById(mlModel.getMlModelId());
     }
 
     @Test
     void createItem_shouldSaveMLModel() {
-        // given
+        // Given
         when(mapper.mapToEntity(mlModelDTO)).thenReturn(mlModel);
         when(mapper.mapToDTO(mlModel)).thenReturn(mlModelDTO);
-        // when
+        // When
         MLModelDTO result = service.createItem(mlModelDTO);
-        // then
+        // Then
         verify(mapper).mapToEntity(mlModelDTO);
         verify(mapper).mapToDTO(mlModel);
         verify(repository).save(mlModel);
@@ -93,15 +97,15 @@ class MLModelServiceImplTest {
 
     @Test
     void updateItem_shouldUpdateMLModel_ifExist() {
-        // given
+        // Given
         MLModel newMLModelEntity = new MLModel(999L, "NEW_MODEL_NAME", "https://github.com/", 1, 1, null, null, null);
         MLModelDTO newMLModelDTO = new MLModelDTO(999L, "NEW_MODEL_NAME", "https://github.com/", 1, 1, null, null, null);
         when(repository.existsById(mlModel.getMlModelId())).thenReturn(true);
         when(mapper.mapToEntity(newMLModelDTO)).thenReturn(newMLModelEntity);
         when(mapper.mapToDTO(newMLModelEntity)).thenReturn(newMLModelDTO);
-        // when
+        // When
         MLModelDTO result = service.updateItem(newMLModelDTO);
-        // then
+        // Then
         verify(mapper).mapToEntity(newMLModelDTO);
         verify(repository).existsById(mlModel.getMlModelId());
         verify(repository).save(newMLModelEntity);
@@ -110,11 +114,11 @@ class MLModelServiceImplTest {
 
     @Test
     void updateItem_shouldThrowException_ifDoesNotExist() {
-        // given
+        // Given
         when(mapper.mapToEntity(mlModelDTO)).thenReturn(mlModel);
         when(repository.existsById(mlModel.getMlModelId())).thenReturn(false);
-        // when
-        // then
+        // When
+        // Then
         assertThrows(ApiRequestException.class, () -> service.updateItem(mlModelDTO));
         verify(mapper).mapToEntity(mlModelDTO);
         verify(repository).existsById(mlModel.getMlModelId());
@@ -122,12 +126,12 @@ class MLModelServiceImplTest {
 
     @Test
     void deleteItem_shouldDeleteMLModel_IfFinds() {
-        // given
+        // Given
         when(repository.findById(mlModel.getMlModelId())).thenReturn(Optional.of(mlModel));
         when(mapper.mapToDTO(mlModel)).thenReturn(mlModelDTO);
-        // when
+        // When
         MLModelDTO result = service.deleteItem(mlModel.getMlModelId());
-        // then
+        // Then
         verify(repository).findById(mlModel.getMlModelId());
         verify(repository).deleteById(mlModel.getMlModelId());
         assertEquals(mlModelDTO, result);
@@ -136,7 +140,7 @@ class MLModelServiceImplTest {
     // TODO: 2/17/22 rewrite test
     @Test
     void findAllModelsByObservedObject_shouldReturnMLModels_ifTheyContainAllObservedObjects() {
-//        // given
+//        // Given
 //        List<MLModel> mlModelList = generateTestValuesForMLModelList(observedObjectList);
 //        List<MLModelDTO> mlModelDTOList = generateTestValuesForMLModelDTOList(observedObjectDTOList);
 //        Set<Long> observedObjectIdSet = Stream.of(
@@ -147,9 +151,9 @@ class MLModelServiceImplTest {
 //        List<MLModel> mockedMlModelList = Stream.of(mlModelList.get(0), mlModelList.get(1), mlModelList.get(3)).collect(Collectors.toList());
 //        List<MLModelDTO> mockedMlModelDTOList = Stream.of(mlModelDTOList.get(0), mlModelDTOList.get(1), mlModelDTOList.get(3)).collect(Collectors.toList());
 //        when(mapper.mapToDTO(mockedMlModelList)).thenReturn(mockedMlModelDTOList);
-//        // when
+//        // When
 //        List<MLModelDTO> result = service.findAllModelsByObservedObject(observedObjectIdSet);
-//        // then
+//        // Then
 //        verify(repository).findAllActiveModels();
 //        assertTrue(result.contains(mlModelDTOList.get(0)));
 //        assertTrue(result.contains(mlModelDTOList.get(1)));
@@ -158,7 +162,7 @@ class MLModelServiceImplTest {
 //        assertFalse(result.contains(mlModelDTOList.get(4)));
     }
 
-    private List<ObservedObjectDTO> generateTestValuesForObservedObjectDTO() {
+    private static List<ObservedObjectDTO> generateTestValuesForObservedObjectDTO() {
         // ObservedObject instances
         ObservedObjectDTO observedObject1 = new ObservedObjectDTO(1000L, "OBJ_NAME", null, null);
         ObservedObjectDTO observedObject2 = new ObservedObjectDTO(1001L, "OBJ_NAME", null, null);
@@ -169,7 +173,7 @@ class MLModelServiceImplTest {
                 .collect(Collectors.toList());
     }
 
-    private List<ObservedObject> generateTestValuesForObservedObject() {
+    private static List<ObservedObject> generateTestValuesForObservedObject() {
         // ObservedObject instances
         ObservedObject observedObject1 = new ObservedObject(1000L, "OBJ_NAME", null, null);
         ObservedObject observedObject2 = new ObservedObject(1001L, "OBJ_NAME", null, null);

@@ -20,12 +20,12 @@ class RecognitionResultValidatorTest {
 
     @Test
     void validateRecognitionResultDescription() {
-        // given
+        // Given
         RecognitionResultDTO invalidRecognitionResult1 = new RecognitionResultDTO(999L, null, 1, 1, LocalDateTime.now(), null, new MLModelDTO(), new MediaDTO(), new LocationDTO(), new ApplicationUserDTO(), null, null);
         RecognitionResultDTO invalidRecognitionResult2 = new RecognitionResultDTO(999L, "", 1, 1, LocalDateTime.now(), null, new MLModelDTO(), new MediaDTO(), new LocationDTO(), new ApplicationUserDTO(), null, null);
         RecognitionResultDTO invalidRecognitionResult3 = new RecognitionResultDTO(999L, "   ", 1, 1, LocalDateTime.now(), null, new MLModelDTO(), new MediaDTO(), new LocationDTO(), new ApplicationUserDTO(), null, null);
         RecognitionResultDTO validRecognitionResult1 = new RecognitionResultDTO(999L, "Random description text", 1, 1, LocalDateTime.now(), null, new MLModelDTO(), new MediaDTO(), new LocationDTO(), new ApplicationUserDTO(), null, null);
-        // then
+        // Then
         assertFalse(recognitionResultValidator.isValid(invalidRecognitionResult1));
         assertFalse(recognitionResultValidator.isValid(invalidRecognitionResult2));
         assertFalse(recognitionResultValidator.isValid(invalidRecognitionResult3));

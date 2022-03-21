@@ -65,27 +65,27 @@ class ServiceValidatorAspectImplTest {
 
     @Test
     void validateDTOs_shouldNotThrowException_whenDTOIsValid() {
-        // given
+        // Given
         when(aspectUtility.getInstanceOfClassWithJoinPoint(any())).thenReturn(recognitionResultServiceImpl);
         when(aspectUtility.getDTOEntityFromParameters(any())).thenReturn(recognitionResultDTO);
         when(validator.isValid(any())).thenReturn(true);
         when(mapper.mapToEntity(recognitionResultDTO)).thenReturn(recognitionResultEntity);
         when(mapper.mapToDTO(recognitionResultEntity)).thenReturn(recognitionResultDTO);
         when(repository.existsById(recognitionResultEntity.getRecognitionResultId())).thenReturn(true);
-        // when
-        // then
+        // When
+        // Then
         serviceProxy.createItem(recognitionResultDTO);
         serviceProxy.updateItem(recognitionResultDTO);
     }
 
     @Test
     void validateDTOs_shouldThrowException_whenDTOIsInvalid() {
-        // given
+        // Given
         when(aspectUtility.getInstanceOfClassWithJoinPoint(any())).thenReturn(recognitionResultServiceImpl);
         when(aspectUtility.getDTOEntityFromParameters(any())).thenReturn(recognitionResultDTO);
         when(validator.isValid(any())).thenReturn(false);
-        // when
-        // then
+        // When
+        // Then
         assertThrows(Exception.class, () -> serviceProxy.createItem(recognitionResultDTO));
         assertThrows(Exception.class, () -> serviceProxy.updateItem(recognitionResultDTO));
     }

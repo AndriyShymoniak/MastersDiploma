@@ -25,13 +25,13 @@ class LocationValidatorTest {
 
     @Test
     public void validateLongitudeAndLatitude(){
-        // given
+        // Given
         LocationDTO invalidLocation1 = new LocationDTO(999L, null, validLocationValue);
         LocationDTO invalidLocation2 = new LocationDTO(999L, "", validLocationValue);
         LocationDTO invalidLocation3 = new LocationDTO(999L, validLocationValue, null);
         LocationDTO invalidLocation4 = new LocationDTO(999L, validLocationValue, "");
         LocationDTO validLocation1 = new LocationDTO(999L, validLocationValue, validLocationValue);
-        // then
+        // Then
         assertFalse(locationValidator.isValid(invalidLocation1));
         assertFalse(locationValidator.isValid(invalidLocation2));
         assertFalse(locationValidator.isValid(invalidLocation3));

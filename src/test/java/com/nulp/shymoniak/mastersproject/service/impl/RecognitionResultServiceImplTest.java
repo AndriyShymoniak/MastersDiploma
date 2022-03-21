@@ -8,6 +8,7 @@ import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
 import com.nulp.shymoniak.mastersproject.mapping.RecognitionResultMapper;
 import com.nulp.shymoniak.mastersproject.repository.RecognitionResultRepository;
 import com.nulp.shymoniak.mastersproject.repository.ApplicationUserRepository;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,24 +43,28 @@ class RecognitionResultServiceImplTest {
     @InjectMocks
     private RecognitionResultServiceImpl service;
 
-    private RecognitionResult recognitionResult;
-    private RecognitionResultDTO recognitionResultDTO;
+    private static RecognitionResult recognitionResult;
+    private static RecognitionResultDTO recognitionResultDTO;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
+    @BeforeAll
+    static void beforeAll() {
         recognitionResult = new RecognitionResult(999L, "description ... ", 1, 1, null, null, null, null, null, null, null, null);
         recognitionResultDTO = new RecognitionResultDTO(999L, "description ... ", 1, 1, null, null, null, null, null, null, null, null);
     }
 
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
+
     @Test
     void findById_shouldReturnRecognitionResult_IfFinds() {
-        // given
+        // Given
         when(repository.findById(recognitionResult.getRecognitionResultId())).thenReturn(Optional.of(recognitionResult));
         when(mapper.mapToDTO(recognitionResult)).thenReturn(recognitionResultDTO);
-        // when
+        // When
         RecognitionResultDTO result = service.findById(recognitionResult.getRecognitionResultId());
-        // then
+        // Then
         verify(repository).findById(recognitionResult.getRecognitionResultId());
         verify(mapper).mapToDTO(recognitionResult);
         assertEquals(recognitionResultDTO, result);
@@ -67,22 +72,22 @@ class RecognitionResultServiceImplTest {
 
     @Test
     void findById_shouldThrowException_IfCanNotFind() {
-        // given
+        // Given
         when(repository.findById(recognitionResult.getRecognitionResultId())).thenReturn(Optional.empty());
-        // when
-        // then
+        // When
+        // Then
         assertThrows(ApiRequestException.class, () -> service.findById(recognitionResult.getRecognitionResultId()));
         verify(repository).findById(recognitionResult.getRecognitionResultId());
     }
 
     @Test
     void createItem_shouldSaveRecognitionResult() {
-        // given
+        // Given
         when(mapper.mapToEntity(recognitionResultDTO)).thenReturn(recognitionResult);
         when(mapper.mapToDTO(recognitionResult)).thenReturn(recognitionResultDTO);
-        // when
+        // When
         RecognitionResultDTO result = service.createItem(recognitionResultDTO);
-        // then
+        // Then
         verify(mapper).mapToEntity(recognitionResultDTO);
         verify(mapper).mapToDTO(recognitionResult);
         verify(repository).save(recognitionResult);
@@ -91,15 +96,15 @@ class RecognitionResultServiceImplTest {
 
     @Test
     void updateItem_shouldUpdateRecognitionResult_ifExist() {
-        // given
+        // Given
         RecognitionResult newRecognitionResultEntity = new RecognitionResult(999L, "new description ... ", 1, 1, null, null, null, null, null, null, null, null);
         RecognitionResultDTO newRecognitionResultDTO = new RecognitionResultDTO(999L, "new description ... ", 1, 1, null, null, null, null, null, null, null, null);
         when(repository.existsById(recognitionResult.getRecognitionResultId())).thenReturn(true);
         when(mapper.mapToEntity(newRecognitionResultDTO)).thenReturn(newRecognitionResultEntity);
         when(mapper.mapToDTO(newRecognitionResultEntity)).thenReturn(newRecognitionResultDTO);
-        // when
+        // When
         RecognitionResultDTO result = service.updateItem(newRecognitionResultDTO);
-        // then
+        // Then
         verify(mapper).mapToEntity(newRecognitionResultDTO);
         verify(repository).existsById(recognitionResult.getRecognitionResultId());
         verify(repository).save(newRecognitionResultEntity);
@@ -108,11 +113,11 @@ class RecognitionResultServiceImplTest {
 
     @Test
     void updateItem_shouldThrowException_ifDoesNotExist() {
-        // given
+        // Given
         when(mapper.mapToEntity(recognitionResultDTO)).thenReturn(recognitionResult);
         when(repository.existsById(recognitionResult.getRecognitionResultId())).thenReturn(false);
-        // when
-        // then
+        // When
+        // Then
         assertThrows(ApiRequestException.class, () -> service.updateItem(recognitionResultDTO));
         verify(mapper).mapToEntity(recognitionResultDTO);
         verify(repository).existsById(recognitionResult.getRecognitionResultId());
@@ -120,12 +125,12 @@ class RecognitionResultServiceImplTest {
 
     @Test
     void deleteItem_shouldDeleteRecognitionResult_IfFinds() {
-        // given
+        // Given
         when(repository.findById(recognitionResult.getRecognitionResultId())).thenReturn(Optional.of(recognitionResult));
         when(mapper.mapToDTO(recognitionResult)).thenReturn(recognitionResultDTO);
-        // when
+        // When
         RecognitionResultDTO result = service.deleteItem(recognitionResult.getRecognitionResultId());
-        // then
+        // Then
         verify(repository).findById(recognitionResult.getRecognitionResultId());
         verify(repository).deleteById(recognitionResult.getRecognitionResultId());
         assertEquals(recognitionResultDTO, result);
@@ -133,15 +138,15 @@ class RecognitionResultServiceImplTest {
 
 //    @Test
 //    void findAllByUserId_shouldThrowException_IfUserDoNotExist() {
-//        // given
+//        // Given
 //        List<User> userList = generateTestUserListValues();
 //        for (User user : userList) {
 //            when(userRepository.findById(user.getUserId())).thenReturn(Optional.of(new User()));
 //        }
 //        when(repository.findAll()).thenReturn(generateTestRecognitionResultListValues(generateTestUserListValues()));
 //        when(userRepository.findAll()).thenReturn(userList);
-//        // when
-//        // then
+//        // When
+//        // Then
 //        assertThrows(ApiRequestException.class, () -> service.findAllByUserId(userList.get(0).getUserId()));
 //        assertThrows(ApiRequestException.class, () -> service.findAllByUserId(userList.get(1).getUserId()));
 //        assertThrows(ApiRequestException.class, () -> service.findAllByUserId(userList.get(2).getUserId()));

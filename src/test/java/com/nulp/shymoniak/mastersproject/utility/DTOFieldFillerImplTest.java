@@ -18,17 +18,17 @@ class DTOFieldFillerImplTest {
 
     @Test
     void fillCreateFields_shouldFillCreateDateField_IfExists() {
-        // given
+        // Given
         MediaDTO media = new MediaDTO();
         MLModelDTO mlModel = new MLModelDTO();
         RecognitionResultDTO recognitionResult = new RecognitionResultDTO();
         ApplicationUserDTO user = new ApplicationUserDTO();
-        // when
+        // When
         media = (MediaDTO) fieldFiller.fillCreateFields(media);
         mlModel = (MLModelDTO) fieldFiller.fillCreateFields(mlModel);
         recognitionResult = (RecognitionResultDTO) fieldFiller.fillCreateFields(recognitionResult);
         user = (ApplicationUserDTO) fieldFiller.fillCreateFields(user);
-        // then
+        // Then
         assertNotNull(media.getCreateDate());
         assertNotNull(mlModel.getCreateDate());
         assertNotNull(recognitionResult.getCreateDate());
@@ -37,11 +37,11 @@ class DTOFieldFillerImplTest {
 
     @Test
     void fillUpdateFields_shouldFillUpdateDateField_IfExists() {
-        // given
+        // Given
         RecognitionResultDTO recognitionResult = new RecognitionResultDTO();
-        // when
+        // When
         recognitionResult = (RecognitionResultDTO) fieldFiller.fillUpdateFields(recognitionResult);
-        // then
+        // Then
         assertNotNull(recognitionResult.getUpdateDate());
     }
 }

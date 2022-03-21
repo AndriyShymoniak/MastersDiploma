@@ -5,6 +5,7 @@ import com.nulp.shymoniak.mastersproject.entity.ApplicationUser;
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
 import com.nulp.shymoniak.mastersproject.mapping.UserMapper;
 import com.nulp.shymoniak.mastersproject.repository.ApplicationUserRepository;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,24 +33,28 @@ class ApplicationUserServiceImplTest {
     @InjectMocks
     private ApplicationUserServiceImpl service;
     
-    private ApplicationUser user;
-    private ApplicationUserDTO userDTO;
+    private static ApplicationUser user;
+    private static ApplicationUserDTO userDTO;
 
+    @BeforeAll
+    static void beforeAll() {
+        user = new ApplicationUser(999L, "Username", "password", null, null, null);
+        userDTO = new ApplicationUserDTO(999L, "Username", "password", null, null, null);
+    }
+    
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        user = new ApplicationUser(999L, "Username", "password", null, null, null);
-        userDTO = new ApplicationUserDTO(999L, "Username", "password", null, null, null);
     }
 
     @Test
     void findById_shouldReturnUser_IfFinds() {
-        // given
+        // Given
         when(repository.findById(user.getUserId())).thenReturn(Optional.of(user));
         when(mapper.mapToDTO(user)).thenReturn(userDTO);
-        // when
+        // When
         ApplicationUserDTO result = service.findById(user.getUserId());
-        // then
+        // Then
         verify(repository).findById(user.getUserId());
         verify(mapper).mapToDTO(user);
         assertEquals(userDTO, result);
@@ -57,22 +62,22 @@ class ApplicationUserServiceImplTest {
 
     @Test
     void findById_shouldThrowException_IfCanNotFind() {
-        // given
+        // Given
         when(repository.findById(user.getUserId())).thenReturn(Optional.empty());
-        // when
-        // then
+        // When
+        // Then
         assertThrows(ApiRequestException.class, () -> service.findById(user.getUserId()));
         verify(repository).findById(user.getUserId());
     }
 
     @Test
     void createItem_shouldSaveUser() {
-        // given
+        // Given
         when(mapper.mapToEntity(userDTO)).thenReturn(user);
         when(mapper.mapToDTO(user)).thenReturn(userDTO);
-        // when
+        // When
         ApplicationUserDTO result = service.createItem(userDTO);
-        // then
+        // Then
         verify(mapper).mapToEntity(userDTO);
         verify(mapper).mapToDTO(user);
         verify(repository).save(user);
@@ -81,15 +86,15 @@ class ApplicationUserServiceImplTest {
 
     @Test
     void updateItem_shouldUpdateUser_ifExist() {
-        // given
+        // Given
         ApplicationUser newUserEntity = new ApplicationUser(999L, "NewUsername", "password", null, null, null);
         ApplicationUserDTO newUserDTO = new ApplicationUserDTO(999L, "NewUsername", "password", null, null, null);
         when(repository.existsById(user.getUserId())).thenReturn(true);
         when(mapper.mapToEntity(newUserDTO)).thenReturn(newUserEntity);
         when(mapper.mapToDTO(newUserEntity)).thenReturn(newUserDTO);
-        // when
+        // When
         ApplicationUserDTO result = service.updateItem(newUserDTO);
-        // then
+        // Then
         verify(mapper).mapToEntity(newUserDTO);
         verify(repository).existsById(user.getUserId());
         verify(repository).save(newUserEntity);
@@ -98,11 +103,11 @@ class ApplicationUserServiceImplTest {
 
     @Test
     void updateItem_shouldThrowException_ifDoesNotExist() {
-        // given
+        // Given
         when(mapper.mapToEntity(userDTO)).thenReturn(user);
         when(repository.existsById(user.getUserId())).thenReturn(false);
-        // when
-        // then
+        // When
+        // Then
         assertThrows(ApiRequestException.class, () -> service.updateItem(userDTO));
         verify(mapper).mapToEntity(userDTO);
         verify(repository).existsById(user.getUserId());
@@ -110,12 +115,12 @@ class ApplicationUserServiceImplTest {
 
     @Test
     void deleteItem_shouldDeleteUser_IfFinds() {
-        // given
+        // Given
         when(repository.findById(user.getUserId())).thenReturn(Optional.of(user));
         when(mapper.mapToDTO(user)).thenReturn(userDTO);
-        // when
+        // When
         ApplicationUserDTO result = service.deleteItem(user.getUserId());
-        // then
+        // Then
         verify(repository).findById(user.getUserId());
         verify(repository).deleteById(user.getUserId());
         assertEquals(userDTO, result);

@@ -28,7 +28,7 @@ class MediaValidatorTest {
 
     @Test
     void validateMediaURL() {
-        // given
+        // Given
         MediaDTO invalidMedia1 = new MediaDTO(999L, null, validUrl, LocalDateTime.now(), new ApplicationUserDTO());
         MediaDTO invalidMedia2 = new MediaDTO(999L, "", validUrl, LocalDateTime.now(), new ApplicationUserDTO());
         MediaDTO invalidMedia3 = new MediaDTO(999L, "random word", validUrl, LocalDateTime.now(), new ApplicationUserDTO());
@@ -36,7 +36,7 @@ class MediaValidatorTest {
         MediaDTO invalidMedia5 = new MediaDTO(999L, validUrl, "", LocalDateTime.now(), new ApplicationUserDTO());
         MediaDTO invalidMedia6 = new MediaDTO(999L, validUrl, "random word", LocalDateTime.now(), new ApplicationUserDTO());
         MediaDTO validMedia1 = new MediaDTO(999L, validUrl, validUrl, LocalDateTime.now(), new ApplicationUserDTO());
-        // then
+        // Then
         assertFalse(mediaValidator.isValid(invalidMedia1));
         assertFalse(mediaValidator.isValid(invalidMedia2));
         assertFalse(mediaValidator.isValid(invalidMedia3));

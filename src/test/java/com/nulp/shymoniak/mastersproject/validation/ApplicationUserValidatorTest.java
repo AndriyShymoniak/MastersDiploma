@@ -29,11 +29,11 @@ class ApplicationUserValidatorTest {
 
     @Test
     public void validateUsernameOnNotBeingBlank() {
-        // given
+        // Given
         ApplicationUserDTO invalidUser1 = new ApplicationUserDTO(999L, null, "password", LocalDateTime.now(), null, null);
         ApplicationUserDTO invalidUser2 = new ApplicationUserDTO(999L, "", "password", LocalDateTime.now(), null, null);
         ApplicationUserDTO validUser1 = new ApplicationUserDTO(999L, "username", "password", LocalDateTime.now(), null, null);
-        // then
+        // Then
         assertFalse(userValidator.isValid(invalidUser1));
         assertFalse(userValidator.isValid(invalidUser2));
         assertTrue(userValidator.isValid(validUser1));

@@ -18,12 +18,12 @@ class ObservedObjectValidatorTest {
 
     @Test
     void validateObservedObjetName() {
-        // given
+        // Given
         ObservedObjectDTO invalidObservedObject1 = new ObservedObjectDTO(999L, null, null, null);
         ObservedObjectDTO invalidObservedObject2 = new ObservedObjectDTO(999L, "", null, null);
         ObservedObjectDTO invalidObservedObject3 = new ObservedObjectDTO(999L, " ", null, null);
         ObservedObjectDTO validObject1 = new ObservedObjectDTO(999L, "CAR", null, null);
-        // then
+        // Then
         assertFalse(observedObjectValidator.isValid(invalidObservedObject1));
         assertFalse(observedObjectValidator.isValid(invalidObservedObject2));
         assertFalse(observedObjectValidator.isValid(invalidObservedObject3));
