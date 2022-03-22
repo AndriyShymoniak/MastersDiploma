@@ -1,4 +1,4 @@
-package com.nulp.shymoniak.mastersproject.utility;
+package com.nulp.shymoniak.mastersproject.utility.impl;
 
 import com.nulp.shymoniak.mastersproject.constant.ApplicationConstants;
 import com.nulp.shymoniak.mastersproject.utility.impl.ValidationUtilityImpl;

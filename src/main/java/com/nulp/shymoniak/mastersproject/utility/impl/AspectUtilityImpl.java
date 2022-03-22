@@ -21,11 +21,14 @@ public class AspectUtilityImpl implements AspectUtility {
      */
     @Override
     public Object getInstanceOfClassWithJoinPoint(JoinPoint joinPoint) {
-        Signature signature = joinPoint.getSignature();
-        Class targetClass = signature.getDeclaringType();
-        return context.getBean(targetClass);
+        try {
+            String canonicalName = joinPoint.getTarget().getClass().getCanonicalName();
+            Class<?> targetClass = Class.forName(canonicalName);
+            return context.getBean(targetClass);
+        } catch (ClassNotFoundException e) {
+            throw new ApiRequestException(e.getMessage());
+        }
     }
-
 
     /**
      * Gets instance of DTO class from JoinPoint arguments

@@ -1,6 +1,7 @@
-package com.nulp.shymoniak.mastersproject.utility;
+package com.nulp.shymoniak.mastersproject.utility.impl;
 
 import com.nulp.shymoniak.mastersproject.dto.*;
+import com.nulp.shymoniak.mastersproject.utility.DTOFieldFiller;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
