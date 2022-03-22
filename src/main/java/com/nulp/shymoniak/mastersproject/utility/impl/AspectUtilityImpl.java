@@ -1,6 +1,7 @@
-package com.nulp.shymoniak.mastersproject.utility;
+package com.nulp.shymoniak.mastersproject.utility.impl;
 
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
+import com.nulp.shymoniak.mastersproject.utility.AspectUtility;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;

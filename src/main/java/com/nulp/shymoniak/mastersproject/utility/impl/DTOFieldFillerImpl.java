@@ -1,5 +1,6 @@
-package com.nulp.shymoniak.mastersproject.utility;
+package com.nulp.shymoniak.mastersproject.utility.impl;
 
+import com.nulp.shymoniak.mastersproject.utility.DTOFieldFiller;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
 

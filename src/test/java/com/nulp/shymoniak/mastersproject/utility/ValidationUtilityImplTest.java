@@ -1,6 +1,7 @@
 package com.nulp.shymoniak.mastersproject.utility;
 
 import com.nulp.shymoniak.mastersproject.constant.ApplicationConstants;
+import com.nulp.shymoniak.mastersproject.utility.impl.ValidationUtilityImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
