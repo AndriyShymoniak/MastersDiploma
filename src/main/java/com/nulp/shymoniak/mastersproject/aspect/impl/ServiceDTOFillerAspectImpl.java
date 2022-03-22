@@ -1,5 +1,6 @@
-package com.nulp.shymoniak.mastersproject.aspect;
+package com.nulp.shymoniak.mastersproject.aspect.impl;
 
+import com.nulp.shymoniak.mastersproject.aspect.ServiceDTOFillerAspect;
 import com.nulp.shymoniak.mastersproject.utility.AspectUtility;
 import com.nulp.shymoniak.mastersproject.utility.DTOFieldFiller;
 import lombok.RequiredArgsConstructor;

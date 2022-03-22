@@ -1,5 +1,6 @@
 package com.nulp.shymoniak.mastersproject.aspect;
 
+import com.nulp.shymoniak.mastersproject.aspect.impl.ServiceDTOFillerAspectImpl;
 import com.nulp.shymoniak.mastersproject.dto.ApplicationUserDTO;
 import com.nulp.shymoniak.mastersproject.dto.RecognitionResultDTO;
 import com.nulp.shymoniak.mastersproject.entity.ApplicationUser;

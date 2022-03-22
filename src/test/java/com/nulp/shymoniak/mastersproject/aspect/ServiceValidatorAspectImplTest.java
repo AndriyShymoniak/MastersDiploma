@@ -1,5 +1,6 @@
 package com.nulp.shymoniak.mastersproject.aspect;
 
+import com.nulp.shymoniak.mastersproject.aspect.impl.ServiceValidatorAspectImpl;
 import com.nulp.shymoniak.mastersproject.dto.RecognitionResultDTO;
 import com.nulp.shymoniak.mastersproject.entity.RecognitionResult;
 import com.nulp.shymoniak.mastersproject.mapping.RecognitionResultMapper;
