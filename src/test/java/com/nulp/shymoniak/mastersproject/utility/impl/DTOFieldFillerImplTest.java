@@ -1,29 +1,56 @@
 package com.nulp.shymoniak.mastersproject.utility.impl;
 
 import com.nulp.shymoniak.mastersproject.dto.*;
-import com.nulp.shymoniak.mastersproject.utility.DTOFieldFiller;
+import com.nulp.shymoniak.mastersproject.utility.SecuritySessionUtility;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
+
 
 @SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class DTOFieldFillerImplTest {
-    private final DTOFieldFiller fieldFiller;
+    @Mock
+    private SecuritySessionUtility sessionUtility;
 
-    @Autowired
-    public DTOFieldFillerImplTest(DTOFieldFiller fieldFiller) {
-        this.fieldFiller = fieldFiller;
+    @InjectMocks
+    private DTOFieldFillerImpl fieldFiller;
+
+    private static ApplicationUserDTO currentUser;
+
+    private MediaDTO media;
+    private MLModelDTO mlModel;
+    private RecognitionResultDTO recognitionResult;
+    private ApplicationUserDTO user;
+
+    @BeforeAll
+    static void beforeAll() {
+        currentUser = new ApplicationUserDTO(999L, "Username", "password", null, null, null);
+    }
+
+    @BeforeEach
+    void setUp() {
+        media = new MediaDTO();
+        mlModel = new MLModelDTO();
+        recognitionResult = new RecognitionResultDTO();
+        user = new ApplicationUserDTO();
+        fieldFiller = null;
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
     void fillCreateFields_shouldFillCreateDateField_IfExists() {
         // Given
-        MediaDTO media = new MediaDTO();
-        MLModelDTO mlModel = new MLModelDTO();
-        RecognitionResultDTO recognitionResult = new RecognitionResultDTO();
-        ApplicationUserDTO user = new ApplicationUserDTO();
+        when(sessionUtility.getCurrentUserFromSession()).thenReturn(currentUser);
         // When
         media = (MediaDTO) fieldFiller.fillCreateFields(media);
         mlModel = (MLModelDTO) fieldFiller.fillCreateFields(mlModel);
@@ -34,15 +61,19 @@ class DTOFieldFillerImplTest {
         assertNotNull(mlModel.getCreateDate());
         assertNotNull(recognitionResult.getCreateDate());
         assertNotNull(user.getCreateDate());
+        assertEquals(currentUser, media.getCreateUser());
+        assertEquals(currentUser, mlModel.getCreateUser());
+        assertEquals(currentUser, recognitionResult.getCreateUser());
     }
 
     @Test
     void fillUpdateFields_shouldFillUpdateDateField_IfExists() {
         // Given
-        RecognitionResultDTO recognitionResult = new RecognitionResultDTO();
+        when(sessionUtility.getCurrentUserFromSession()).thenReturn(currentUser);
         // When
         recognitionResult = (RecognitionResultDTO) fieldFiller.fillUpdateFields(recognitionResult);
         // Then
         assertNotNull(recognitionResult.getUpdateDate());
+        assertEquals(currentUser, recognitionResult.getUpdateUser());
     }
 }

@@ -17,6 +17,6 @@ public interface AbstractMapper<Entity, DTO> {
         if (entityPage == null) {
             return null;
         }
-        return entityPage.map(item -> mapToDTO(item));
+        return entityPage.map(this::mapToDTO);
     }
 }

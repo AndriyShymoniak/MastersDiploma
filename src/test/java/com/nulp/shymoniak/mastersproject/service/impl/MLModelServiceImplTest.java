@@ -235,37 +235,35 @@ class MLModelServiceImplTest {
         MLModel mlModel3 = new MLModel(1002L, "MODEL_NAME", "", 1, 1, null, null, null);
         MLModel mlModel4 = new MLModel(1003L, "MODEL_NAME", "", 1, 1, null, null, null);
         MLModel mlModel5 = new MLModel(1004L, "MODEL_NAME", "", 1, 1, null, null, null);
-        // ObservedObject instances
-        List<ObservedObject> ooList = observedObjectList;
         // MLModelObservedObject instances
         // mlModel1
-        MLModelObservedObject mlModelObservedObject11 = new MLModelObservedObject(1000L, mlModel1, ooList.get(0));
-        MLModelObservedObject mlModelObservedObject12 = new MLModelObservedObject(1000L, mlModel1, ooList.get(1));
-        MLModelObservedObject mlModelObservedObject13 = new MLModelObservedObject(1000L, mlModel1, ooList.get(2));
-        MLModelObservedObject mlModelObservedObject14 = new MLModelObservedObject(1000L, mlModel1, ooList.get(3));
+        MLModelObservedObject mlModelObservedObject11 = new MLModelObservedObject(1000L, mlModel1, observedObjectList.get(0));
+        MLModelObservedObject mlModelObservedObject12 = new MLModelObservedObject(1000L, mlModel1, observedObjectList.get(1));
+        MLModelObservedObject mlModelObservedObject13 = new MLModelObservedObject(1000L, mlModel1, observedObjectList.get(2));
+        MLModelObservedObject mlModelObservedObject14 = new MLModelObservedObject(1000L, mlModel1, observedObjectList.get(3));
         mlModel1.setObservedObjectList(Stream.of(mlModelObservedObject11, mlModelObservedObject12, mlModelObservedObject13, mlModelObservedObject14).collect(Collectors.toList()));
         // mlModel2
-        MLModelObservedObject mlModelObservedObject21 = new MLModelObservedObject(1000L, mlModel2, ooList.get(0));
-        MLModelObservedObject mlModelObservedObject22 = new MLModelObservedObject(1000L, mlModel2, ooList.get(1));
-        MLModelObservedObject mlModelObservedObject23 = new MLModelObservedObject(1000L, mlModel2, ooList.get(2));
-        MLModelObservedObject mlModelObservedObject24 = new MLModelObservedObject(1000L, mlModel2, ooList.get(3));
+        MLModelObservedObject mlModelObservedObject21 = new MLModelObservedObject(1000L, mlModel2, observedObjectList.get(0));
+        MLModelObservedObject mlModelObservedObject22 = new MLModelObservedObject(1000L, mlModel2, observedObjectList.get(1));
+        MLModelObservedObject mlModelObservedObject23 = new MLModelObservedObject(1000L, mlModel2, observedObjectList.get(2));
+        MLModelObservedObject mlModelObservedObject24 = new MLModelObservedObject(1000L, mlModel2, observedObjectList.get(3));
         mlModel2.setObservedObjectList(Stream.of(mlModelObservedObject21, mlModelObservedObject22, mlModelObservedObject23, mlModelObservedObject24).collect(Collectors.toList()));
         // mlModel3
-        MLModelObservedObject mlModelObservedObject31 = new MLModelObservedObject(1000L, mlModel3, ooList.get(1));
-        MLModelObservedObject mlModelObservedObject32 = new MLModelObservedObject(1000L, mlModel3, ooList.get(2));
-        MLModelObservedObject mlModelObservedObject33 = new MLModelObservedObject(1000L, mlModel3, ooList.get(3));
-        MLModelObservedObject mlModelObservedObject34 = new MLModelObservedObject(1000L, mlModel3, ooList.get(4));
+        MLModelObservedObject mlModelObservedObject31 = new MLModelObservedObject(1000L, mlModel3, observedObjectList.get(1));
+        MLModelObservedObject mlModelObservedObject32 = new MLModelObservedObject(1000L, mlModel3, observedObjectList.get(2));
+        MLModelObservedObject mlModelObservedObject33 = new MLModelObservedObject(1000L, mlModel3, observedObjectList.get(3));
+        MLModelObservedObject mlModelObservedObject34 = new MLModelObservedObject(1000L, mlModel3, observedObjectList.get(4));
         mlModel3.setObservedObjectList(Stream.of(mlModelObservedObject31, mlModelObservedObject32, mlModelObservedObject33, mlModelObservedObject34).collect(Collectors.toList()));
         // mlModel4
-        MLModelObservedObject mlModelObservedObject41 = new MLModelObservedObject(1000L, mlModel4, ooList.get(0));
-        MLModelObservedObject mlModelObservedObject42 = new MLModelObservedObject(1000L, mlModel4, ooList.get(1));
-        MLModelObservedObject mlModelObservedObject43 = new MLModelObservedObject(1000L, mlModel4, ooList.get(2));
-        MLModelObservedObject mlModelObservedObject44 = new MLModelObservedObject(1000L, mlModel4, ooList.get(4));
+        MLModelObservedObject mlModelObservedObject41 = new MLModelObservedObject(1000L, mlModel4, observedObjectList.get(0));
+        MLModelObservedObject mlModelObservedObject42 = new MLModelObservedObject(1000L, mlModel4, observedObjectList.get(1));
+        MLModelObservedObject mlModelObservedObject43 = new MLModelObservedObject(1000L, mlModel4, observedObjectList.get(2));
+        MLModelObservedObject mlModelObservedObject44 = new MLModelObservedObject(1000L, mlModel4, observedObjectList.get(4));
         mlModel4.setObservedObjectList(Stream.of(mlModelObservedObject41, mlModelObservedObject42, mlModelObservedObject43, mlModelObservedObject44).collect(Collectors.toList()));
         // mlModel5
-        MLModelObservedObject mlModelObservedObject51 = new MLModelObservedObject(1000L, mlModel5, ooList.get(2));
-        MLModelObservedObject mlModelObservedObject52 = new MLModelObservedObject(1000L, mlModel5, ooList.get(3));
-        MLModelObservedObject mlModelObservedObject53 = new MLModelObservedObject(1000L, mlModel5, ooList.get(4));
+        MLModelObservedObject mlModelObservedObject51 = new MLModelObservedObject(1000L, mlModel5, observedObjectList.get(2));
+        MLModelObservedObject mlModelObservedObject52 = new MLModelObservedObject(1000L, mlModel5, observedObjectList.get(3));
+        MLModelObservedObject mlModelObservedObject53 = new MLModelObservedObject(1000L, mlModel5, observedObjectList.get(4));
         mlModel5.setObservedObjectList(Stream.of(mlModelObservedObject51, mlModelObservedObject52, mlModelObservedObject53).collect(Collectors.toList()));
         return Stream.of(mlModel1, mlModel2, mlModel3, mlModel4, mlModel5).collect(Collectors.toList());
     }
@@ -277,37 +275,35 @@ class MLModelServiceImplTest {
         MLModelDTO mlModel3 = new MLModelDTO(1002L, "MODEL_NAME", "", 1, 1, null, null, null);
         MLModelDTO mlModel4 = new MLModelDTO(1003L, "MODEL_NAME", "", 1, 1, null, null, null);
         MLModelDTO mlModel5 = new MLModelDTO(1004L, "MODEL_NAME", "", 1, 1, null, null, null);
-        // ObservedObject instances
-        List<ObservedObjectDTO> ooList = observedObjectList;
         // MLModelObservedObject instances
         // mlModel1
-        MLModelObservedObjectDTO mlModelObservedObject11 = new MLModelObservedObjectDTO(1000L, mlModel1, ooList.get(0));
-        MLModelObservedObjectDTO mlModelObservedObject12 = new MLModelObservedObjectDTO(1000L, mlModel1, ooList.get(1));
-        MLModelObservedObjectDTO mlModelObservedObject13 = new MLModelObservedObjectDTO(1000L, mlModel1, ooList.get(2));
-        MLModelObservedObjectDTO mlModelObservedObject14 = new MLModelObservedObjectDTO(1000L, mlModel1, ooList.get(3));
+        MLModelObservedObjectDTO mlModelObservedObject11 = new MLModelObservedObjectDTO(1000L, mlModel1, observedObjectList.get(0));
+        MLModelObservedObjectDTO mlModelObservedObject12 = new MLModelObservedObjectDTO(1000L, mlModel1, observedObjectList.get(1));
+        MLModelObservedObjectDTO mlModelObservedObject13 = new MLModelObservedObjectDTO(1000L, mlModel1, observedObjectList.get(2));
+        MLModelObservedObjectDTO mlModelObservedObject14 = new MLModelObservedObjectDTO(1000L, mlModel1, observedObjectList.get(3));
         mlModel1.setObservedObjectList(Stream.of(mlModelObservedObject11, mlModelObservedObject12, mlModelObservedObject13, mlModelObservedObject14).collect(Collectors.toList()));
         // mlModel2
-        MLModelObservedObjectDTO mlModelObservedObject21 = new MLModelObservedObjectDTO(1000L, mlModel2, ooList.get(0));
-        MLModelObservedObjectDTO mlModelObservedObject22 = new MLModelObservedObjectDTO(1000L, mlModel2, ooList.get(1));
-        MLModelObservedObjectDTO mlModelObservedObject23 = new MLModelObservedObjectDTO(1000L, mlModel2, ooList.get(2));
-        MLModelObservedObjectDTO mlModelObservedObject24 = new MLModelObservedObjectDTO(1000L, mlModel2, ooList.get(3));
+        MLModelObservedObjectDTO mlModelObservedObject21 = new MLModelObservedObjectDTO(1000L, mlModel2, observedObjectList.get(0));
+        MLModelObservedObjectDTO mlModelObservedObject22 = new MLModelObservedObjectDTO(1000L, mlModel2, observedObjectList.get(1));
+        MLModelObservedObjectDTO mlModelObservedObject23 = new MLModelObservedObjectDTO(1000L, mlModel2, observedObjectList.get(2));
+        MLModelObservedObjectDTO mlModelObservedObject24 = new MLModelObservedObjectDTO(1000L, mlModel2, observedObjectList.get(3));
         mlModel2.setObservedObjectList(Stream.of(mlModelObservedObject21, mlModelObservedObject22, mlModelObservedObject23, mlModelObservedObject24).collect(Collectors.toList()));
         // mlModel3
-        MLModelObservedObjectDTO mlModelObservedObject31 = new MLModelObservedObjectDTO(1000L, mlModel3, ooList.get(1));
-        MLModelObservedObjectDTO mlModelObservedObject32 = new MLModelObservedObjectDTO(1000L, mlModel3, ooList.get(2));
-        MLModelObservedObjectDTO mlModelObservedObject33 = new MLModelObservedObjectDTO(1000L, mlModel3, ooList.get(3));
-        MLModelObservedObjectDTO mlModelObservedObject34 = new MLModelObservedObjectDTO(1000L, mlModel3, ooList.get(4));
+        MLModelObservedObjectDTO mlModelObservedObject31 = new MLModelObservedObjectDTO(1000L, mlModel3, observedObjectList.get(1));
+        MLModelObservedObjectDTO mlModelObservedObject32 = new MLModelObservedObjectDTO(1000L, mlModel3, observedObjectList.get(2));
+        MLModelObservedObjectDTO mlModelObservedObject33 = new MLModelObservedObjectDTO(1000L, mlModel3, observedObjectList.get(3));
+        MLModelObservedObjectDTO mlModelObservedObject34 = new MLModelObservedObjectDTO(1000L, mlModel3, observedObjectList.get(4));
         mlModel3.setObservedObjectList(Stream.of(mlModelObservedObject31, mlModelObservedObject32, mlModelObservedObject33, mlModelObservedObject34).collect(Collectors.toList()));
         // mlModel4
-        MLModelObservedObjectDTO mlModelObservedObject41 = new MLModelObservedObjectDTO(1000L, mlModel4, ooList.get(0));
-        MLModelObservedObjectDTO mlModelObservedObject42 = new MLModelObservedObjectDTO(1000L, mlModel4, ooList.get(1));
-        MLModelObservedObjectDTO mlModelObservedObject43 = new MLModelObservedObjectDTO(1000L, mlModel4, ooList.get(2));
-        MLModelObservedObjectDTO mlModelObservedObject44 = new MLModelObservedObjectDTO(1000L, mlModel4, ooList.get(4));
+        MLModelObservedObjectDTO mlModelObservedObject41 = new MLModelObservedObjectDTO(1000L, mlModel4, observedObjectList.get(0));
+        MLModelObservedObjectDTO mlModelObservedObject42 = new MLModelObservedObjectDTO(1000L, mlModel4, observedObjectList.get(1));
+        MLModelObservedObjectDTO mlModelObservedObject43 = new MLModelObservedObjectDTO(1000L, mlModel4, observedObjectList.get(2));
+        MLModelObservedObjectDTO mlModelObservedObject44 = new MLModelObservedObjectDTO(1000L, mlModel4, observedObjectList.get(4));
         mlModel4.setObservedObjectList(Stream.of(mlModelObservedObject41, mlModelObservedObject42, mlModelObservedObject43, mlModelObservedObject44).collect(Collectors.toList()));
         // mlModel5
-        MLModelObservedObjectDTO mlModelObservedObject51 = new MLModelObservedObjectDTO(1000L, mlModel5, ooList.get(2));
-        MLModelObservedObjectDTO mlModelObservedObject52 = new MLModelObservedObjectDTO(1000L, mlModel5, ooList.get(3));
-        MLModelObservedObjectDTO mlModelObservedObject53 = new MLModelObservedObjectDTO(1000L, mlModel5, ooList.get(4));
+        MLModelObservedObjectDTO mlModelObservedObject51 = new MLModelObservedObjectDTO(1000L, mlModel5, observedObjectList.get(2));
+        MLModelObservedObjectDTO mlModelObservedObject52 = new MLModelObservedObjectDTO(1000L, mlModel5, observedObjectList.get(3));
+        MLModelObservedObjectDTO mlModelObservedObject53 = new MLModelObservedObjectDTO(1000L, mlModel5, observedObjectList.get(4));
         mlModel5.setObservedObjectList(Stream.of(mlModelObservedObject51, mlModelObservedObject52, mlModelObservedObject53).collect(Collectors.toList()));
         return Stream.of(mlModel1, mlModel2, mlModel3, mlModel4, mlModel5).collect(Collectors.toList());
     }

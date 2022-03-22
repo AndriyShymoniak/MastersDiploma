@@ -2,7 +2,6 @@ package com.nulp.shymoniak.mastersproject.controller;
 
 import com.google.gson.Gson;
 import com.nulp.shymoniak.mastersproject.dto.MLModelDTO;
-import com.nulp.shymoniak.mastersproject.dto.MLModelDTO;
 import com.nulp.shymoniak.mastersproject.exception.ApiExceptionHandler;
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
 import com.nulp.shymoniak.mastersproject.service.MLModelService;

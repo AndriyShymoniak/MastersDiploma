@@ -1,6 +1,8 @@
 package com.nulp.shymoniak.mastersproject.utility.impl;
 
 import com.nulp.shymoniak.mastersproject.utility.DTOFieldFiller;
+import com.nulp.shymoniak.mastersproject.utility.SecuritySessionUtility;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
 
@@ -8,7 +10,10 @@ import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 
 @Component
+@RequiredArgsConstructor
 public class DTOFieldFillerImpl implements DTOFieldFiller {
+    private final SecuritySessionUtility sessionUtility;
+
     @Override
     @SneakyThrows
     public Object fillCreateFields(Object obj) {
@@ -18,7 +23,8 @@ public class DTOFieldFillerImpl implements DTOFieldFiller {
                 field.setAccessible(true);
                 field.set(obj, LocalDateTime.now());
             } else if (field.getName().equals("createUser")) {
-                // TODO: 2/8/22  set user from session
+                field.setAccessible(true);
+                field.set(obj, sessionUtility.getCurrentUserFromSession());
             }
         }
         return obj;
@@ -33,7 +39,8 @@ public class DTOFieldFillerImpl implements DTOFieldFiller {
                 field.setAccessible(true);
                 field.set(obj, LocalDateTime.now());
             } else if (field.getName().equals("updateUser")) {
-                // TODO: 2/8/22  set user from session
+                field.setAccessible(true);
+                field.set(obj, sessionUtility.getCurrentUserFromSession());
             }
         }
         return obj;
