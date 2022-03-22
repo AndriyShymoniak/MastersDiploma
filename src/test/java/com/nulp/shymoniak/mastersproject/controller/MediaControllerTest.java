@@ -108,7 +108,7 @@ class MediaControllerTest {
         mockMvc.perform(get("/media/{id}", media.getMediaId()))
                 .andDo(log())
                 .andExpect(status().isBadRequest())
-                .andExpect(result -> assertTrue(result.getResolvedException().getMessage().equals(ERROR_MESSAGE_RECORD_NOT_FOUND)));
+                .andExpect(result -> assertEquals(ERROR_MESSAGE_RECORD_NOT_FOUND, result.getResolvedException().getMessage()));
     }
 
     @Test
