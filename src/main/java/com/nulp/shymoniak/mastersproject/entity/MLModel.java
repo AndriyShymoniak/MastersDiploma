@@ -19,7 +19,7 @@ import java.util.Objects;
 @Table(name = "ml_model")
 public class MLModel implements Persistable<Long> {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "ml_model_id")
     private Long mlModelId;
 

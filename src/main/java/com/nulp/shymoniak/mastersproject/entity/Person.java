@@ -16,7 +16,7 @@ import java.util.Objects;
 @Table(name = "person")
 public class Person implements Persistable<Long> {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "person_id")
     private Long personId;
 

@@ -18,7 +18,7 @@ import java.util.Objects;
 @Table(name = "application_user")
 public class ApplicationUser implements Persistable<Long> {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "user_id")
     private Long userId;
 
@@ -31,8 +31,8 @@ public class ApplicationUser implements Persistable<Long> {
     @Column(name = "registered_date")
     private LocalDateTime createDate;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "person_id", referencedColumnName = "person_id")
+    @OneToOne
+    @JoinColumn(name = "person_id")
     @ToString.Exclude
     private Person person;
 

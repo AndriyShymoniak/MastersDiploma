@@ -19,7 +19,7 @@ import java.util.Objects;
 @Table(name = "recognition_result")
 public class RecognitionResult implements Persistable<Long> {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "recognition_result_id")
     private Long recognitionResultId;
 
