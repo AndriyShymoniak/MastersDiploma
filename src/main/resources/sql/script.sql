@@ -1,13 +1,8 @@
--- Contains personal information about users
-CREATE SEQUENCE person_sequence INCREMENT BY 1 MINVALUE 0 MAXVALUE 9223372036854775807 START 100 NO CYCLE;
-CREATE TABLE person
-(
-    person_id NUMERIC(16) NOT NULL DEFAULT NEXTVAL('person_sequence'::regclass),
-    name      VARCHAR(100),
-    surname   VARCHAR(100),
-    email     VARCHAR(100),
-    PRIMARY KEY (person_id)
-);
+-- Drop-Create schema
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO public;
+DROP SCHEMA public CASCADE;
+CREATE SCHEMA public;
 
 -- Contains all users
 CREATE SEQUENCE user_sequence INCREMENT BY 1 MINVALUE 0 MAXVALUE 9223372036854775807 START 100 NO CYCLE;
@@ -16,11 +11,23 @@ CREATE TABLE application_user
     user_id         NUMERIC(16)  NOT NULL DEFAULT NEXTVAL('user_sequence'::regclass),
     username        VARCHAR(100) NOT NULL UNIQUE,
     password        VARCHAR(100) NOT NULL,
-    role            VARCHAR(20) NOT NULL,
-    person_id       NUMERIC(16),
+    role            VARCHAR(20)  NOT NULL,
     registered_date TIMESTAMP,
-    PRIMARY KEY (user_id),
-    CONSTRAINT "fk_user_person_id" FOREIGN KEY (person_id) REFERENCES person (person_id)
+    CONSTRAINT PK_ApplicationUser PRIMARY KEY (user_id)
+);
+
+-- Contains personal information about users
+CREATE SEQUENCE person_sequence INCREMENT BY 1 MINVALUE 0 MAXVALUE 9223372036854775807 START 100 NO CYCLE;
+CREATE TABLE person
+(
+    person_id NUMERIC(16) NOT NULL DEFAULT NEXTVAL('person_sequence'::regclass),
+    name      VARCHAR(100),
+    surname   VARCHAR(100),
+    email     VARCHAR(100),
+    user_id   NUMERIC(16) NOT NULL,
+    CONSTRAINT PK_Person PRIMARY KEY (person_id),
+    CONSTRAINT FK_Person_ApplicationUser FOREIGN KEY (user_id) REFERENCES application_user (user_id),
+    CONSTRAINT UQ_Person_UserId UNIQUE (user_id)
 );
 
 -- Objects to be recognized (tank, atv, ...)
@@ -29,7 +36,7 @@ CREATE TABLE observed_object
 (
     observed_object_id NUMERIC(16) NOT NULL DEFAULT NEXTVAL('observed_object_sequence'::regclass),
     object_name        VARCHAR(50),
-    PRIMARY KEY (observed_object_id)
+    CONSTRAINT PK_ObservedObject PRIMARY KEY (observed_object_id)
 );
 
 -- Stores links to media
@@ -41,8 +48,8 @@ CREATE TABLE media
     processed_media_url VARCHAR(500),
     create_user         NUMERIC(16),
     create_date         TIMESTAMP,
-    PRIMARY KEY (media_id),
-    CONSTRAINT "fk_media_create_user" FOREIGN KEY (create_user) REFERENCES application_user (user_id)
+    CONSTRAINT PK_Media PRIMARY KEY (media_id),
+    CONSTRAINT FK_Media_ApplicationUser FOREIGN KEY (create_user) REFERENCES application_user (user_id)
 );
 
 -- Contains locations of detected objects
@@ -52,7 +59,7 @@ CREATE TABLE location
     location_id NUMERIC(16) NOT NULL DEFAULT NEXTVAL('location_sequence'::regclass),
     longitude   VARCHAR(100),
     latitude    VARCHAR(100),
-    PRIMARY KEY (location_id)
+    CONSTRAINT PK_Location PRIMARY KEY (location_id)
 );
 
 -- Stores information about used ML models
@@ -66,8 +73,8 @@ CREATE TABLE ml_model
     is_active   NUMERIC(1),
     create_user NUMERIC(16),
     create_date TIMESTAMP,
-    PRIMARY KEY (ml_model_id),
-    CONSTRAINT "fk_ml_model_create_user" FOREIGN KEY (create_user) REFERENCES application_user (user_id)
+    CONSTRAINT PK_MlModel PRIMARY KEY (ml_model_id),
+    CONSTRAINT FK_MlModel_ApplicationUser FOREIGN KEY (create_user) REFERENCES application_user (user_id)
 );
 
 -- Relation between ml_model and observed_object tables
@@ -77,9 +84,9 @@ CREATE TABLE ml_model_observed_object
     ml_model_observed_object_id NUMERIC(16) NOT NULL DEFAULT NEXTVAL('ml_model_observed_object_sequence'::regclass),
     ml_model_id                 NUMERIC(16),
     observed_object_id          NUMERIC(16),
-    PRIMARY KEY (ml_model_observed_object_id),
-    CONSTRAINT "fk_mmoo_ml_model_id" FOREIGN KEY (ml_model_id) REFERENCES ml_model (ml_model_id),
-    CONSTRAINT "fk_mmoo_observed_object_id" FOREIGN KEY (observed_object_id) REFERENCES observed_object (observed_object_id)
+    CONSTRAINT PK_MlModelObservedObject PRIMARY KEY (ml_model_observed_object_id),
+    CONSTRAINT FK_MlModelObservedObject_MlModel FOREIGN KEY (ml_model_id) REFERENCES ml_model (ml_model_id),
+    CONSTRAINT FK_MlModelObservedObject_ObservedObject FOREIGN KEY (observed_object_id) REFERENCES observed_object (observed_object_id)
 );
 
 -- Contains all necessary data about recognized objects
@@ -97,12 +104,12 @@ CREATE TABLE recognition_result
     create_date            TIMESTAMP,
     update_user            NUMERIC(16),
     update_date            TIMESTAMP,
-    PRIMARY KEY (recognition_result_id),
-    CONSTRAINT "fk_recognition_result_ml_model_id" FOREIGN KEY (ml_model_id) REFERENCES ml_model (ml_model_id),
-    CONSTRAINT "fk_recognition_result_media_id" FOREIGN KEY (media_id) REFERENCES media (media_id),
-    CONSTRAINT "fk_recognition_result_location_id" FOREIGN KEY (location_id) REFERENCES location (location_id),
-    CONSTRAINT "fk_recognition_result_create_user" FOREIGN KEY (create_user) REFERENCES application_user (user_id),
-    CONSTRAINT "fk_recognition_result_update_user" FOREIGN KEY (update_user) REFERENCES application_user (user_id)
+    CONSTRAINT PK_RecognitionResult PRIMARY KEY (recognition_result_id),
+    CONSTRAINT FK_RecognitionResult_MlModel FOREIGN KEY (ml_model_id) REFERENCES ml_model (ml_model_id),
+    CONSTRAINT FK_RecognitionResult_Media FOREIGN KEY (media_id) REFERENCES media (media_id),
+    CONSTRAINT FK_RecognitionResult_Location FOREIGN KEY (location_id) REFERENCES location (location_id),
+    CONSTRAINT FK_RecognitionResult_ApplicationUser_CreateUser FOREIGN KEY (create_user) REFERENCES application_user (user_id),
+    CONSTRAINT FK_RecognitionResult_ApplicationUser_UpdateUser FOREIGN KEY (update_user) REFERENCES application_user (user_id)
 );
 
 -- Relation between recognition_result and observed_object tables
@@ -112,7 +119,7 @@ CREATE TABLE recognition_result_observed_object
     recognition_result_observed_object_id NUMERIC(16) NOT NULL DEFAULT NEXTVAL('recognition_result_observed_object_sequence'::regclass),
     recognition_result_id                 NUMERIC(16),
     observed_object_id                    NUMERIC(16),
-    PRIMARY KEY (recognition_result_observed_object_id),
-    CONSTRAINT "fk_rsoo_recognition_result_id" FOREIGN KEY (recognition_result_id) REFERENCES recognition_result (recognition_result_id),
-    CONSTRAINT "fk_rsoo_observed_object_id" FOREIGN KEY (observed_object_id) REFERENCES observed_object (observed_object_id)
+    CONSTRAINT PK_RecognitionResultObservedObject PRIMARY KEY (recognition_result_observed_object_id),
+    CONSTRAINT FK_RecognitionResultObservedObject_RecognitionResult FOREIGN KEY (recognition_result_id) REFERENCES recognition_result (recognition_result_id),
+    CONSTRAINT FK_RecognitionResultObservedObject_ObservedObject FOREIGN KEY (observed_object_id) REFERENCES observed_object (observed_object_id)
 );

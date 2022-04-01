@@ -1,14 +1,14 @@
-INSERT INTO person (person_id, name, surname, email)
-VALUES (1, 'Anton', 'Stefaniv', 'anton_s@email.com'),
-       (2, 'Bohdan', 'Juk', 'bohdan_j@email.com'),
-       (3, 'Dmytro', 'Levytskyy', 'dmytro_l@email.com'),
-       (4, 'Evgen', 'Vovchuk', 'evgen_v@email.com');
+INSERT INTO application_user (user_id, username, password, role, registered_date)
+VALUES (1, 'admin', 'admin', 'ADMIN', current_timestamp),
+       (2, 'puser', 'puser', 'PRIVILEGED_USER', current_timestamp),
+       (3, 'user', 'user', 'USER', current_timestamp),
+       (4, 'engenvovk', 'password', 'USER', current_timestamp);
 
-INSERT INTO application_user (user_id, username, password, role, person_id, registered_date)
-VALUES (1, 'admin', 'admin', 'ADMIN', 1, current_timestamp),
-       (2, 'puser', 'puser', 'PRIVILEGED_USER', 2, current_timestamp),
-       (3, 'user', 'user', 'USER', 3, current_timestamp),
-       (4, 'engenvovk', 'password', 'USER', 4, current_timestamp);
+INSERT INTO person (person_id, name, surname, email, user_id)
+VALUES (1, 'Anton', 'Stefaniv', 'anton_s@email.com', 1),
+       (2, 'Bohdan', 'Juk', 'bohdan_j@email.com', 2),
+       (3, 'Dmytro', 'Levytskyy', 'dmytro_l@email.com', 3),
+       (4, 'Evgen', 'Vovchuk', 'evgen_v@email.com', 4);
 
 INSERT INTO location (location_id, longitude, latitude)
 VALUES (1, '49.444452', '39.847446'),
