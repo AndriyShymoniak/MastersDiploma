@@ -19,18 +19,18 @@ VALUES (1, '49.444452', '39.847446'),
        (6, '48.305275', '39.350204');
 
 INSERT INTO media (media_id, original_media_url, processed_media_url, create_user, create_date)
-VALUES (1, NULL, NULL, 1, current_timestamp),
-       (2, NULL, NULL, 1, current_timestamp),
-       (3, NULL, NULL, 2, current_timestamp),
-       (4, NULL, NULL, 2, current_timestamp),
-       (5, NULL, NULL, 3, current_timestamp),
-       (6, NULL, NULL, 3, current_timestamp);
+VALUES (1, 'http://example.com/back', 'http://example.com/back', 1, current_timestamp),
+       (2, 'http://example.com/back', 'http://example.com/back', 1, current_timestamp),
+       (3, 'http://example.com/back', 'http://example.com/back', 2, current_timestamp),
+       (4, 'http://example.com/back', 'http://example.com/back', 2, current_timestamp),
+       (5, 'http://example.com/back', 'http://example.com/back', 3, current_timestamp),
+       (6, 'http://example.com/back', 'http://example.com/back', 3, current_timestamp);
 
 INSERT INTO ml_model(ml_model_id, model_name, model_path, is_custom, is_active, create_user, create_date)
-VALUES (1, 'TANK_model', NULL, 1, 1, 1, current_timestamp),
-       (2, 'APC_model', NULL, 1, 1, 1, current_timestamp),
-       (3, 'SHIP_model', NULL, 1, 1, 1, current_timestamp),
-       (4, 'AERO_VEHICLES_model', NULL, 1, 1, 1, current_timestamp);
+VALUES (1, 'TANK_model', 'http://example.com/back', 1, 1, 1, current_timestamp),
+       (2, 'APC_model', 'http://example.com/back', 1, 1, 1, current_timestamp),
+       (3, 'SHIP_model', 'http://example.com/back', 1, 1, 1, current_timestamp),
+       (4, 'AERO_VEHICLES_model', 'http://example.com/back', 1, 1, 1, current_timestamp);
 
 INSERT INTO recognition_result (recognition_result_id, description, is_object_present, is_recognition_correct,
                                 ml_model_id, media_id, location_id, create_user, create_date, update_user, update_date)
