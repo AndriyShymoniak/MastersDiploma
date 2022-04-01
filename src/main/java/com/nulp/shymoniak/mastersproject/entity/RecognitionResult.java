@@ -19,7 +19,8 @@ import java.util.Objects;
 @Table(name = "recognition_result")
 public class RecognitionResult implements Persistable<Long> {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "generator")
+    @SequenceGenerator(name = "generator", sequenceName = "recognition_result_sequence", allocationSize = 20)
     @Column(name = "recognition_result_id")
     private Long recognitionResultId;
 

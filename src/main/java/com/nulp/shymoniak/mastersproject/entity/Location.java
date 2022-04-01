@@ -16,7 +16,8 @@ import java.util.Objects;
 @Table(name = "location")
 public class Location implements Persistable<Long> {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "generator")
+    @SequenceGenerator(name = "generator", sequenceName = "location_sequence", allocationSize = 20)
     @Column(name = "location_id")
     private Long locationId;
 

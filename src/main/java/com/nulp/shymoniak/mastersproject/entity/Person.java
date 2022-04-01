@@ -16,7 +16,8 @@ import java.util.Objects;
 @Table(name = "person")
 public class Person implements Persistable<Long> {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "generator")
+    @SequenceGenerator(name = "generator", sequenceName = "person_sequence", allocationSize = 20)
     @Column(name = "person_id")
     private Long personId;
 
@@ -31,7 +32,6 @@ public class Person implements Persistable<Long> {
 
     @OneToOne
     @JoinColumn(name = "user_id")
-    @ToString.Exclude
     private ApplicationUser applicationUser;
 
     @Override

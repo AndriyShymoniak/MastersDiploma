@@ -19,7 +19,8 @@ import java.util.Objects;
 @Table(name = "ml_model")
 public class MLModel implements Persistable<Long> {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "generator")
+    @SequenceGenerator(name = "generator", sequenceName = "ml_model_sequence", allocationSize = 20)
     @Column(name = "ml_model_id")
     private Long mlModelId;
 

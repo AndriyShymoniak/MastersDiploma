@@ -5,7 +5,7 @@ DROP SCHEMA public CASCADE;
 CREATE SCHEMA public;
 
 -- Contains all users
-CREATE SEQUENCE user_sequence INCREMENT BY 1 MINVALUE 0 MAXVALUE 9223372036854775807 START 100 NO CYCLE;
+CREATE SEQUENCE user_sequence INCREMENT BY 20 MINVALUE 0 MAXVALUE 9223372036854775807 START 100 NO CYCLE;
 CREATE TABLE application_user
 (
     user_id         BIGINT       NOT NULL DEFAULT NEXTVAL('user_sequence'::regclass),
@@ -17,7 +17,7 @@ CREATE TABLE application_user
 );
 
 -- Contains personal information about users
-CREATE SEQUENCE person_sequence INCREMENT BY 1 MINVALUE 0 MAXVALUE 9223372036854775807 START 100 NO CYCLE;
+CREATE SEQUENCE person_sequence INCREMENT BY 20 MINVALUE 0 MAXVALUE 9223372036854775807 START 100 NO CYCLE;
 CREATE TABLE person
 (
     person_id BIGINT NOT NULL DEFAULT NEXTVAL('person_sequence'::regclass),
@@ -32,7 +32,7 @@ CREATE TABLE person
 );
 
 -- Objects to be recognized (tank, atv, ...)
-CREATE SEQUENCE observed_object_sequence INCREMENT BY 1 MINVALUE 0 MAXVALUE 9223372036854775807 START 100 NO CYCLE;
+CREATE SEQUENCE observed_object_sequence INCREMENT BY 20 MINVALUE 0 MAXVALUE 9223372036854775807 START 100 NO CYCLE;
 CREATE TABLE observed_object
 (
     observed_object_id BIGINT      NOT NULL DEFAULT NEXTVAL('observed_object_sequence'::regclass),
@@ -41,7 +41,7 @@ CREATE TABLE observed_object
 );
 
 -- Stores links to media
-CREATE SEQUENCE media_sequence INCREMENT BY 1 MINVALUE 0 MAXVALUE 9223372036854775807 START 100 NO CYCLE;
+CREATE SEQUENCE media_sequence INCREMENT BY 20 MINVALUE 0 MAXVALUE 9223372036854775807 START 100 NO CYCLE;
 CREATE TABLE media
 (
     media_id            BIGINT       NOT NULL DEFAULT NEXTVAL('media_sequence'::regclass),
@@ -54,7 +54,7 @@ CREATE TABLE media
 );
 
 -- Contains locations of detected objects
-CREATE SEQUENCE location_sequence INCREMENT BY 1 MINVALUE 0 MAXVALUE 9223372036854775807 START 100 NO CYCLE;
+CREATE SEQUENCE location_sequence INCREMENT BY 20 MINVALUE 0 MAXVALUE 9223372036854775807 START 100 NO CYCLE;
 CREATE TABLE location
 (
     location_id BIGINT       NOT NULL DEFAULT NEXTVAL('location_sequence'::regclass),
@@ -64,7 +64,7 @@ CREATE TABLE location
 );
 
 -- Stores information about used ML models
-CREATE SEQUENCE ml_model_sequence INCREMENT BY 1 MINVALUE 0 MAXVALUE 9223372036854775807 START 100 NO CYCLE;
+CREATE SEQUENCE ml_model_sequence INCREMENT BY 20 MINVALUE 0 MAXVALUE 9223372036854775807 START 100 NO CYCLE;
 CREATE TABLE ml_model
 (
     ml_model_id BIGINT       NOT NULL DEFAULT NEXTVAL('ml_model_sequence'::regclass),
@@ -79,7 +79,7 @@ CREATE TABLE ml_model
 );
 
 -- Relation between ml_model and observed_object tables
-CREATE SEQUENCE ml_model_observed_object_sequence INCREMENT BY 1 MINVALUE 0 MAXVALUE 9223372036854775807 START 100 NO CYCLE;
+CREATE SEQUENCE ml_model_observed_object_sequence INCREMENT BY 20 MINVALUE 0 MAXVALUE 9223372036854775807 START 100 NO CYCLE;
 CREATE TABLE ml_model_observed_object
 (
     ml_model_observed_object_id BIGINT NOT NULL DEFAULT NEXTVAL('ml_model_observed_object_sequence'::regclass),
@@ -91,7 +91,7 @@ CREATE TABLE ml_model_observed_object
 );
 
 -- Contains all necessary data about recognized objects
-CREATE SEQUENCE recognition_result_sequence INCREMENT BY 1 MINVALUE 0 MAXVALUE 9223372036854775807 START 100 NO CYCLE;
+CREATE SEQUENCE recognition_result_sequence INCREMENT BY 20 MINVALUE 0 MAXVALUE 9223372036854775807 START 100 NO CYCLE;
 CREATE TABLE recognition_result
 (
     recognition_result_id  BIGINT NOT NULL DEFAULT NEXTVAL('recognition_result_sequence'::regclass),
@@ -114,7 +114,7 @@ CREATE TABLE recognition_result
 );
 
 -- Relation between recognition_result and observed_object tables
-CREATE SEQUENCE recognition_result_observed_object_sequence INCREMENT BY 1 MINVALUE 0 MAXVALUE 9223372036854775807 START 100 NO CYCLE;
+CREATE SEQUENCE recognition_result_observed_object_sequence INCREMENT BY 20 MINVALUE 0 MAXVALUE 9223372036854775807 START 100 NO CYCLE;
 CREATE TABLE recognition_result_observed_object
 (
     recognition_result_observed_object_id BIGINT NOT NULL DEFAULT NEXTVAL('recognition_result_observed_object_sequence'::regclass),

@@ -17,7 +17,8 @@ import java.util.Objects;
 @Table(name = "media")
 public class Media implements Persistable<Long> {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "generator")
+    @SequenceGenerator(name = "generator", sequenceName = "media_sequence", allocationSize = 20)
     @Column(name = "media_id")
     private Long mediaId;
 

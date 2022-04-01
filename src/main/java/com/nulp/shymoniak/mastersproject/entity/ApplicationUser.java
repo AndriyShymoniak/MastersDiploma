@@ -18,7 +18,8 @@ import java.util.Objects;
 @Table(name = "application_user")
 public class ApplicationUser implements Persistable<Long> {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "generator")
+    @SequenceGenerator(name = "generator", sequenceName = "user_sequence", allocationSize = 20)
     @Column(name = "user_id")
     private Long userId;
 
@@ -31,8 +32,7 @@ public class ApplicationUser implements Persistable<Long> {
     @Column(name = "registered_date")
     private LocalDateTime createDate;
 
-    @OneToOne(mappedBy = "applicationUser", cascade = CascadeType.ALL)
-    @ToString.Exclude
+    @OneToOne(mappedBy = "applicationUser", cascade = CascadeType.ALL, orphanRemoval = true)
     private Person person;
 
     @Column(name = "role")
