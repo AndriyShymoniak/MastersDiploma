@@ -16,14 +16,15 @@ class PersonValidatorTest {
         this.personValidator = personValidator;
     }
 
+    // TODO: 4/1/22 Create test data generator class (generateUser, generatePerson, ...)
     @Test
     void validatePersonName() {
         // Given
-        PersonDTO invalidPerson1 = new PersonDTO(999L, null, "Surname", "test@email.com");
-        PersonDTO invalidPerson2 = new PersonDTO(999L, "", "Surname", "test@email.com");
-        PersonDTO invalidPerson3 = new PersonDTO(999L, " ", "Surname", "test@email.com");
-        PersonDTO validPerson1 = new PersonDTO(999L, "Anton", "Surname", "test@email.com");
-        PersonDTO validPerson2 = new PersonDTO(999L, "Anna-Maria", "Surname", "test@email.com");
+        PersonDTO invalidPerson1 = new PersonDTO(999L, null, "Surname", "test@email.com", null);
+        PersonDTO invalidPerson2 = new PersonDTO(999L, "", "Surname", "test@email.com", null);
+        PersonDTO invalidPerson3 = new PersonDTO(999L, " ", "Surname", "test@email.com", null);
+        PersonDTO validPerson1 = new PersonDTO(999L, "Anton", "Surname", "test@email.com", null);
+        PersonDTO validPerson2 = new PersonDTO(999L, "Anna-Maria", "Surname", "test@email.com", null);
         // Then
         assertFalse(personValidator.isValid(invalidPerson1));
         assertFalse(personValidator.isValid(invalidPerson2));
@@ -35,10 +36,10 @@ class PersonValidatorTest {
     @Test
     void validatePersonSurname() {
         // Given
-        PersonDTO invalidPerson1 = new PersonDTO(999L, "Name", null, "test@email.com");
-        PersonDTO invalidPerson2 = new PersonDTO(999L, "Name", "", "test@email.com");
-        PersonDTO invalidPerson3 = new PersonDTO(999L, "Name", "  ", "test@email.com");
-        PersonDTO validPerson1 = new PersonDTO(999L, "Name", "Surname", "test@email.com");
+        PersonDTO invalidPerson1 = new PersonDTO(999L, "Name", null, "test@email.com", null);
+        PersonDTO invalidPerson2 = new PersonDTO(999L, "Name", "", "test@email.com", null);
+        PersonDTO invalidPerson3 = new PersonDTO(999L, "Name", "  ", "test@email.com", null);
+        PersonDTO validPerson1 = new PersonDTO(999L, "Name", "Surname", "test@email.com", null);
         // Then
         assertFalse(personValidator.isValid(invalidPerson1));
         assertFalse(personValidator.isValid(invalidPerson2));
@@ -49,10 +50,10 @@ class PersonValidatorTest {
     @Test
     void validatePersonEmail() {
         // Given
-        PersonDTO invalidPerson1 = new PersonDTO(999L, "Name", "Surname", null);
-        PersonDTO invalidPerson2 = new PersonDTO(999L, "Name", "Surname", "");
-        PersonDTO invalidPerson3 = new PersonDTO(999L, "Name", "Surname", "  ");
-        PersonDTO validPerson1 = new PersonDTO(999L, "Name", "Surname", "test@email.com");
+        PersonDTO invalidPerson1 = new PersonDTO(999L, "Name", "Surname", null, null);
+        PersonDTO invalidPerson2 = new PersonDTO(999L, "Name", "Surname", "", null);
+        PersonDTO invalidPerson3 = new PersonDTO(999L, "Name", "Surname", "  ", null);
+        PersonDTO validPerson1 = new PersonDTO(999L, "Name", "Surname", "test@email.com", null);
         // Then
         assertFalse(personValidator.isValid(invalidPerson1));
         assertFalse(personValidator.isValid(invalidPerson2));

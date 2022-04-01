@@ -42,7 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class PersonControllerTest {
     @Autowired
     private MockMvc mockMvc;
-    
+
     @Mock
     private PersonService service;
 
@@ -55,7 +55,7 @@ class PersonControllerTest {
     @BeforeAll
     static void beforeAll() {
         gson = new Gson();
-        person = new PersonDTO(999L, "Vitalii", "Kachmar", "vitalii_k@mail.com");
+        person = new PersonDTO(999L, "Vitalii", "Kachmar", "vitalii_k@mail.com", null);
     }
 
     @BeforeEach
@@ -73,8 +73,8 @@ class PersonControllerTest {
         // Given
         List<PersonDTO> personList = Arrays.asList(
                 person,
-                new PersonDTO(1000L, null, null, null),
-                new PersonDTO(1001L, null, null, null));
+                new PersonDTO(1000L, null, null, null, null),
+                new PersonDTO(1001L, null, null, null, null));
         Pageable pageable = PageRequest.of(0, 10);
         when(service.findAll(any())).thenReturn(new PageImpl<>(personList, pageable, personList.size()));
         // When

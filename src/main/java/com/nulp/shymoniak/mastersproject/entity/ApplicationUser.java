@@ -31,8 +31,7 @@ public class ApplicationUser implements Persistable<Long> {
     @Column(name = "registered_date")
     private LocalDateTime createDate;
 
-    @OneToOne
-    @JoinColumn(name = "person_id")
+    @OneToOne(mappedBy = "applicationUser", cascade = CascadeType.ALL)
     @ToString.Exclude
     private Person person;
 

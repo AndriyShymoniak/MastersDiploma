@@ -29,6 +29,11 @@ public class Person implements Persistable<Long> {
     @Column(name = "email")
     private String email;
 
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    @ToString.Exclude
+    private ApplicationUser applicationUser;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
