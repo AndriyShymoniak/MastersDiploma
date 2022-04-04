@@ -16,22 +16,22 @@ import java.util.Objects;
 @Table(name = "person")
 public class Person implements Persistable<Long> {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "generator")
-    @SequenceGenerator(name = "generator", sequenceName = "person_sequence", allocationSize = 20)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PersonSeqGenerator")
+    @SequenceGenerator(name = "PersonSeqGenerator", sequenceName = "person_sequence", allocationSize = 20)
     @Column(name = "person_id")
     private Long personId;
 
-    @Column(name = "name")
+    @Column(name = "name", length = 100)
     private String name;
 
-    @Column(name = "surname")
+    @Column(name = "surname", length = 100)
     private String surname;
 
-    @Column(name = "email")
+    @Column(name = "email", length = 100)
     private String email;
 
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private ApplicationUser applicationUser;
 
     @Override

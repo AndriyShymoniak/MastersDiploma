@@ -16,15 +16,15 @@ import java.util.Objects;
 @Table(name = "location")
 public class Location implements Persistable<Long> {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "generator")
-    @SequenceGenerator(name = "generator", sequenceName = "location_sequence", allocationSize = 20)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "LocSeqGenerator")
+    @SequenceGenerator(name = "LocSeqGenerator", sequenceName = "location_sequence", allocationSize = 20)
     @Column(name = "location_id")
     private Long locationId;
 
-    @Column(name = "longitude")
+    @Column(name = "longitude", nullable = false, length = 100)
     private String longitude;
 
-    @Column(name = "latitude")
+    @Column(name = "latitude", nullable = false, length = 100)
     private String latitude;
 
     @Override

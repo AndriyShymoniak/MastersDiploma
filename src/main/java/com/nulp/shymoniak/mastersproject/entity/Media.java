@@ -17,15 +17,15 @@ import java.util.Objects;
 @Table(name = "media")
 public class Media implements Persistable<Long> {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "generator")
-    @SequenceGenerator(name = "generator", sequenceName = "media_sequence", allocationSize = 20)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MediaSeqGenerator")
+    @SequenceGenerator(name = "MediaSeqGenerator", sequenceName = "media_sequence", allocationSize = 20)
     @Column(name = "media_id")
     private Long mediaId;
 
-    @Column(name = "original_media_url")
+    @Column(name = "original_media_url", nullable = false)
     private String originalMediaUrl;
 
-    @Column(name = "processed_media_url")
+    @Column(name = "processed_media_url", nullable = false)
     private String processedMediaUrl;
 
     @Column(name = "create_date")

@@ -19,18 +19,18 @@ import java.util.Objects;
 @Table(name = "recognition_result")
 public class RecognitionResult implements Persistable<Long> {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "generator")
-    @SequenceGenerator(name = "generator", sequenceName = "recognition_result_sequence", allocationSize = 20)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RecResSeqGenerator")
+    @SequenceGenerator(name = "RecResSeqGenerator", sequenceName = "recognition_result_sequence", allocationSize = 20)
     @Column(name = "recognition_result_id")
     private Long recognitionResultId;
 
-    @Column(name = "description")
+    @Column(name = "description", length = 500)
     private String description;
 
-    @Column(name = "is_object_present")
+    @Column(name = "is_object_present", columnDefinition = "numeric", precision = 1)
     private Integer isObjectPresent;
 
-    @Column(name = "is_recognition_correct")
+    @Column(name = "is_recognition_correct", columnDefinition = "numeric", precision = 1)
     private Integer isRecognitionCorrect;
 
     @Column(name = "create_date")

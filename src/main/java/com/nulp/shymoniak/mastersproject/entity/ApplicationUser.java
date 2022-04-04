@@ -18,15 +18,15 @@ import java.util.Objects;
 @Table(name = "application_user")
 public class ApplicationUser implements Persistable<Long> {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "generator")
-    @SequenceGenerator(name = "generator", sequenceName = "user_sequence", allocationSize = 20)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AplUserSeqGenerator")
+    @SequenceGenerator(name = "AplUserSeqGenerator", sequenceName = "user_sequence", allocationSize = 20)
     @Column(name = "user_id")
     private Long userId;
 
-    @Column(name = "username")
+    @Column(name = "username", nullable = false, unique = true, length = 100)
     private String username;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false, length = 100)
     private String password;
 
     @Column(name = "registered_date")
@@ -35,8 +35,8 @@ public class ApplicationUser implements Persistable<Long> {
     @OneToOne(mappedBy = "applicationUser", cascade = CascadeType.ALL, orphanRemoval = true)
     private Person person;
 
-    @Column(name = "role")
     @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
     private ApplicationUserRole role;
 
     @Override
