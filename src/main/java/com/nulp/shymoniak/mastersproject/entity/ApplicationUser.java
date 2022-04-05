@@ -32,12 +32,12 @@ public class ApplicationUser implements Persistable<Long> {
     @Column(name = "registered_date")
     private LocalDateTime createDate;
 
-    @OneToOne(mappedBy = "applicationUser", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Person person;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private ApplicationUserRole role;
+
+    @OneToOne(mappedBy = "applicationUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Person person;
 
     @Override
     public boolean equals(Object o) {

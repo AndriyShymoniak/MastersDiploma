@@ -23,8 +23,8 @@ import static com.nulp.shymoniak.mastersproject.constant.ApplicationConstants.ER
 
 @Service
 public class ApplicationUserServiceImpl extends AbstractService<ApplicationUser, ApplicationUserDTO> implements ApplicationUserService, UserDetailsService {
-    private final ApplicationUserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    private ApplicationUserRepository userRepository;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     public ApplicationUserServiceImpl(ApplicationUserRepository repository, UserValidator validator, PasswordEncoder passwordEncoder) {
@@ -36,11 +36,11 @@ public class ApplicationUserServiceImpl extends AbstractService<ApplicationUser,
     }
 
     @Override
-    public ApplicationUserDTO createItem(ApplicationUserDTO applicationUserDTO) {
-        ApplicationUser user = (ApplicationUser) mapper.mapToEntity(applicationUserDTO);
+    public ApplicationUserDTO createItem(ApplicationUserDTO userDTO) {
+        ApplicationUser user = (ApplicationUser) mapper.mapToEntity(userDTO);
         user.addPerson(user.getPerson());
-        userRepository.save(user);
-        return (ApplicationUserDTO) mapper.mapToDTO(user);
+        ApplicationUser result = userRepository.save(user);
+        return (ApplicationUserDTO) mapper.mapToDTO(result);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class ApplicationUserServiceImpl extends AbstractService<ApplicationUser,
         ApplicationUser user = optionalEntity.get();
         user.removePerson();
         repository.deleteById(id);
-        return (ApplicationUserDTO) mapper.mapToDTO(optionalEntity.get());
+        return (ApplicationUserDTO) mapper.mapToDTO(user);
     }
 
     @Override

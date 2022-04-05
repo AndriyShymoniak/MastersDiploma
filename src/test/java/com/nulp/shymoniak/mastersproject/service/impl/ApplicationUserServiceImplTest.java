@@ -1,8 +1,11 @@
 package com.nulp.shymoniak.mastersproject.service.impl;
 
 import com.nulp.shymoniak.mastersproject.dto.ApplicationUserDTO;
+import com.nulp.shymoniak.mastersproject.dto.PersonDTO;
 import com.nulp.shymoniak.mastersproject.entity.ApplicationUser;
+import com.nulp.shymoniak.mastersproject.entity.Person;
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
+import com.nulp.shymoniak.mastersproject.mapping.AbstractMapper;
 import com.nulp.shymoniak.mastersproject.mapping.UserMapper;
 import com.nulp.shymoniak.mastersproject.repository.ApplicationUserRepository;
 import org.junit.jupiter.api.BeforeAll;
@@ -18,6 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -28,7 +32,7 @@ class ApplicationUserServiceImplTest {
     private ApplicationUserRepository repository;
 
     @Mock
-    private UserMapper mapper;
+    private AbstractMapper mapper;
     
     @InjectMocks
     private ApplicationUserServiceImpl service;
@@ -38,8 +42,8 @@ class ApplicationUserServiceImplTest {
 
     @BeforeAll
     static void beforeAll() {
-        user = new ApplicationUser(999L, "Username", "password", null, null, null);
-        userDTO = new ApplicationUserDTO(999L, "Username", "password", null, null, null);
+        user = new ApplicationUser(999L, "Username", "password", null, null, new Person());
+        userDTO = new ApplicationUserDTO(999L, "Username", "password", null, null, new PersonDTO());
     }
     
     @BeforeEach
@@ -75,6 +79,7 @@ class ApplicationUserServiceImplTest {
         // Given
         when(mapper.mapToEntity(userDTO)).thenReturn(user);
         when(mapper.mapToDTO(user)).thenReturn(userDTO);
+        when(repository.save(any())).thenReturn(user);
         // When
         ApplicationUserDTO result = service.createItem(userDTO);
         // Then
