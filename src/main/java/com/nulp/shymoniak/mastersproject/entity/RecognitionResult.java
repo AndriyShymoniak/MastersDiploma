@@ -40,32 +40,26 @@ public class RecognitionResult implements Persistable<Long> {
     private LocalDateTime updateDate;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "ml_model_id", referencedColumnName = "ml_model_id")
-    @ToString.Exclude
+    @JoinColumn(name = "ml_model_id")
     private MLModel mlModel;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "media_id", referencedColumnName = "media_id")
-    @ToString.Exclude
+    @JoinColumn(name = "media_id")
     private Media media;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "location_id", referencedColumnName = "location_id")
-    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "location_id")
     private Location location;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "create_user", referencedColumnName = "user_id")
-    @ToString.Exclude
     private ApplicationUser createUser;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "update_user", referencedColumnName = "user_id")
-    @ToString.Exclude
     private ApplicationUser updateUser;
 
-    @OneToMany(mappedBy = "observedObject", cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude
+    @OneToMany(mappedBy = "observedObject", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<RecognitionResultObservedObject> observedObjectList = new ArrayList<>();
 
     @Override

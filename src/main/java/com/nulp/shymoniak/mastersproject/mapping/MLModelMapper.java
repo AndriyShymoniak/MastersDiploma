@@ -6,10 +6,7 @@ import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 @Named("MlModelMapper")
-@Mapper(
-        componentModel = "spring",
-        unmappedTargetPolicy = ReportingPolicy.IGNORE
-)
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface MLModelMapper extends AbstractMapper<MLModel, MLModelDTO> {
     MLModelMapper INSTANCE = Mappers.getMapper(MLModelMapper.class);
 

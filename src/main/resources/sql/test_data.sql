@@ -58,8 +58,8 @@ VALUES (1, 1, 1),
 
 INSERT INTO ml_model_observed_object (ml_model_observed_object_id, ml_model_id, observed_object_id)
 VALUES (1, 1, 1),
-       (2, 1, 1),
-       (3, 1, 1),
+       (2, 1, 2),
+       (3, 2, 1),
        (4, 2, 2),
-       (5, 2, 2),
-       (6, 2, 2);
+       (5, 3, 4),
+       (6, 4, 4);

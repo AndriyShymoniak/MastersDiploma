@@ -26,12 +26,10 @@ public class ObservedObject implements Persistable<Long> {
     @Column(name = "object_name", nullable = false, length = 50)
     private String objectName;
 
-    @OneToMany(mappedBy = "mlModel", cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude
+    @OneToMany(mappedBy = "mlModel", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<MLModelObservedObject> mlModelList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "recognitionResult", cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude
+    @OneToMany(mappedBy = "recognitionResult", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<RecognitionResultObservedObject> recognitionResultList = new ArrayList<>();
 
     @Override

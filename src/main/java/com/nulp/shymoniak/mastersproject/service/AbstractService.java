@@ -16,6 +16,7 @@ import java.util.Optional;
 import static com.nulp.shymoniak.mastersproject.constant.ApplicationConstants.ERROR_INVALID_ENTITY;
 import static com.nulp.shymoniak.mastersproject.constant.ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND;
 
+@Transactional
 public abstract class AbstractService<Entity, DTO > {
     protected Validator validator;
     protected AbstractRepository repository;
@@ -33,14 +34,12 @@ public abstract class AbstractService<Entity, DTO > {
                 .orElseThrow(() -> new ApiRequestException(ERROR_MESSAGE_RECORD_NOT_FOUND));
     }
 
-    @Transactional
     public DTO createItem(DTO dto) {
         Entity entity = (Entity) mapper.mapToEntity(dto);
         repository.save(entity);
         return (DTO) mapper.mapToDTO(entity);
     }
 
-    @Transactional
     public DTO updateItem(DTO dto) {
         Entity entity = (Entity) mapper.mapToEntity(dto);
         Long entityId = getIdFromEntity(entity);
@@ -51,7 +50,6 @@ public abstract class AbstractService<Entity, DTO > {
         return (DTO) mapper.mapToDTO(entity);
     }
 
-    @Transactional
     public DTO deleteItem(Long id) {
         Optional<Entity> optionalEntity = repository.findById(id);
         if (optionalEntity.isEmpty()) {

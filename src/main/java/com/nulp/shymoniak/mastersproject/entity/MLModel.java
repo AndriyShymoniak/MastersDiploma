@@ -39,13 +39,11 @@ public class MLModel implements Persistable<Long> {
     @Column(name = "create_date")
     private LocalDateTime createDate;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "create_user", referencedColumnName = "user_id")
-    @ToString.Exclude
     private ApplicationUser createUser;
 
-    @OneToMany(mappedBy = "observedObject", cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude
+    @OneToMany(mappedBy = "observedObject", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<MLModelObservedObject> observedObjectList = new ArrayList<>();
 
     @Override

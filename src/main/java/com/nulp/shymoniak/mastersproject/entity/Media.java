@@ -31,9 +31,8 @@ public class Media implements Persistable<Long> {
     @Column(name = "create_date")
     private LocalDateTime createDate;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "create_user", referencedColumnName = "user_id")
-    @ToString.Exclude
     private ApplicationUser createUser;
 
     @Override
