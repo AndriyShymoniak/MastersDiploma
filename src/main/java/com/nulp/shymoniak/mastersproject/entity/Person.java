@@ -30,7 +30,7 @@ public class Person implements Persistable<Long> {
     @Column(name = "email", length = 100)
     private String email;
 
-    @OneToOne
+    @OneToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private ApplicationUser applicationUser;
 

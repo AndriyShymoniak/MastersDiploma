@@ -61,4 +61,16 @@ public class ApplicationUser implements Persistable<Long> {
     public boolean isNew() {
         return userId == null;
     }
+
+    public void addPerson(Person person) {
+        person.setApplicationUser(this);
+        this.person = person;
+    }
+
+    public void removePerson() {
+        if (person != null) {
+            person.setApplicationUser(null);
+            this.person = null;
+        }
+    }
 }

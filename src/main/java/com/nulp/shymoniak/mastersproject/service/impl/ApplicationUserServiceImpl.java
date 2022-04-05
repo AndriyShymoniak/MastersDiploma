@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+import static com.nulp.shymoniak.mastersproject.constant.ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND;
+
 @Service
 public class ApplicationUserServiceImpl extends AbstractService<ApplicationUser, ApplicationUserDTO> implements ApplicationUserService, UserDetailsService {
     private final ApplicationUserRepository userRepository;
@@ -31,6 +33,26 @@ public class ApplicationUserServiceImpl extends AbstractService<ApplicationUser,
         this.validator = validator;
         this.mapper = UserMapper.INSTANCE;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    @Override
+    public ApplicationUserDTO createItem(ApplicationUserDTO applicationUserDTO) {
+        ApplicationUser user = (ApplicationUser) mapper.mapToEntity(applicationUserDTO);
+        user.addPerson(user.getPerson());
+        userRepository.save(user);
+        return (ApplicationUserDTO) mapper.mapToDTO(user);
+    }
+
+    @Override
+    public ApplicationUserDTO deleteItem(Long id) {
+        Optional<ApplicationUser> optionalEntity = repository.findById(id);
+        if (optionalEntity.isEmpty()) {
+            throw new ApiRequestException(ERROR_MESSAGE_RECORD_NOT_FOUND);
+        }
+        ApplicationUser user = optionalEntity.get();
+        user.removePerson();
+        repository.deleteById(id);
+        return (ApplicationUserDTO) mapper.mapToDTO(optionalEntity.get());
     }
 
     @Override

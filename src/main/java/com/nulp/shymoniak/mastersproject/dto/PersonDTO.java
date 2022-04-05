@@ -12,5 +12,5 @@ public class PersonDTO {
     private String name;
     private String surname;
     private String email;
-    private ApplicationUserDTO applicationUser;
+    private ApplicationUserDTO user;
 }
