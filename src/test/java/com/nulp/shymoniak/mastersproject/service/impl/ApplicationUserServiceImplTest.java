@@ -33,10 +33,10 @@ class ApplicationUserServiceImplTest {
 
     @Mock
     private AbstractMapper mapper;
-    
+
     @InjectMocks
     private ApplicationUserServiceImpl service;
-    
+
     private static ApplicationUser user;
     private static ApplicationUserDTO userDTO;
 
@@ -45,7 +45,7 @@ class ApplicationUserServiceImplTest {
         user = new ApplicationUser(999L, "Username", "password", null, null, new Person());
         userDTO = new ApplicationUserDTO(999L, "Username", "password", null, null, new PersonDTO());
     }
-    
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -79,7 +79,7 @@ class ApplicationUserServiceImplTest {
         // Given
         when(mapper.mapToEntity(userDTO)).thenReturn(user);
         when(mapper.mapToDTO(user)).thenReturn(userDTO);
-        when(repository.save(any())).thenReturn(user);
+        when(repository.save(user)).thenReturn(user);
         // When
         ApplicationUserDTO result = service.createItem(userDTO);
         // Then
@@ -94,9 +94,10 @@ class ApplicationUserServiceImplTest {
         // Given
         ApplicationUser newUserEntity = new ApplicationUser(999L, "NewUsername", "password", null, null, null);
         ApplicationUserDTO newUserDTO = new ApplicationUserDTO(999L, "NewUsername", "password", null, null, null);
-        when(repository.existsById(user.getUserId())).thenReturn(true);
         when(mapper.mapToEntity(newUserDTO)).thenReturn(newUserEntity);
         when(mapper.mapToDTO(newUserEntity)).thenReturn(newUserDTO);
+        when(repository.existsById(user.getUserId())).thenReturn(true);
+        when(repository.save(newUserEntity)).thenReturn(newUserEntity);
         // When
         ApplicationUserDTO result = service.updateItem(newUserDTO);
         // Then

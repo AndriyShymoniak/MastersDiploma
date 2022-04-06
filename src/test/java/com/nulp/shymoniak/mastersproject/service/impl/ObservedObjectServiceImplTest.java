@@ -75,6 +75,7 @@ class ObservedObjectServiceImplTest {
         // Given
         when(mapper.mapToEntity(observedObjectDTO)).thenReturn(observedObject);
         when(mapper.mapToDTO(observedObject)).thenReturn(observedObjectDTO);
+        when(repository.save(observedObject)).thenReturn(observedObject);
         // When
         ObservedObjectDTO result = service.createItem(observedObjectDTO);
         // Then
@@ -89,9 +90,10 @@ class ObservedObjectServiceImplTest {
         // Given
         ObservedObject newObservedObjectEntity = new ObservedObject(999L, "NEW_OBJ_NAME", null, null);
         ObservedObjectDTO newObservedObjectDTO = new ObservedObjectDTO(999L, "NEW_OBJ_NAME", null, null);
-        when(repository.existsById(observedObject.getObservedObjectId())).thenReturn(true);
         when(mapper.mapToEntity(newObservedObjectDTO)).thenReturn(newObservedObjectEntity);
         when(mapper.mapToDTO(newObservedObjectEntity)).thenReturn(newObservedObjectDTO);
+        when(repository.existsById(observedObject.getObservedObjectId())).thenReturn(true);
+        when(repository.save(newObservedObjectEntity)).thenReturn(newObservedObjectEntity);
         // When
         ObservedObjectDTO result = service.updateItem(newObservedObjectDTO);
         // Then

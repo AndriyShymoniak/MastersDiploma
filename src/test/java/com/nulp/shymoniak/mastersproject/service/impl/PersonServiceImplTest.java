@@ -75,6 +75,7 @@ class PersonServiceImplTest {
         // Given
         when(mapper.mapToEntity(personDTO)).thenReturn(person);
         when(mapper.mapToDTO(person)).thenReturn(personDTO);
+        when(repository.save(person)).thenReturn(person);
         // When
         PersonDTO result = service.createItem(personDTO);
         // Then
@@ -89,9 +90,10 @@ class PersonServiceImplTest {
         // Given
         Person newPersonEntity = new Person(999L, "NewName", "NewSurname", "vitalii_k@mail.com", null);
         PersonDTO newPersonDTO = new PersonDTO(999L, "NewName", "NewSurname", "vitalii_k@mail.com", null);
-        when(repository.existsById(person.getPersonId())).thenReturn(true);
         when(mapper.mapToEntity(newPersonDTO)).thenReturn(newPersonEntity);
         when(mapper.mapToDTO(newPersonEntity)).thenReturn(newPersonDTO);
+        when(repository.existsById(person.getPersonId())).thenReturn(true);
+        when(repository.save(newPersonEntity)).thenReturn(newPersonEntity);
         // When
         PersonDTO result = service.updateItem(newPersonDTO);
         // Then

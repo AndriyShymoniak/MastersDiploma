@@ -94,6 +94,7 @@ class MLModelServiceImplTest {
         // Given
         when(mapper.mapToEntity(mlModelDTO)).thenReturn(mlModel);
         when(mapper.mapToDTO(mlModel)).thenReturn(mlModelDTO);
+        when(repository.save(mlModel)).thenReturn(mlModel);
         // When
         MLModelDTO result = service.createItem(mlModelDTO);
         // Then
@@ -108,9 +109,10 @@ class MLModelServiceImplTest {
         // Given
         MLModel newMLModelEntity = new MLModel(999L, "NEW_MODEL_NAME", "https://github.com/", 1, 1, null, null, null);
         MLModelDTO newMLModelDTO = new MLModelDTO(999L, "NEW_MODEL_NAME", "https://github.com/", 1, 1, null, null, null);
-        when(repository.existsById(mlModel.getMlModelId())).thenReturn(true);
         when(mapper.mapToEntity(newMLModelDTO)).thenReturn(newMLModelEntity);
         when(mapper.mapToDTO(newMLModelEntity)).thenReturn(newMLModelDTO);
+        when(repository.existsById(mlModel.getMlModelId())).thenReturn(true);
+        when(repository.save(newMLModelEntity)).thenReturn(newMLModelEntity);
         // When
         MLModelDTO result = service.updateItem(newMLModelDTO);
         // Then

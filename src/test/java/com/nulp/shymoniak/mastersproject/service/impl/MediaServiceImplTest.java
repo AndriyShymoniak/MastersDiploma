@@ -75,6 +75,7 @@ class MediaServiceImplTest {
         // Given
         when(mapper.mapToEntity(mediaDTO)).thenReturn(media);
         when(mapper.mapToDTO(media)).thenReturn(mediaDTO);
+        when(repository.save(media)).thenReturn(media);
         // When
         MediaDTO result = service.createItem(mediaDTO);
         // Then
@@ -89,9 +90,10 @@ class MediaServiceImplTest {
         // Given
         Media newMediaEntity = new Media(999L, "https://github.com/", "", null, null);
         MediaDTO newMediaDTO = new MediaDTO(999L, "https://github.com/", "", null, null);
-        when(repository.existsById(media.getMediaId())).thenReturn(true);
         when(mapper.mapToEntity(newMediaDTO)).thenReturn(newMediaEntity);
         when(mapper.mapToDTO(newMediaEntity)).thenReturn(newMediaDTO);
+        when(repository.existsById(media.getMediaId())).thenReturn(true);
+        when(repository.save(newMediaEntity)).thenReturn(newMediaEntity);
         // When
         MediaDTO result = service.updateItem(newMediaDTO);
         // Then

@@ -17,7 +17,7 @@ import static com.nulp.shymoniak.mastersproject.constant.ApplicationConstants.ER
 import static com.nulp.shymoniak.mastersproject.constant.ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND;
 
 @Transactional
-public abstract class AbstractService<Entity, DTO > {
+public abstract class AbstractService<Entity, DTO> {
     protected Validator validator;
     protected AbstractRepository repository;
     protected AbstractMapper mapper;
@@ -36,8 +36,8 @@ public abstract class AbstractService<Entity, DTO > {
 
     public DTO createItem(DTO dto) {
         Entity entity = (Entity) mapper.mapToEntity(dto);
-        repository.save(entity);
-        return (DTO) mapper.mapToDTO(entity);
+        Entity savedEntity = (Entity) repository.save(entity);
+        return (DTO) mapper.mapToDTO(savedEntity);
     }
 
     public DTO updateItem(DTO dto) {
@@ -46,8 +46,8 @@ public abstract class AbstractService<Entity, DTO > {
         if (!repository.existsById(entityId)) {
             throw new ApiRequestException(ERROR_MESSAGE_RECORD_NOT_FOUND);
         }
-        repository.save(entity);
-        return (DTO) mapper.mapToDTO(entity);
+        Entity updatedEntity = (Entity) repository.save(entity);
+        return (DTO) mapper.mapToDTO(updatedEntity);
     }
 
     public DTO deleteItem(Long id) {

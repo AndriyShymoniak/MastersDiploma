@@ -85,6 +85,7 @@ class ServiceDTOFillerAspectImplTest {
         when(fieldFiller.fillCreateFields(recognitionResultDTO)).thenReturn(updatedRecognitionResultDTO);
         when(mapper.mapToEntity(updatedRecognitionResultDTO)).thenReturn(updatedRecognitionResultEntity);
         when(mapper.mapToDTO(updatedRecognitionResultEntity)).thenReturn(updatedRecognitionResultDTO);
+        when(repository.save(updatedRecognitionResultEntity)).thenReturn(updatedRecognitionResultEntity);
         // When
         RecognitionResultDTO result = serviceProxy.createItem(recognitionResultDTO);
         // Then
@@ -97,9 +98,10 @@ class ServiceDTOFillerAspectImplTest {
         // Given
         when(aspectUtility.getDTOEntityFromParameters(any())).thenReturn(recognitionResultDTO);
         when(fieldFiller.fillUpdateFields(recognitionResultDTO)).thenReturn(updatedRecognitionResultDTO);
-        when(repository.existsById(recognitionResultEntity.getRecognitionResultId())).thenReturn(true);
         when(mapper.mapToEntity(updatedRecognitionResultDTO)).thenReturn(updatedRecognitionResultEntity);
         when(mapper.mapToDTO(updatedRecognitionResultEntity)).thenReturn(updatedRecognitionResultDTO);
+        when(repository.existsById(recognitionResultEntity.getRecognitionResultId())).thenReturn(true);
+        when(repository.save(recognitionResultEntity)).thenReturn(recognitionResultEntity);
         // When
         RecognitionResultDTO result = serviceProxy.updateItem(recognitionResultDTO);
         // Then

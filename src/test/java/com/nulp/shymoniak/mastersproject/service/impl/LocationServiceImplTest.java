@@ -74,6 +74,7 @@ class LocationServiceImplTest {
         // Given
         when(mapper.mapToEntity(locationDTO)).thenReturn(location);
         when(mapper.mapToDTO(location)).thenReturn(locationDTO);
+        when(repository.save(location)).thenReturn(location);
         // When
         LocationDTO result = service.createItem(locationDTO);
         // Then
@@ -88,9 +89,10 @@ class LocationServiceImplTest {
         // Given
         Location newLocationEntity = new Location(999L, "40.54321", "40.54321");
         LocationDTO newLocationDTO = new LocationDTO(999L, "40.54321", "40.54321");
-        when(repository.existsById(location.getLocationId())).thenReturn(true);
         when(mapper.mapToEntity(newLocationDTO)).thenReturn(newLocationEntity);
         when(mapper.mapToDTO(newLocationEntity)).thenReturn(newLocationDTO);
+        when(repository.existsById(location.getLocationId())).thenReturn(true);
+        when(repository.save(newLocationEntity)).thenReturn(newLocationEntity);
         // When
         LocationDTO result = service.updateItem(newLocationDTO);
         // Then

@@ -73,6 +73,7 @@ class ServiceValidatorAspectImplTest {
         when(mapper.mapToEntity(recognitionResultDTO)).thenReturn(recognitionResultEntity);
         when(mapper.mapToDTO(recognitionResultEntity)).thenReturn(recognitionResultDTO);
         when(repository.existsById(recognitionResultEntity.getRecognitionResultId())).thenReturn(true);
+        when(repository.save(recognitionResultEntity)).thenReturn(recognitionResultEntity);
         // When
         // Then
         serviceProxy.createItem(recognitionResultDTO);

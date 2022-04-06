@@ -89,6 +89,7 @@ class RecognitionResultServiceImplTest {
         // Given
         when(mapper.mapToEntity(recognitionResultDTO)).thenReturn(recognitionResult);
         when(mapper.mapToDTO(recognitionResult)).thenReturn(recognitionResultDTO);
+        when(repository.save(recognitionResult)).thenReturn(recognitionResult);
         // When
         RecognitionResultDTO result = service.createItem(recognitionResultDTO);
         // Then
@@ -103,9 +104,10 @@ class RecognitionResultServiceImplTest {
         // Given
         RecognitionResult newRecognitionResultEntity = new RecognitionResult(999L, "new description ... ", 1, 1, null, null, null, null, null, null, null, null);
         RecognitionResultDTO newRecognitionResultDTO = new RecognitionResultDTO(999L, "new description ... ", 1, 1, null, null, null, null, null, null, null, null);
-        when(repository.existsById(recognitionResult.getRecognitionResultId())).thenReturn(true);
         when(mapper.mapToEntity(newRecognitionResultDTO)).thenReturn(newRecognitionResultEntity);
         when(mapper.mapToDTO(newRecognitionResultEntity)).thenReturn(newRecognitionResultDTO);
+        when(repository.existsById(recognitionResult.getRecognitionResultId())).thenReturn(true);
+        when(repository.save(newRecognitionResultEntity)).thenReturn(newRecognitionResultEntity);
         // When
         RecognitionResultDTO result = service.updateItem(newRecognitionResultDTO);
         // Then
