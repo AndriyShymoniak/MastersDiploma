@@ -41,9 +41,11 @@ public class MLModel implements Persistable<Long> {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "create_user", referencedColumnName = "user_id")
+    @ToString.Exclude
     private ApplicationUser createUser;
 
     @OneToMany(mappedBy = "observedObject", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ToString.Exclude
     private List<MLModelObservedObject> observedObjectList = new ArrayList<>();
 
     @Override

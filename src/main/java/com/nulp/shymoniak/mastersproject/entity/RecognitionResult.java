@@ -41,25 +41,31 @@ public class RecognitionResult implements Persistable<Long> {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "ml_model_id")
+    @ToString.Exclude
     private MLModel mlModel;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "media_id")
+    @ToString.Exclude
     private Media media;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
+    @ToString.Exclude
     private Location location;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "create_user", referencedColumnName = "user_id")
+    @ToString.Exclude
     private ApplicationUser createUser;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "update_user", referencedColumnName = "user_id")
+    @ToString.Exclude
     private ApplicationUser updateUser;
 
     @OneToMany(mappedBy = "observedObject", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ToString.Exclude
     private List<RecognitionResultObservedObject> observedObjectList = new ArrayList<>();
 
     @Override

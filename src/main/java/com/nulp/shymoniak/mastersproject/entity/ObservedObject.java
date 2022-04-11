@@ -27,9 +27,11 @@ public class ObservedObject implements Persistable<Long> {
     private String objectName;
 
     @OneToMany(mappedBy = "mlModel", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ToString.Exclude
     private List<MLModelObservedObject> mlModelList = new ArrayList<>();
 
     @OneToMany(mappedBy = "recognitionResult", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ToString.Exclude
     private List<RecognitionResultObservedObject> recognitionResultList = new ArrayList<>();
 
     @Override

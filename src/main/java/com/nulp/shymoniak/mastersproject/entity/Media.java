@@ -33,6 +33,7 @@ public class Media implements Persistable<Long> {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "create_user", referencedColumnName = "user_id")
+    @ToString.Exclude
     private ApplicationUser createUser;
 
     @Override
