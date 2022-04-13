@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  app:
+#    image: 'masters-app-docker.jar'
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: masters-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - dbpostgresql
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://dbpostgresql:5432/masters
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=1234
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=create
+
+  dbpostgresql:
+    image: 'postgres:13.5-alpine3.15'
+    container_name: db-postgresql
+    ports:
+      - "5000:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=masters
+      - PGDATA=/var/lib/postgresql/data
+
+volumes:
+  db-data:
+    external: false
