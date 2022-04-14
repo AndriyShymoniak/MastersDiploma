@@ -1,4 +1,11 @@
-FROM openjdk:11
+FROM openjdk:11-jdk-slim-buster
 EXPOSE 8080
-ADD target/masters-app-docker.jar masters-app-docker.jar
-ENTRYPOINT ["java", "-jar", "masters-app-docker.jar"]
+WORKDIR /app
+
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+RUN ./mvnw dependency:go-offline
+
+COPY src ./src
+
+CMD ["./mvnw", "spring-boot:run"]
