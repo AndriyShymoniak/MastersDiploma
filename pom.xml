@@ -121,7 +121,6 @@
     </dependencies>
 
     <build>
-        <finalName>masters-app-docker</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
