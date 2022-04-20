@@ -8,13 +8,16 @@ services:
     container_name: masters-app
     ports:
       - "8080:8080"
+    volumes:
+      - app-data:/var/lib/app/data
     depends_on:
       - dbpostgresql
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://dbpostgresql:5432/masters
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=1234
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=create
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    command: ./mvnw spring-boot:run -Dspring-boot.run.profiles=test
 
   dbpostgresql:
     image: 'postgres:13.5-alpine3.15'
@@ -31,4 +34,6 @@ services:
 
 volumes:
   db-data:
+    external: false
+  app-data:
     external: false
