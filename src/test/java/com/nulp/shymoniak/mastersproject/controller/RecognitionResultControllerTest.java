@@ -1,6 +1,7 @@
 package com.nulp.shymoniak.mastersproject.controller;
 
 import com.google.gson.Gson;
+import com.nulp.shymoniak.mastersproject.TestObjectsGenerator;
 import com.nulp.shymoniak.mastersproject.dto.RecognitionResultDTO;
 import com.nulp.shymoniak.mastersproject.exception.ApiExceptionHandler;
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
@@ -25,7 +26,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,7 +56,7 @@ class RecognitionResultControllerTest {
     @BeforeAll
     static void beforeAll() {
         gson = new Gson();
-        recognitionResult = new RecognitionResultDTO(999L, "description ... ", 1, 1, null, null, null, null, null, null, null, null);
+        recognitionResult = TestObjectsGenerator.generateRecognitionResultDTO();
     }
 
     @BeforeEach
@@ -72,10 +72,7 @@ class RecognitionResultControllerTest {
     @Test
     void findAllRecognitionResults_shouldReturnRecognitionResultListAndStatusCode200_ifRecognitionResultsExist() throws Exception {
         // Given
-        List<RecognitionResultDTO> recognitionResultList = Arrays.asList(
-                recognitionResult,
-                new RecognitionResultDTO(1000L, null, null, null, null, null, null, null, null, null, null, null),
-                new RecognitionResultDTO(1001L, null, null, null, null, null, null, null, null, null, null, null));
+        List<RecognitionResultDTO> recognitionResultList = TestObjectsGenerator.generateRecognitionResultDTOList(LocalDateTime.now(), LocalDateTime.now());
         Pageable pageable = PageRequest.of(0, 10);
         when(service.findAll(any())).thenReturn(new PageImpl<>(recognitionResultList, pageable, recognitionResultList.size()));
         // When
@@ -92,10 +89,7 @@ class RecognitionResultControllerTest {
     @Test
     void findAllRecognitionResultsGroupedByDate_shouldReturnResponseEntityOfFoundRecognitionResults_ifRecognitionResultsExist() throws Exception {
         // Given
-        List<RecognitionResultDTO> recognitionResultList = Arrays.asList(
-                recognitionResult,
-                new RecognitionResultDTO(1000L, null, null, null, null, null, null, null, null, null, null, null),
-                new RecognitionResultDTO(1001L, null, null, null, null, null, null, null, null, null, null, null));
+        List<RecognitionResultDTO> recognitionResultList = TestObjectsGenerator.generateRecognitionResultDTOList(LocalDateTime.now(), LocalDateTime.now());
         Map<LocalDateTime, List<RecognitionResultDTO>> resultMap = new HashMap<>();
         LocalDateTime currentDate = LocalDateTime.now();
         resultMap.put(currentDate, recognitionResultList);
@@ -113,10 +107,7 @@ class RecognitionResultControllerTest {
     @Test
     void findRecognitionResultsByUserId_shouldReturnResponseEntityOfFoundRecognitionResults_ifRecognitionResultsExist() throws Exception {
         // Given
-        List<RecognitionResultDTO> recognitionResultList = Arrays.asList(
-                recognitionResult,
-                new RecognitionResultDTO(1000L, null, null, null, null, null, null, null, null, null, null, null),
-                new RecognitionResultDTO(1001L, null, null, null, null, null, null, null, null, null, null, null));
+        List<RecognitionResultDTO> recognitionResultList = TestObjectsGenerator.generateRecognitionResultDTOList(LocalDateTime.now(), LocalDateTime.now());
         Long userId = 999L;
         when(service.findAllByUserId(userId)).thenReturn(recognitionResultList);
         // When

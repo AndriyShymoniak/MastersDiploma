@@ -1,5 +1,6 @@
 package com.nulp.shymoniak.mastersproject.service.impl;
 
+import com.nulp.shymoniak.mastersproject.TestObjectsGenerator;
 import com.nulp.shymoniak.mastersproject.dto.MediaDTO;
 import com.nulp.shymoniak.mastersproject.entity.Media;
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
@@ -38,8 +39,8 @@ class MediaServiceImplTest {
 
     @BeforeAll
     static void beforeAll() {
-        media = new Media(999L, "https://shorturl.at/elnI5", "https://shorturl.at/elnI5", null, null);
-        mediaDTO = new MediaDTO(999L, "https://shorturl.at/elnI5", "https://shorturl.at/elnI5", null, null);
+        media = TestObjectsGenerator.generateMedia();
+        mediaDTO = TestObjectsGenerator.generateMediaDTO();
     }
 
     @BeforeEach
@@ -66,7 +67,8 @@ class MediaServiceImplTest {
         when(repository.findById(media.getMediaId())).thenReturn(Optional.empty());
         // When
         // Then
-        assertThrows(ApiRequestException.class, () -> service.findById(media.getMediaId()));
+        assertThrows(ApiRequestException.class,
+                () -> service.findById(media.getMediaId()));
         verify(repository).findById(media.getMediaId());
     }
 
@@ -88,8 +90,10 @@ class MediaServiceImplTest {
     @Test
     void updateItem_shouldUpdateMedia_ifExist() {
         // Given
-        Media newMediaEntity = new Media(999L, "https://github.com/", "", null, null);
-        MediaDTO newMediaDTO = new MediaDTO(999L, "https://github.com/", "", null, null);
+        Media newMediaEntity = TestObjectsGenerator.generateMedia();
+        newMediaEntity.setProcessedMediaUrl("https://newlink.com/");
+        MediaDTO newMediaDTO = TestObjectsGenerator.generateMediaDTO();
+        newMediaDTO.setProcessedMediaUrl("https://newlink.com/");
         when(mapper.mapToEntity(newMediaDTO)).thenReturn(newMediaEntity);
         when(mapper.mapToDTO(newMediaEntity)).thenReturn(newMediaDTO);
         when(repository.existsById(media.getMediaId())).thenReturn(true);
@@ -110,7 +114,8 @@ class MediaServiceImplTest {
         when(repository.existsById(media.getMediaId())).thenReturn(false);
         // When
         // Then
-        assertThrows(ApiRequestException.class, () -> service.updateItem(mediaDTO));
+        assertThrows(ApiRequestException.class,
+                () -> service.updateItem(mediaDTO));
         verify(mapper).mapToEntity(mediaDTO);
         verify(repository).existsById(media.getMediaId());
     }

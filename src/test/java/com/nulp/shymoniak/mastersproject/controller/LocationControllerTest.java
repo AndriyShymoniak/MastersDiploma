@@ -1,6 +1,7 @@
 package com.nulp.shymoniak.mastersproject.controller;
 
 import com.google.gson.Gson;
+import com.nulp.shymoniak.mastersproject.TestObjectsGenerator;
 import com.nulp.shymoniak.mastersproject.dto.LocationDTO;
 import com.nulp.shymoniak.mastersproject.exception.ApiExceptionHandler;
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
@@ -24,7 +25,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static com.nulp.shymoniak.mastersproject.constant.ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND;
@@ -53,7 +53,7 @@ class LocationControllerTest {
     @BeforeAll
     static void beforeAll() {
         gson = new Gson();
-        location = new LocationDTO(999L, "39.12345", "39.12345");
+        location = TestObjectsGenerator.generateLocationDTO();
     }
 
     @BeforeEach
@@ -69,10 +69,7 @@ class LocationControllerTest {
     @Test
     void findAllLocations_shouldReturnLocationListAndStatusCode200_ifLocationsExist() throws Exception {
         // Given
-        List<LocationDTO> locationList = Arrays.asList(
-                location,
-                new LocationDTO(1000L, null, null),
-                new LocationDTO(1001L, null, null));
+        List<LocationDTO> locationList = TestObjectsGenerator.generateLocationDTOList();
         Pageable pageable = PageRequest.of(0, 10);
         when(service.findAll(any())).thenReturn(new PageImpl<>(locationList, pageable, locationList.size()));
         // When

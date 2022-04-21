@@ -1,12 +1,10 @@
 package com.nulp.shymoniak.mastersproject.service.impl;
 
+import com.nulp.shymoniak.mastersproject.TestObjectsGenerator;
 import com.nulp.shymoniak.mastersproject.dto.ApplicationUserDTO;
-import com.nulp.shymoniak.mastersproject.dto.PersonDTO;
 import com.nulp.shymoniak.mastersproject.entity.ApplicationUser;
-import com.nulp.shymoniak.mastersproject.entity.Person;
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
 import com.nulp.shymoniak.mastersproject.mapping.AbstractMapper;
-import com.nulp.shymoniak.mastersproject.mapping.UserMapper;
 import com.nulp.shymoniak.mastersproject.repository.ApplicationUserRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +19,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -42,8 +39,8 @@ class ApplicationUserServiceImplTest {
 
     @BeforeAll
     static void beforeAll() {
-        user = new ApplicationUser(999L, "Username", "password", null, null, new Person());
-        userDTO = new ApplicationUserDTO(999L, "Username", "password", null, null, new PersonDTO());
+        user = TestObjectsGenerator.generateApplicationUser();
+        userDTO = TestObjectsGenerator.generateApplicationUserDTO();
     }
 
     @BeforeEach
@@ -92,8 +89,10 @@ class ApplicationUserServiceImplTest {
     @Test
     void updateItem_shouldUpdateUser_ifExist() {
         // Given
-        ApplicationUser newUserEntity = new ApplicationUser(999L, "NewUsername", "password", null, null, null);
-        ApplicationUserDTO newUserDTO = new ApplicationUserDTO(999L, "NewUsername", "password", null, null, null);
+        ApplicationUser newUserEntity = TestObjectsGenerator.generateApplicationUser();
+        newUserEntity.setUsername("NewUser");
+        ApplicationUserDTO newUserDTO = TestObjectsGenerator.generateApplicationUserDTO();
+        newUserDTO.setUsername("NewUser");
         when(mapper.mapToEntity(newUserDTO)).thenReturn(newUserEntity);
         when(mapper.mapToDTO(newUserEntity)).thenReturn(newUserDTO);
         when(repository.existsById(user.getUserId())).thenReturn(true);

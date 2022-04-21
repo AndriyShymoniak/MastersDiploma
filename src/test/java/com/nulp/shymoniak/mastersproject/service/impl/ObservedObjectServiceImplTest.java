@@ -1,5 +1,6 @@
 package com.nulp.shymoniak.mastersproject.service.impl;
 
+import com.nulp.shymoniak.mastersproject.TestObjectsGenerator;
 import com.nulp.shymoniak.mastersproject.dto.ObservedObjectDTO;
 import com.nulp.shymoniak.mastersproject.entity.ObservedObject;
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
@@ -38,8 +39,8 @@ class ObservedObjectServiceImplTest {
 
     @BeforeAll
     static void beforeAll() {
-        observedObject = new ObservedObject(999L, "OBJ_NAME", null, null);
-        observedObjectDTO = new ObservedObjectDTO(999L, "OBJ_NAME", null, null);
+        observedObject = TestObjectsGenerator.generateObservedObject();
+        observedObjectDTO = TestObjectsGenerator.generateObservedObjectDTO();
     }
 
     @BeforeEach
@@ -88,8 +89,10 @@ class ObservedObjectServiceImplTest {
     @Test
     void updateItem_shouldUpdateObservedObject_ifExist() {
         // Given
-        ObservedObject newObservedObjectEntity = new ObservedObject(999L, "NEW_OBJ_NAME", null, null);
-        ObservedObjectDTO newObservedObjectDTO = new ObservedObjectDTO(999L, "NEW_OBJ_NAME", null, null);
+        ObservedObject newObservedObjectEntity = TestObjectsGenerator.generateObservedObject();
+        newObservedObjectEntity.setObjectName("NEW_OBJ_NAME");
+        ObservedObjectDTO newObservedObjectDTO = TestObjectsGenerator.generateObservedObjectDTO();
+        newObservedObjectDTO.setObjectName("NEW_OBJ_NAME");
         when(mapper.mapToEntity(newObservedObjectDTO)).thenReturn(newObservedObjectEntity);
         when(mapper.mapToDTO(newObservedObjectEntity)).thenReturn(newObservedObjectDTO);
         when(repository.existsById(observedObject.getObservedObjectId())).thenReturn(true);

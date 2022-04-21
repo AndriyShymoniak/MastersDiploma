@@ -1,6 +1,7 @@
 package com.nulp.shymoniak.mastersproject.controller;
 
 import com.google.gson.Gson;
+import com.nulp.shymoniak.mastersproject.TestObjectsGenerator;
 import com.nulp.shymoniak.mastersproject.dto.ApplicationUserDTO;
 import com.nulp.shymoniak.mastersproject.exception.ApiExceptionHandler;
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
@@ -24,7 +25,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static com.nulp.shymoniak.mastersproject.constant.ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND;
@@ -54,7 +54,7 @@ class ApplicationUserControllerTest {
     @BeforeAll
     static void beforeAll() {
         gson = new Gson();
-        user = new ApplicationUserDTO(999L, "Username", "password", null, null, null);
+        user = TestObjectsGenerator.generateApplicationUserDTO();
     }
 
     @BeforeEach
@@ -70,10 +70,7 @@ class ApplicationUserControllerTest {
     @Test
     void findAllUsers_shouldReturnApplicationUserListAndStatusCode200_ifUsersExist() throws Exception {
         // Given
-        List<ApplicationUserDTO> userList = Arrays.asList(
-                user,
-                new ApplicationUserDTO(1000L, null, null, null, null, null),
-                new ApplicationUserDTO(1001L, null, null, null, null, null));
+        List<ApplicationUserDTO> userList = TestObjectsGenerator.generateApplicationUserDTOList();
         Pageable pageable = PageRequest.of(0, 10);
         when(service.findAll(any())).thenReturn(new PageImpl<>(userList, pageable, userList.size()));
         // When

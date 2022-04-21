@@ -1,7 +1,7 @@
 package com.nulp.shymoniak.mastersproject.service.impl;
 
+import com.nulp.shymoniak.mastersproject.TestObjectsGenerator;
 import com.nulp.shymoniak.mastersproject.dto.RecognitionResultDTO;
-import com.nulp.shymoniak.mastersproject.dto.ApplicationUserDTO;
 import com.nulp.shymoniak.mastersproject.entity.ApplicationUser;
 import com.nulp.shymoniak.mastersproject.entity.RecognitionResult;
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
@@ -20,12 +20,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -52,8 +49,8 @@ class RecognitionResultServiceImplTest {
 
     @BeforeAll
     static void beforeAll() {
-        recognitionResult = new RecognitionResult(999L, "description ... ", 1, 1, null, null, null, null, null, null, null, null);
-        recognitionResultDTO = new RecognitionResultDTO(999L, "description ... ", 1, 1, null, null, null, null, null, null, null, null);
+        recognitionResult = TestObjectsGenerator.generateRecognitionResult();
+        recognitionResultDTO =TestObjectsGenerator.generateRecognitionResultDTO();
     }
 
     @BeforeEach
@@ -102,8 +99,10 @@ class RecognitionResultServiceImplTest {
     @Test
     void updateItem_shouldUpdateRecognitionResult_ifExist() {
         // Given
-        RecognitionResult newRecognitionResultEntity = new RecognitionResult(999L, "new description ... ", 1, 1, null, null, null, null, null, null, null, null);
-        RecognitionResultDTO newRecognitionResultDTO = new RecognitionResultDTO(999L, "new description ... ", 1, 1, null, null, null, null, null, null, null, null);
+        RecognitionResult newRecognitionResultEntity = TestObjectsGenerator.generateRecognitionResult();
+        newRecognitionResultEntity.setDescription("new description ... ");
+        RecognitionResultDTO newRecognitionResultDTO = TestObjectsGenerator.generateRecognitionResultDTO();
+        newRecognitionResultDTO.setDescription("new description ... ");
         when(mapper.mapToEntity(newRecognitionResultDTO)).thenReturn(newRecognitionResultEntity);
         when(mapper.mapToDTO(newRecognitionResultEntity)).thenReturn(newRecognitionResultDTO);
         when(repository.existsById(recognitionResult.getRecognitionResultId())).thenReturn(true);
@@ -145,15 +144,10 @@ class RecognitionResultServiceImplTest {
     @Test
     void findAllByUserId_shouldReturnRecognitionResultListWhichUserCreatedOrUpdated_ifSuchRecordsExist() {
         // Given
-        List<RecognitionResult> expectedResultList = Arrays.asList(
-                recognitionResult,
-                new RecognitionResult(1000L, null, null, null, null, null, null, null, null, null, null, null),
-                new RecognitionResult(1001L, null, null, null, null, null, null, null, null, null, null, null));
-        List<RecognitionResultDTO> expectedResultDtoList = Arrays.asList(
-                recognitionResultDTO,
-                new RecognitionResultDTO(1000L, null, null, null, null, null, null, null, null, null, null, null),
-                new RecognitionResultDTO(1001L, null, null, null, null, null, null, null, null, null, null, null));
-
+        LocalDateTime today = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS);
+        LocalDateTime yesterday = LocalDateTime.now().minusDays(1).truncatedTo(ChronoUnit.DAYS);
+        List<RecognitionResult> expectedResultList = TestObjectsGenerator.generateRecognitionResultList(today, yesterday);
+        List<RecognitionResultDTO> expectedResultDtoList = TestObjectsGenerator.generateRecognitionResultDTOList(today, yesterday);
         Long userId = 999L;
         when(userRepository.findById(userId)).thenReturn(Optional.of(new ApplicationUser()));
         when(repository.findAllByCreateUserOrUpdateUser(any(), any())).thenReturn(expectedResultList);
@@ -179,8 +173,8 @@ class RecognitionResultServiceImplTest {
         // Given
         LocalDateTime today = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS);
         LocalDateTime yesterday = LocalDateTime.now().minusDays(1).truncatedTo(ChronoUnit.DAYS);
-        List<RecognitionResult> recognitionResults = generateTestRecognitionResultListValues(today, yesterday);
-        List<RecognitionResultDTO> recognitionResultDTOList = generateTestRecognitionResultDTOListValues(today, yesterday);
+        List<RecognitionResult> recognitionResults = TestObjectsGenerator.generateRecognitionResultList(today, yesterday);
+        List<RecognitionResultDTO> recognitionResultDTOList = TestObjectsGenerator.generateRecognitionResultDTOList(today, yesterday);
         when(repository.findAllForList()).thenReturn(recognitionResults);
         when(mapper.mapToDTO(recognitionResults)).thenReturn(recognitionResultDTOList);
         // When
@@ -188,43 +182,5 @@ class RecognitionResultServiceImplTest {
         // Then
         assertEquals(3, result.get(today).size());
         assertEquals(2, result.get(yesterday).size());
-    }
-
-    private List<RecognitionResult> generateTestRecognitionResultListValues(LocalDateTime date1, LocalDateTime date2) {
-        List<ApplicationUser> users = generateTestUserListValues();
-        return Stream.of(
-                new RecognitionResult(1001L, "description ...", 1, 1, date1, null, null, null, null, users.get(0), users.get(1), null),
-                new RecognitionResult(1002L, "description ...", 1, 1, date1, null, null, null, null, users.get(0), users.get(1), null),
-                new RecognitionResult(1003L, "description ...", 1, 1, date1, null, null, null, null, users.get(1), users.get(2), null),
-                new RecognitionResult(1004L, "description ...", 1, 1, date2, null, null, null, null, users.get(1), users.get(2), null),
-                new RecognitionResult(1005L, "description ...", 1, 1, date2, null, null, null, null, users.get(1), users.get(2), null)
-        ).collect(Collectors.toList());
-    }
-
-    private List<RecognitionResultDTO> generateTestRecognitionResultDTOListValues(LocalDateTime date1, LocalDateTime date2) {
-        List<ApplicationUserDTO> users = generateTestUserDTOListValues();
-        return Stream.of(
-                new RecognitionResultDTO(1001L, "description ...", 1, 1, date1, null, null, null, null, users.get(0), users.get(1), null),
-                new RecognitionResultDTO(1002L, "description ...", 1, 1, date1, null, null, null, null, users.get(0), users.get(1), null),
-                new RecognitionResultDTO(1003L, "description ...", 1, 1, date1, null, null, null, null, users.get(1), users.get(2), null),
-                new RecognitionResultDTO(1004L, "description ...", 1, 1, date2, null, null, null, null, users.get(1), users.get(2), null),
-                new RecognitionResultDTO(1005L, "description ...", 1, 1, date2, null, null, null, null, users.get(1), users.get(2), null)
-        ).collect(Collectors.toList());
-    }
-
-    private List<ApplicationUser> generateTestUserListValues() {
-        return Stream.of(
-                new ApplicationUser(1000L, "Username1", "password", null, null, null),
-                new ApplicationUser(1001L, "Username2", "password", null, null, null),
-                new ApplicationUser(1002L, "Username3", "password", null, null, null)
-        ).collect(Collectors.toList());
-    }
-
-    private List<ApplicationUserDTO> generateTestUserDTOListValues() {
-        return Stream.of(
-                new ApplicationUserDTO(1000L, "Username1", "password", null, null, null),
-                new ApplicationUserDTO(1001L, "Username2", "password", null, null, null),
-                new ApplicationUserDTO(1002L, "Username3", "password", null, null, null)
-        ).collect(Collectors.toList());
     }
 }

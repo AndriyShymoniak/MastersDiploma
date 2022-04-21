@@ -1,5 +1,6 @@
 package com.nulp.shymoniak.mastersproject.utility.impl;
 
+import com.nulp.shymoniak.mastersproject.TestObjectsGenerator;
 import com.nulp.shymoniak.mastersproject.dto.ApplicationUserDTO;
 import com.nulp.shymoniak.mastersproject.service.ApplicationUserService;
 import org.junit.jupiter.api.BeforeAll;
@@ -37,7 +38,7 @@ class SecuritySessionUtilityImplTest {
 
     @BeforeAll
     static void beforeAll() {
-        currentUser = new ApplicationUserDTO(999L, "Username", "password", null, null, null);
+        currentUser = TestObjectsGenerator.generateApplicationUserDTO();
     }
 
     @BeforeEach

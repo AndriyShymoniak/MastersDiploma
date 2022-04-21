@@ -1,5 +1,6 @@
 package com.nulp.shymoniak.mastersproject.service.impl;
 
+import com.nulp.shymoniak.mastersproject.TestObjectsGenerator;
 import com.nulp.shymoniak.mastersproject.dto.PersonDTO;
 import com.nulp.shymoniak.mastersproject.entity.Person;
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
@@ -38,8 +39,8 @@ class PersonServiceImplTest {
 
     @BeforeAll
     static void beforeAll() {
-        person = new Person(999L, "Vitalii", "Kachmar", "vitalii_k@mail.com", null);
-        personDTO = new PersonDTO(999L, "Vitalii", "Kachmar", "vitalii_k@mail.com", null);
+        person = TestObjectsGenerator.generatePerson();
+        personDTO = TestObjectsGenerator.generatePersonDTO();
     }
 
     @BeforeEach
@@ -88,8 +89,10 @@ class PersonServiceImplTest {
     @Test
     void updateItem_shouldUpdatePerson_ifExist() {
         // Given
-        Person newPersonEntity = new Person(999L, "NewName", "NewSurname", "vitalii_k@mail.com", null);
-        PersonDTO newPersonDTO = new PersonDTO(999L, "NewName", "NewSurname", "vitalii_k@mail.com", null);
+        Person newPersonEntity = TestObjectsGenerator.generatePerson();
+        newPersonEntity.setName("NewName");
+        PersonDTO newPersonDTO = TestObjectsGenerator.generatePersonDTO();
+        newPersonDTO.setName("NewName");
         when(mapper.mapToEntity(newPersonDTO)).thenReturn(newPersonEntity);
         when(mapper.mapToDTO(newPersonEntity)).thenReturn(newPersonDTO);
         when(repository.existsById(person.getPersonId())).thenReturn(true);

@@ -1,5 +1,6 @@
 package com.nulp.shymoniak.mastersproject.aspect;
 
+import com.nulp.shymoniak.mastersproject.TestObjectsGenerator;
 import com.nulp.shymoniak.mastersproject.aspect.impl.ServiceDTOFillerAspectImpl;
 import com.nulp.shymoniak.mastersproject.dto.ApplicationUserDTO;
 import com.nulp.shymoniak.mastersproject.dto.RecognitionResultDTO;
@@ -63,10 +64,20 @@ class ServiceDTOFillerAspectImplTest {
         currentDate = LocalDateTime.now();
         currentUserEntity = new ApplicationUser();
         currentUserDTO = new ApplicationUserDTO();
-        recognitionResultEntity = new RecognitionResult(999L, "description ... ", 1, 1, null, null, null, null, null, null, null, null);
-        recognitionResultDTO = new RecognitionResultDTO(999L, "description ... ", 1, 1, null, null, null, null, null, null, null, null);
-        updatedRecognitionResultEntity = new RecognitionResult(999L, "description ... ", 1, 1, currentDate, currentDate, null, null, null, currentUserEntity, currentUserEntity, null);
-        updatedRecognitionResultDTO = new RecognitionResultDTO(999L, "description ... ", 1, 1, currentDate, currentDate, null, null, null, currentUserDTO, currentUserDTO, null);
+        recognitionResultEntity = TestObjectsGenerator.generateRecognitionResult();
+        recognitionResultDTO = TestObjectsGenerator.generateRecognitionResultDTO();
+
+        updatedRecognitionResultEntity = TestObjectsGenerator.generateRecognitionResult();
+        updatedRecognitionResultEntity.setCreateUser(currentUserEntity);
+        updatedRecognitionResultEntity.setUpdateUser(currentUserEntity);
+        updatedRecognitionResultEntity.setCreateDate(currentDate);
+        updatedRecognitionResultEntity.setUpdateDate(currentDate);
+
+        updatedRecognitionResultDTO = TestObjectsGenerator.generateRecognitionResultDTO();
+        updatedRecognitionResultDTO.setCreateUser(currentUserDTO);
+        updatedRecognitionResultDTO.setUpdateUser(currentUserDTO);
+        updatedRecognitionResultDTO.setCreateDate(currentDate);
+        updatedRecognitionResultDTO.setUpdateDate(currentDate);
     }
 
     @BeforeEach

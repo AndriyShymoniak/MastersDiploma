@@ -1,6 +1,7 @@
 package com.nulp.shymoniak.mastersproject.controller;
 
 import com.google.gson.Gson;
+import com.nulp.shymoniak.mastersproject.TestObjectsGenerator;
 import com.nulp.shymoniak.mastersproject.dto.MediaDTO;
 import com.nulp.shymoniak.mastersproject.exception.ApiExceptionHandler;
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
@@ -24,7 +25,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static com.nulp.shymoniak.mastersproject.constant.ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND;
@@ -53,7 +53,7 @@ class MediaControllerTest {
     @BeforeAll
     static void beforeAll() {
         gson = new Gson();
-        media = new MediaDTO(999L, "https://shorturl.at/elnI5", "https://shorturl.at/elnI5", null, null);
+        media = TestObjectsGenerator.generateMediaDTO();
     }
     
     @BeforeEach
@@ -69,10 +69,7 @@ class MediaControllerTest {
     @Test
     void findAllMedias_shouldReturnMediaListAndStatusCode200_ifMediasExist() throws Exception {
         // Given
-        List<MediaDTO> mediaList = Arrays.asList(
-                media,
-                new MediaDTO(1000L, null, null, null, null),
-                new MediaDTO(1001L, null, null, null, null));
+        List<MediaDTO> mediaList = TestObjectsGenerator.generateMediaDTOList();
         Pageable pageable = PageRequest.of(0, 10);
         when(service.findAll(any())).thenReturn(new PageImpl<>(mediaList, pageable, mediaList.size()));
         // When

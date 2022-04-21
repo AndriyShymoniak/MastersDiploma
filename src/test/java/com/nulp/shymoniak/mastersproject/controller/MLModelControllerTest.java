@@ -1,6 +1,7 @@
 package com.nulp.shymoniak.mastersproject.controller;
 
 import com.google.gson.Gson;
+import com.nulp.shymoniak.mastersproject.TestObjectsGenerator;
 import com.nulp.shymoniak.mastersproject.dto.MLModelDTO;
 import com.nulp.shymoniak.mastersproject.exception.ApiExceptionHandler;
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
@@ -24,7 +25,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static com.nulp.shymoniak.mastersproject.constant.ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND;
@@ -53,7 +53,7 @@ class MLModelControllerTest {
     @BeforeAll
     static void beforeAll() {
         gson = new Gson();
-        mlModel = new MLModelDTO(999L, "MODEL_NAME", "https://github.com/", 1, 1, null, null, null);
+        mlModel = TestObjectsGenerator.generateMLModelDTO();
     }
 
     @BeforeEach
@@ -69,10 +69,10 @@ class MLModelControllerTest {
     @Test
     void findAllMLModels_shouldReturnMLModelListAndStatusCode200_ifMLModelsExist() throws Exception {
         // Given
-        List<MLModelDTO> mlModelList = Arrays.asList(
-                mlModel,
-                new MLModelDTO(1000L, null, null, null, null, null, null, null),
-                new MLModelDTO(1001L, null, null, null, null, null, null, null));
+        List<MLModelDTO> mlModelList = TestObjectsGenerator.generateMLModelDTOList();
+        for (MLModelDTO model : mlModelList) {
+            model.setObservedObjectList(null);
+        }
         Pageable pageable = PageRequest.of(0, 10);
         when(service.findAll(any())).thenReturn(new PageImpl<>(mlModelList, pageable, mlModelList.size()));
         // When
@@ -89,10 +89,10 @@ class MLModelControllerTest {
     @Test
     void findAllModelsByObservedObject_shouldReturnMLModelListAndStatusCode200_ifMLModelsExist() throws Exception {
         // Given
-        List<MLModelDTO> mlModelList = Arrays.asList(
-                mlModel,
-                new MLModelDTO(1000L, null, null, null, null, null, null, null),
-                new MLModelDTO(1001L, null, null, null, null, null, null, null));
+        List<MLModelDTO> mlModelList = TestObjectsGenerator.generateMLModelDTOList();
+        for (MLModelDTO model : mlModelList) {
+            model.setObservedObjectList(null);
+        }
         when(service.findAllModelsByObservedObject(any())).thenReturn(mlModelList);
         // When
         // Then

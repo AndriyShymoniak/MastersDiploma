@@ -1,5 +1,6 @@
 package com.nulp.shymoniak.mastersproject.service.impl;
 
+import com.nulp.shymoniak.mastersproject.TestObjectsGenerator;
 import com.nulp.shymoniak.mastersproject.dto.LocationDTO;
 import com.nulp.shymoniak.mastersproject.entity.Location;
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
@@ -37,8 +38,8 @@ class LocationServiceImplTest {
 
     @BeforeAll
     static void beforeAll() {
-        location = new Location(999L, "39.12345", "39.12345");
-        locationDTO = new LocationDTO(999L, "39.12345", "39.12345");
+        location = TestObjectsGenerator.generateLocation();
+        locationDTO = TestObjectsGenerator.generateLocationDTO();
     }
 
     @BeforeEach
@@ -87,8 +88,10 @@ class LocationServiceImplTest {
     @Test
     void updateItem_shouldUpdateLocation_ifExist() {
         // Given
-        Location newLocationEntity = new Location(999L, "40.54321", "40.54321");
-        LocationDTO newLocationDTO = new LocationDTO(999L, "40.54321", "40.54321");
+        Location newLocationEntity = TestObjectsGenerator.generateLocation();
+        newLocationEntity.setLatitude("99.9999");
+        LocationDTO newLocationDTO = TestObjectsGenerator.generateLocationDTO();
+        newLocationDTO.setLatitude("99.9999");
         when(mapper.mapToEntity(newLocationDTO)).thenReturn(newLocationEntity);
         when(mapper.mapToDTO(newLocationEntity)).thenReturn(newLocationDTO);
         when(repository.existsById(location.getLocationId())).thenReturn(true);

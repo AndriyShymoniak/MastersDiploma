@@ -1,5 +1,6 @@
 package com.nulp.shymoniak.mastersproject.aspect;
 
+import com.nulp.shymoniak.mastersproject.TestObjectsGenerator;
 import com.nulp.shymoniak.mastersproject.aspect.impl.ServiceValidatorAspectImpl;
 import com.nulp.shymoniak.mastersproject.dto.RecognitionResultDTO;
 import com.nulp.shymoniak.mastersproject.entity.RecognitionResult;
@@ -51,8 +52,8 @@ class ServiceValidatorAspectImplTest {
 
     @BeforeAll
     static void beforeAll() {
-        recognitionResultEntity = new RecognitionResult(999L, "description ... ", 1, 1, null, null, null, null, null, null, null, null);
-        recognitionResultDTO = new RecognitionResultDTO(999L, "description ... ", 1, 1, null, null, null, null, null, null, null, null);
+        recognitionResultEntity = TestObjectsGenerator.generateRecognitionResult();
+        recognitionResultDTO = TestObjectsGenerator.generateRecognitionResultDTO();
     }
 
     @BeforeEach

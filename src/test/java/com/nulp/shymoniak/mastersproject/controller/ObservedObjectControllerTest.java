@@ -1,6 +1,7 @@
 package com.nulp.shymoniak.mastersproject.controller;
 
 import com.google.gson.Gson;
+import com.nulp.shymoniak.mastersproject.TestObjectsGenerator;
 import com.nulp.shymoniak.mastersproject.dto.ObservedObjectDTO;
 import com.nulp.shymoniak.mastersproject.exception.ApiExceptionHandler;
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
@@ -24,7 +25,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static com.nulp.shymoniak.mastersproject.constant.ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND;
@@ -53,7 +53,7 @@ class ObservedObjectControllerTest {
     @BeforeAll
     static void beforeAll() {
         gson = new Gson();
-        observedObject = new ObservedObjectDTO(999L, "OBJ_NAME", null, null);
+        observedObject = TestObjectsGenerator.generateObservedObjectDTO();
     }
 
     @BeforeEach
@@ -69,10 +69,7 @@ class ObservedObjectControllerTest {
     @Test
     void findAllObservedObjects_shouldReturnObservedObjectListAndStatusCode200_ifObservedObjectsExist() throws Exception {
         // Given
-        List<ObservedObjectDTO> observedObjectList = Arrays.asList(
-                observedObject,
-                new ObservedObjectDTO(1000L, null, null, null),
-                new ObservedObjectDTO(1001L, null, null, null));
+        List<ObservedObjectDTO> observedObjectList = TestObjectsGenerator.generateObservedObjectDTOList();
         Pageable pageable = PageRequest.of(0, 10);
         when(service.findAll(any())).thenReturn(new PageImpl<>(observedObjectList, pageable, observedObjectList.size()));
         // When
