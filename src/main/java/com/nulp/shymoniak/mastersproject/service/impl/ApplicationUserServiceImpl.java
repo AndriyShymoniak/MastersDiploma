@@ -1,6 +1,5 @@
 package com.nulp.shymoniak.mastersproject.service.impl;
 
-import com.nulp.shymoniak.mastersproject.constant.ApplicationConstants;
 import com.nulp.shymoniak.mastersproject.dto.ApplicationUserDTO;
 import com.nulp.shymoniak.mastersproject.entity.ApplicationUser;
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
@@ -59,7 +58,7 @@ public class ApplicationUserServiceImpl extends AbstractService<ApplicationUser,
     public ApplicationUserDTO findByUsername(String username) {
         Optional<ApplicationUser> optionalUser = userRepository.findByUsername(username);
         return optionalUser.map(item -> (ApplicationUserDTO) mapper.mapToDTO(item))
-                .orElseThrow(() -> new ApiRequestException(ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND));
+                .orElseThrow(() -> new ApiRequestException("There is no such user with username: " + username));
     }
 
     @Override

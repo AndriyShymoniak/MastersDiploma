@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MediaServiceImpl extends AbstractService<Media, MediaDTO> implements MediaService {
-
     @Autowired
     public MediaServiceImpl(MediaRepository repository, MediaValidator validator) {
         this.repository = repository;

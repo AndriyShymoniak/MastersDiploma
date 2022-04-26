@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class LocationServiceImpl extends AbstractService<Location, LocationDTO> implements LocationService {
-
     @Autowired
     public LocationServiceImpl(LocationRepository repository, LocationValidator validator) {
         this.repository = repository;

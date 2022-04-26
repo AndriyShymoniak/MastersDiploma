@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PersonServiceImpl extends AbstractService<Person, PersonDTO> implements PersonService {
-
     @Autowired
     public PersonServiceImpl(PersonRepository repository, PersonValidator validator) {
         this.repository = repository;

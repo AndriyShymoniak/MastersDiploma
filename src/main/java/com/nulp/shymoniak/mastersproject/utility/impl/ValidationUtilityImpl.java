@@ -16,22 +16,26 @@ public class ValidationUtilityImpl implements ValidationUtility {
 
     @Override
     public boolean isValidURL(String url) {
-        return isNotNullAndNotBlank(url) && Pattern.matches(URL_REGEX_PATTERN, url);
+        return isNotNullAndNotBlank(url)
+                && Pattern.matches(URL_REGEX_PATTERN, url);
     }
 
     @Override
     public boolean isValidEmail(String email) {
-        return isNotNullAndNotBlank(email) && Pattern.matches(EMAIL_REGEX_PATTERN, email);
+        return isNotNullAndNotBlank(email)
+                && Pattern.matches(EMAIL_REGEX_PATTERN, email);
     }
 
     @Override
     public boolean isValidStrCapitalAndUnderscoresOnly(String input) {
-        return isNotNullAndNotBlank(input) && Pattern.matches(CAPITAL_LETTERS_WITH_UNDERSCORE_REGEX_PATTERN, input);
+        return isNotNullAndNotBlank(input)
+                && Pattern.matches(CAPITAL_LETTERS_WITH_UNDERSCORE_REGEX_PATTERN, input);
     }
 
     @Override
     public boolean isValidUsernameOrPassword(String input) {
-        return isNotNullAndNotBlank(input) && Pattern.matches(USERNAME_AND_PASSWORD_REGEX_PATTERN, input);
+        return isNotNullAndNotBlank(input)
+                && Pattern.matches(USERNAME_AND_PASSWORD_REGEX_PATTERN, input);
     }
 
     @Override
