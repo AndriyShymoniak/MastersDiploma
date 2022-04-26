@@ -2,7 +2,7 @@ package com.nulp.shymoniak.mastersproject.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,21 +28,36 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
     private final JwtConfig config;
     private final SecretKey secretKey;
 
-    // Receiving credentials from client and validating them
+    /**
+     * Receiving credentials from client and validating them
+     * @param request
+     * @param response
+     * @return
+     * @throws AuthenticationException
+     */
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        try {
-            UsernamePasswordAuthenticationRequest authRequest = new ObjectMapper().readValue(request.getInputStream(), UsernamePasswordAuthenticationRequest.class);
-            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword());
-            return authenticationManager.authenticate(authToken);
-        } catch (IOException e) {
-            throw new ApiRequestException(e.getMessage());
-        }
+    public Authentication attemptAuthentication(HttpServletRequest request,
+                                                HttpServletResponse response) throws AuthenticationException {
+        UsernamePasswordAuthenticationRequest authRequest = convertRequest(request);
+        UsernamePasswordAuthenticationToken authToken =
+                new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword());
+        return authenticationManager.authenticate(authToken);
     }
 
-    // Generating and sending a token to a client after successful validation
+    /**
+     * Generating and sending a token to a client after successful validation
+     * @param request
+     * @param response
+     * @param chain
+     * @param authResult
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+    protected void successfulAuthentication(HttpServletRequest request,
+                                            HttpServletResponse response,
+                                            FilterChain chain,
+                                            Authentication authResult) throws IOException, ServletException {
         String token = Jwts.builder()
                 .setSubject(authResult.getName())                                       // username of client
                 .claim(JWT_AUTHORITIES, authResult.getAuthorities())                    // role of client
@@ -51,5 +66,20 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
                 .signWith(secretKey)                                                    // setting secret encryption key
                 .compact();
         response.addHeader(config.getAuthorizationHeader(), config.getTokenPrefix() + token);
+    }
+
+    /**
+     * Converts HttpServletRequest to custom UsernamePasswordAuthenticationRequest
+     * @param request HttpServletRequest
+     * @return converted request
+     */
+    private UsernamePasswordAuthenticationRequest convertRequest(HttpServletRequest request) {
+        try {
+            return new ObjectMapper().readValue(request.getInputStream(),
+                    UsernamePasswordAuthenticationRequest.class);
+        } catch (IOException e) {
+            throw new JwtException("Error occurred while extracting user " +
+                    "credentials", e);
+        }
     }
 }
