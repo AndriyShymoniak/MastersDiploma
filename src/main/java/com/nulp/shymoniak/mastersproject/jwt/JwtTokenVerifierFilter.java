@@ -1,6 +1,5 @@
 package com.nulp.shymoniak.mastersproject.jwt;
 
-import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,39 +29,64 @@ public class JwtTokenVerifierFilter extends OncePerRequestFilter {
 
     // This method will be invoked for each request
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String authorizationHeader = request.getHeader(config.getAuthorizationHeader());
-        if (authorizationHeader.isBlank() || !authorizationHeader.startsWith(config.getTokenPrefix())) {
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
+        String authHeader = request.getHeader(config.getAuthorizationHeader());
+        // validates token
+        if (isAuthorizationHeaderNotValid(authHeader)) {
             filterChain.doFilter(request, response);
             return;
         }
 
+        Jwt<Header, Claims> token = decodeToken(authHeader);
+        String username = token.getBody().getSubject();
+        Set<SimpleGrantedAuthority> authorities = extractAuthoritiesFromToken(token);
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                username, null, authorities);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        filterChain.doFilter(request, response); // passes to the next filter of the application
+    }
+
+    /**
+     * Checks whether authorization header is not valid
+     * @param authorizationHeader
+     * @return true if authorization header is not valid
+     */
+    private boolean isAuthorizationHeaderNotValid(String authorizationHeader){
+        return authorizationHeader.isBlank()
+                || !authorizationHeader.startsWith(config.getTokenPrefix());
+    }
+
+    /**
+     * Extracting and decoding token from authorization header
+     * @param authorizationHeader
+     * @return decoded token
+     */
+    private Jwt<Header, Claims> decodeToken(String authorizationHeader) {
         try {
-            // Extracting and decoding token
             String token = authorizationHeader.replace(config.getTokenPrefix(), "");
-            Jwt<Header, Claims> headerClaimsJwt = Jwts.parserBuilder()
+            return Jwts.parserBuilder()
                     .setSigningKey(secretKey)
                     .build()
                     .parse(token);
-            // Receiving username from token
-            String username = headerClaimsJwt.getBody().getSubject();
-            // Receiving all user authorities
-            List<Map<String, String>> authorities = (List<Map<String, String>>) headerClaimsJwt.getBody().get(JWT_AUTHORITIES);
-            Set<SimpleGrantedAuthority> simpleGrantedAuthoritySet = authorities.stream()
-                    .map(item -> new SimpleGrantedAuthority(item.get(JWT_AUTHORITY)))
-                    .collect(Collectors.toSet());
-
-            Authentication authentication = new UsernamePasswordAuthenticationToken(
-                    username,
-                    null,
-                    simpleGrantedAuthoritySet
-            );
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            filterChain.doFilter(request, response);    // passes to the next filter of the application
         } catch (IllegalArgumentException ex) {
-            throw new ApiRequestException("Unable to fetch JWT Token");
+            throw new JwtException("Unable to fetch Java Web Token");
         } catch (ExpiredJwtException ex) {
-            throw new ApiRequestException("JWT Token is expired");
+            throw new JwtException("Java Web Token is expired");
         }
+    }
+
+    /**
+     * Extracts set of SimpleGrantedAuthority from JWT
+     * @param token JWT
+     * @return authorities
+     */
+    private Set<SimpleGrantedAuthority> extractAuthoritiesFromToken(Jwt<Header, Claims> token) {
+        List<Map<String, String>> authorities = (List<Map<String, String>>) token.getBody().get(JWT_AUTHORITIES);
+        return authorities.stream()
+                .map(item -> new SimpleGrantedAuthority(item.get(JWT_AUTHORITY)))
+                .collect(Collectors.toSet());
     }
 }
