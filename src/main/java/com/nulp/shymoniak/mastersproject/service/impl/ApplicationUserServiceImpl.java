@@ -1,5 +1,6 @@
 package com.nulp.shymoniak.mastersproject.service.impl;
 
+import com.nulp.shymoniak.mastersproject.annotations.CrudService;
 import com.nulp.shymoniak.mastersproject.dto.ApplicationUserDTO;
 import com.nulp.shymoniak.mastersproject.entity.ApplicationUser;
 import com.nulp.shymoniak.mastersproject.exception.ApiRequestException;
@@ -8,31 +9,29 @@ import com.nulp.shymoniak.mastersproject.service.AbstractService;
 import com.nulp.shymoniak.mastersproject.service.ApplicationUserService;
 import com.nulp.shymoniak.mastersproject.mapping.UserMapper;
 import com.nulp.shymoniak.mastersproject.validation.UserValidator;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 import static com.nulp.shymoniak.mastersproject.constant.ApplicationConstants.ERROR_MESSAGE_RECORD_NOT_FOUND;
 
-@Service
+@CrudService(
+        validator = UserValidator.class,
+        repository = ApplicationUserRepository.class,
+        mapper = UserMapper.class
+)
+@RequiredArgsConstructor
 public class ApplicationUserServiceImpl extends AbstractService<ApplicationUser, ApplicationUserDTO> implements ApplicationUserService, UserDetailsService {
+    @NonNull
     private ApplicationUserRepository userRepository;
+    @NonNull
     private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public ApplicationUserServiceImpl(ApplicationUserRepository repository, UserValidator validator, PasswordEncoder passwordEncoder) {
-        this.userRepository = repository;
-        this.repository = repository;
-        this.validator = validator;
-        this.mapper = UserMapper.INSTANCE;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @Override
     public ApplicationUserDTO createItem(ApplicationUserDTO userDTO) {

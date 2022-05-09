@@ -1,5 +1,6 @@
 package com.nulp.shymoniak.mastersproject.service.impl;
 
+import com.nulp.shymoniak.mastersproject.annotations.CrudService;
 import com.nulp.shymoniak.mastersproject.constant.ApplicationConstants;
 import com.nulp.shymoniak.mastersproject.dto.MLModelDTO;
 import com.nulp.shymoniak.mastersproject.entity.MLModel;
@@ -8,24 +9,22 @@ import com.nulp.shymoniak.mastersproject.repository.MLModelRepository;
 import com.nulp.shymoniak.mastersproject.service.AbstractService;
 import com.nulp.shymoniak.mastersproject.service.MLModelService;
 import com.nulp.shymoniak.mastersproject.validation.MLModelValidator;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Service
+@CrudService(
+        validator = MLModelValidator.class,
+        repository = MLModelRepository.class,
+        mapper = MLModelMapper.class
+)
+@RequiredArgsConstructor
 public class MLModelServiceImpl extends AbstractService<MLModel, MLModelDTO> implements MLModelService {
+    @NonNull
     private MLModelRepository mlModelRepository;
-
-    @Autowired
-    public MLModelServiceImpl(MLModelRepository repository, MLModelValidator validator) {
-        this.mlModelRepository = repository;
-        this.repository = repository;
-        this.validator = validator;
-        this.mapper = MLModelMapper.INSTANCE;
-    }
 
     @Override
     public List<MLModelDTO> findAllModelsByObservedObject(Set<Long> observedObjectIdSet) {

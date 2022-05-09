@@ -1,5 +1,6 @@
 package com.nulp.shymoniak.mastersproject.service.impl;
 
+import com.nulp.shymoniak.mastersproject.annotations.CrudService;
 import com.nulp.shymoniak.mastersproject.constant.ApplicationConstants;
 import com.nulp.shymoniak.mastersproject.dto.RecognitionResultDTO;
 import com.nulp.shymoniak.mastersproject.entity.RecognitionResult;
@@ -11,27 +12,25 @@ import com.nulp.shymoniak.mastersproject.service.AbstractService;
 import com.nulp.shymoniak.mastersproject.service.RecognitionResultService;
 import com.nulp.shymoniak.mastersproject.mapping.RecognitionResultMapper;
 import com.nulp.shymoniak.mastersproject.validation.RecognitionResultValidator;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Service
+@CrudService(
+        validator = RecognitionResultValidator.class,
+        repository = RecognitionResultRepository.class,
+        mapper = RecognitionResultMapper.class
+)
+@RequiredArgsConstructor
 public class RecognitionResultServiceImpl extends AbstractService<RecognitionResult, RecognitionResultDTO> implements RecognitionResultService {
+    @NonNull
     private RecognitionResultRepository recognitionResultRepository;
+    @NonNull
     private ApplicationUserRepository userRepository;
-
-    @Autowired
-    public RecognitionResultServiceImpl(RecognitionResultRepository repository, RecognitionResultValidator validator, ApplicationUserRepository userRepository) {
-        this.recognitionResultRepository = repository;
-        this.repository = repository;
-        this.userRepository = userRepository;
-        this.validator = validator;
-        this.mapper = RecognitionResultMapper.INSTANCE;
-    }
 
     @Override
     public List<RecognitionResultDTO> findAllByUserId(Long userId) {

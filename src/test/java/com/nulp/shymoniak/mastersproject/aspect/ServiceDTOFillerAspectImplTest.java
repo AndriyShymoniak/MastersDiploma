@@ -7,6 +7,7 @@ import com.nulp.shymoniak.mastersproject.dto.RecognitionResultDTO;
 import com.nulp.shymoniak.mastersproject.entity.ApplicationUser;
 import com.nulp.shymoniak.mastersproject.entity.RecognitionResult;
 import com.nulp.shymoniak.mastersproject.mapping.RecognitionResultMapper;
+import com.nulp.shymoniak.mastersproject.repository.ApplicationUserRepository;
 import com.nulp.shymoniak.mastersproject.repository.RecognitionResultRepository;
 import com.nulp.shymoniak.mastersproject.service.RecognitionResultService;
 import com.nulp.shymoniak.mastersproject.service.impl.RecognitionResultServiceImpl;
@@ -33,6 +34,9 @@ import static org.mockito.Mockito.*;
 class ServiceDTOFillerAspectImplTest {
     @Mock
     private RecognitionResultRepository repository;
+
+    @Mock
+    private ApplicationUserRepository userRepository;
 
     @Mock
     private RecognitionResultMapper mapper;

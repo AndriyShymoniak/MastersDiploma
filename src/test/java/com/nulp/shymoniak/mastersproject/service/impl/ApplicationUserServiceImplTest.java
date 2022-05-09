@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
@@ -27,6 +28,9 @@ import static org.mockito.Mockito.when;
 class ApplicationUserServiceImplTest {
     @Mock
     private ApplicationUserRepository repository;
+
+    @Mock
+    private PasswordEncoder passwordEncoder;
 
     @Mock
     private AbstractMapper mapper;
