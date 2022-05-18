@@ -22,12 +22,14 @@ public abstract class AbstractService<Entity, DTO> {
     protected AbstractRepository repository;
     protected AbstractMapper mapper;
 
+    @Transactional(readOnly = true)
     public Page<DTO> findAll(Pageable pageable) {
         Page<Entity> entityList = repository.findAll(pageable);
         Page<DTO> resultList = (Page<DTO>) mapper.mapToDTO(entityList);
         return resultList;
     }
 
+    @Transactional(readOnly = true)
     public DTO findById(Long id) {
         Optional<Entity> optionalEntity = repository.findById(id);
         return optionalEntity.map(item -> (DTO) mapper.mapToDTO(item))
